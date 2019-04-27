@@ -57,13 +57,6 @@ module.exports = {
                             name: '[name].[ext]',
                         },
                     },
-                    //Adapted from https://www.npmjs.com/package/image-webpack-loader
-                    {
-                        loader: 'image-webpack-loader',
-                        options: {
-                            disable: true, // webpack@2.x and newer
-                        },
-                    },
                 ],
             },
         ],
