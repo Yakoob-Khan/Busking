@@ -1,9 +1,9 @@
-# Project Name
+# busking
 
 ![Team Photo](Insert a Team Photo URL here)
 [*how?*](https://help.github.com/articles/about-readmes/#relative-links-and-image-paths-in-readme-files)
 
-TODO: short project description, some sample screenshots or mockups
+This project aims to make it easier for street performers, both part-time and full-time, to advertise their events, receive tips and create a local fanbase. It also helps tourists and residents explore local artists and attend fun events.
 
 ## Architecture
 ### API
