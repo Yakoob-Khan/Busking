@@ -60,7 +60,7 @@ TODO:  descriptions of code organization and tools and libraries used
 
 ## Setup
 
-TODO: how to get the project dev environment up and running, npm install etc
+Clone the project and run `yarn` to install all the project dependencies. Then run `yarn start` to load the run the project locally.
 
 ## Deployment
 
@@ -76,6 +76,6 @@ Tianxing Dai
 
 Chikezie Onungwa 
 
-Yakoob Khan 
+Yakoob Khan '21
 
 ## Acknowledgments
