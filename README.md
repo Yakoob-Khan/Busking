@@ -19,6 +19,10 @@ TODO: how to deploy the project
 
 ## Authors
 
-TODO: list of authors
+Rafi Khaled
+Xingran Zhuang
+Tianxing Dai
+Chikezie Onungwa
+Yakoob Khan
 
 ## Acknowledgments
