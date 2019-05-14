@@ -26,10 +26,8 @@ This project aims to make it easier for street performers, both part-time and fu
 			- Past
 			- Future
 		- Followers
+		- Rating
 		- Join Date
-	- Private
-		- Location (Longitude and Latitude)
-		- Distance willing to travel
 		- Receipts
 ### Frontend
 - Signup/Login
