@@ -37,17 +37,18 @@ export function fetchEvents() {
         });
       })
       .catch((error) => {
-        dispatch(appError(`Error retrieving events :( ${error.response.data}`));
+        dispatch(appError(`Error retrieving events :( ${error}`));
         console.log(error);
       });
   };
 }
 
 export function createEvent(newEvent, history) {
+  console.log(newEvent);
   return (dispatch) => {
     axios.post(`${ROOT_URL}/events`, newEvent)
       .then((response) => {
-        history.push('/');
+        history.push('/events');
       })
       .catch((error) => {
         dispatch(appError(`Error creating post :( ${error.response.data}`));

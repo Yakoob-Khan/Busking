@@ -60,9 +60,6 @@ body, html {
   margin-top: 0;
   margin-bottom :0;
   top: 20%;
-  // top: 25%;
-  // left: 35%;
-  // transform: translate(-50%, -50%);
 }
 #landing-subtitle {
   color: white;
@@ -77,5 +74,36 @@ body, html {
   #landing-subtitle {
     font-size: 1em;
   }
+}
+.events-header {
+  font-family: Raleway;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 32px;
+  line-height: 38px;
+  letter-spacing: 0.06em;
+  color: rgb(45, 43, 43);
+  text-align: center;
+}
+.allEvents {
+  margin-left: 7%;
+  margin-right: 7%;
+}
+.event-container {
+  text-decoration: none;
+}
+.event {
+  padding: 2%;
+  background: gray;
+}
+.event-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: white;
+}
+#info-button {
+  border: 1px solid black;
+  margin-right: 95%;
+  padding: 1%;
 }
 

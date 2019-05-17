@@ -1,24 +1,48 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
+import Ratings from 'react-ratings-declarative';
 import { fetchEvents } from '../actions';
 
 class Events extends Component {
-  componentDidMount(props) {
+  componentDidMount() {
     this.props.fetchEvents();
   }
+
+  // stars = (rating) => {
+  //   return (
+  //     <Ratings
+  //       rating={this.state.rating}
+  //       widgetRatedColors="blue"
+  //       changeRating={this.changeRating}
+  //     />
+  //   );
+  // }
 
   renderEvents = () => {
     if (this.props.events.length !== 0) {
       return this.props.events.map((event) => {
         return (
-          <Link to={`events/${event.id}`} key={event.id}>
-            <div className="event">
-              <p>Title: {event.title}</p>
-              <p>Average Rating: {event.averageRating}</p>
-              <p>Image URL: {event.imageURL}</p>
-            </div>
-          </Link>
+          <div className="event" key={event.id}>
+            <p className="event-title">
+              {event.title}
+            </p>
+            <Ratings
+              rating={Math.round(event.averageRating)}
+              widgetRatedColors="rgb(255, 250, 0)"
+              changeRating={this.changeRating}
+              widgetDimensions="35px"
+            >
+              <Ratings.Widget />
+              <Ratings.Widget />
+              <Ratings.Widget />
+              <Ratings.Widget />
+              <Ratings.Widget />
+            </Ratings>
+            <Link to={`events/${event.id}`} key={event.id} className="event-container">
+              More
+            </Link>
+          </div>
         );
       });
     } else {
@@ -33,6 +57,7 @@ class Events extends Component {
   render() {
     return (
       <div className="allEvents">
+        <p className="events-header">See what&apos;s happening now!</p>
         {this.renderEvents()}
       </div>
     );
