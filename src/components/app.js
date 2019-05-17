@@ -4,7 +4,7 @@ import {
 } from 'react-router-dom';
 import '../style.scss';
 import Events from './events';
-import NewEvent from './newevent';
+import NewEvent from './NewEvent';
 import Event from './event';
 import NavBar from './NavBar';
 import LogIn from './LogIn';
