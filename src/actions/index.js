@@ -44,7 +44,6 @@ export function fetchEvents() {
 }
 
 export function createEvent(newEvent, history) {
-  console.log(newEvent);
   return (dispatch) => {
     axios.post(`${ROOT_URL}/events`, newEvent)
       .then((response) => {
