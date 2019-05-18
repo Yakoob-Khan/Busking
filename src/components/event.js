@@ -2,9 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Ratings from 'react-ratings-declarative';
+// import { Elements, StripeProvider } from 'react-stripe-elements';
+import Checkout from './Checkout';
 import {
   fetchEvent, updateEvent, deleteEvent, rateEvent,
 } from '../actions';
+// import PaymentRequestForm from './PaymentRequestForm';
+
 
 class Event extends Component {
   constructor(props) {
@@ -17,6 +21,7 @@ class Event extends Component {
       latitude: '',
       eventCreator: '',
       rating: 0,
+      tip: '',
     };
   }
 
@@ -29,7 +34,7 @@ class Event extends Component {
       isEditing: true,
       title: this.props.event.title,
       imageURL: this.props.event.imageURL,
-      longitude: this.props.event.longitude,
+      longitude: this.props.eavent.longitude,
       latitude: this.props.event.latitude,
       eventCreator: this.props.event.eventCreator,
     });
@@ -66,6 +71,7 @@ class Event extends Component {
     this.props.rateEvent(this.props.event._id, this.state.rating);
   }
 
+
   renderEvent = () => {
     if (!this.state.isEditing) {
       return (
@@ -99,6 +105,14 @@ class Event extends Component {
           <p>Average Rating: {this.props.event.averageRating}</p>
           <button type="button" onClick={this.startEdit}> Update </button>
           <button type="button" onClick={this.deleteEvent}> Delete </button>
+          <input
+            type="text"
+            name="tip"
+            value={this.state.tip}
+            placeholder="Tip Amount"
+            onChange={this.onFieldChange}
+          />
+          {/* <button type="button" onClick={this.payment}> Tip </button> */}
         </div>
       );
     } else {
@@ -127,11 +141,9 @@ class Event extends Component {
             <br />
             <div>
               <Ratings
-
                 rating={this.props.event.averageRating}
                 widgetRatedColors="rgb(255, 250, 0)"
                 widgetDimensions="35px"
-
               >
                 <Ratings.Widget />
                 <Ratings.Widget />
@@ -184,6 +196,12 @@ class Event extends Component {
     return (
       <div className="allEvents">
         {this.renderEvent()}
+        <Checkout
+        // `#demo${this.state.id}`
+          name={`Send a tip to ${this.props.event.eventCreator}!`}
+          description="You're tip goes a long way!"
+          amount={this.state.tip}
+        />
       </div>
     );
   }
