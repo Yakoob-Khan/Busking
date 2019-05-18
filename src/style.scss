@@ -89,21 +89,58 @@ body, html {
   margin-left: 7%;
   margin-right: 7%;
 }
-.event-container {
+.more-info {
   text-decoration: none;
 }
 .event {
-  padding: 2%;
-  background: gray;
+  padding: 3%;
+  // background: #106696;
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/9/97/Peoria_skyline_banner.jpg");
+  background-repeat: no-repeat;
+  background-size: 100% 150px;
 }
 .event-title {
+  top: 5px;
   font-size: 24px;
   font-weight: 800;
   color: white;
+  margin-top: 1%;
+  margin-bottom: 1%;
+}
+#event-banner {
+  width: 100%;
+  height: 100px;
 }
 #info-button {
   border: 1px solid black;
   margin-right: 95%;
   padding: 1%;
 }
-
+.event-image {
+  width: 50%;
+}
+#event-title {
+  font-family: Raleway;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 32px;
+  line-height: 38px;
+  letter-spacing: 0.06em;
+  color: #6B6B6B;
+  margin-top: 1%;
+  margin-bottom: 1%;
+}
+#event-description {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 30px;
+  letter-spacing: 0.04em;
+  color: #6B6B6B;
+  margin-top: 1%;
+  margin-bottom: 1%;
+}
+.event-page {
+  padding: 2%;
+}

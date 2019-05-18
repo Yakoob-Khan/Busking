@@ -12,6 +12,7 @@ class NewEvent extends Component {
       longitude: '',
       latitude: '',
       eventCreator: '',
+      description: '',
     };
     this.onFieldChange = this.onFieldChange.bind(this);
   }
@@ -27,6 +28,7 @@ class NewEvent extends Component {
       longitude: this.state.longitude,
       latitude: this.state.latitude,
       eventCreator: this.state.eventCreator,
+      description: this.state.description,
     };
     this.props.createEvent(newEvent, this.props.history);
   }
@@ -42,6 +44,15 @@ class NewEvent extends Component {
             name="title"
             value={this.state.title}
             placeholder="Event Title"
+            onChange={this.onFieldChange}
+          />
+          <br />
+          Event Description:<br />
+          <input
+            type="text"
+            name="description"
+            value={this.state.description}
+            placeholder="Event Description"
             onChange={this.onFieldChange}
           />
           <br />

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import Ratings from 'react-ratings-declarative';
 import {
   fetchEvent, updateEvent, deleteEvent, rateEvent,
 } from '../actions';
@@ -15,7 +16,7 @@ class Event extends Component {
       longitude: '',
       latitude: '',
       eventCreator: '',
-      rating: '',
+      rating: 0,
     };
   }
 
@@ -38,13 +39,10 @@ class Event extends Component {
     this.props.deleteEvent(this.props.event._id, this.props.history);
   }
 
-  rateEvent = () => {
-    this.props.rateEvent(this.props.event._id, this.state.rating);
-  }
-
   onFieldChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
   }
+
 
   submitForm = () => {
     const update = {
@@ -61,26 +59,46 @@ class Event extends Component {
     });
   }
 
+  changeRating = (newRating) => {
+    this.setState({
+      rating: newRating,
+    });
+    this.props.rateEvent(this.props.event._id, this.state.rating);
+  }
+
   renderEvent = () => {
     if (!this.state.isEditing) {
       return (
-        <div className="event">
-          <p>Title: {this.props.event.title}</p>
-          <p>Image URL: {this.props.event.imageURL}</p>
+        <div className="event-page">
+          <img
+            alt="banner"
+            src={this.props.event.imageURL}
+            className="event-image"
+          />
+          <div>
+            <Ratings
+              rating={this.props.event.averageRating}
+              widgetRatedColors="rgb(255, 250, 0)"
+              widgetDimensions="35px"
+              changeRating={this.changeRating}
+            >
+              <Ratings.Widget />
+              <Ratings.Widget />
+              <Ratings.Widget />
+              <Ratings.Widget />
+              <Ratings.Widget />
+            </Ratings>
+          </div>
+
+          <p id="event-title">{this.props.event.title}</p>
+          <p id="event-description">{this.props.event.description}</p>
+
           <p>Longitude: {this.props.event.longitude}</p>
           <p>Latitude: {this.props.event.latitude}</p>
           <p>Event Creator: {this.props.event.eventCreator}</p>
           <p>Average Rating: {this.props.event.averageRating}</p>
           <button type="button" onClick={this.startEdit}> Update </button>
           <button type="button" onClick={this.deleteEvent}> Delete </button>
-          <input
-            type="text"
-            name="rating"
-            value={this.state.rating}
-            placeholder="rating"
-            onChange={this.onFieldChange}
-          />
-          <button type="button" onClick={this.rateEvent}> Rate </button>
         </div>
       );
     } else {
@@ -107,6 +125,22 @@ class Event extends Component {
               onChange={this.onFieldChange}
             />
             <br />
+            <div>
+              <Ratings
+
+                rating={this.props.event.averageRating}
+                widgetRatedColors="rgb(255, 250, 0)"
+                widgetDimensions="35px"
+
+              >
+                <Ratings.Widget />
+                <Ratings.Widget />
+                <Ratings.Widget />
+                <Ratings.Widget />
+                <Ratings.Widget />
+              </Ratings>
+            </div>
+
 
             Longitude:<br />
             <input
