@@ -46,7 +46,7 @@ class Events extends Component {
               <Ratings.Widget />
             </Ratings>
             <Link to={`events/${event.id}`} key={event.id} className="more-info">
-              More
+              MORE
             </Link>
           </div>
         );

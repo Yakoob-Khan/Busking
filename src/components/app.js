@@ -29,6 +29,7 @@ const App = (props) => {
           <Route path="/signup" component={SignUp} />
 
           <Route exact path="/events/:eventId" component={Event} />
+          {/* <Route path="/payment" component={CheckoutForm} /> */}
           {/* <Route exact path="/user" component={UserProfile} /> */}
           <Route component={FallBack} />
         </Switch>
