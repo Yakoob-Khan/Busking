@@ -23,13 +23,7 @@ class Events extends Component {
     if (this.props.events.length !== 0) {
       return this.props.events.map((event) => {
         return (
-
           <div className="event" key={event.id}>
-            {/* <img
-              alt="event-banner"
-              src="https://upload.wikimedia.org/wikipedia/commons/9/97/Peoria_skyline_banner.jpg"
-              id="event-banner"
-            /> */}
             <p className="event-title">
               {event.title}
             </p>
@@ -67,8 +61,6 @@ class Events extends Component {
         <div className="events-button-container">
           <NavLink to="/mapView" className="events-toggle">Map View</NavLink>
           <NavLink to="/events" className="events-toggle">List View</NavLink>
-          {/* <button type="button" className="events-toggle" onClick={this.handleMap}>Map View</button>
-          <button type="button" className="events-toggle" onClick={this.handleList}>List View</button> */}
         </div>
         {this.renderEvents()}
       </div>
