@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter, Link, NavLink } from 'react-router-dom';
 import Ratings from 'react-ratings-declarative';
 import { fetchEvents } from '../actions';
 
@@ -64,6 +64,12 @@ class Events extends Component {
     return (
       <div className="allEvents">
         <p className="events-header">See what&apos;s happening now!</p>
+        <div className="events-button-container">
+          <NavLink to="/mapView" className="events-toggle">Map View</NavLink>
+          <NavLink to="/events" className="events-toggle">List View</NavLink>
+          {/* <button type="button" className="events-toggle" onClick={this.handleMap}>Map View</button>
+          <button type="button" className="events-toggle" onClick={this.handleList}>List View</button> */}
+        </div>
         {this.renderEvents()}
       </div>
     );
