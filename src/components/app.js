@@ -29,7 +29,6 @@ const App = (props) => {
           <Route path="/login" component={LogIn} />
           <Route path="/signup" component={SignUp} />
           <Route path="/mapView" component={WrappedMapView} />
-
           <Route exact path="/events/:eventId" component={Event} />
           {/* <Route path="/payment" component={CheckoutForm} /> */}
           {/* <Route exact path="/user" component={UserProfile} /> */}

@@ -1,56 +1,74 @@
+/* eslint-disable react/no-unused-state */
 /* eslint-disable no-restricted-globals */
 import React from 'react';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import FacebookLogin from 'react-facebook-login';
+import config from '../config.json';
 
 class LogIn extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      email: '',
-      password: '',
-    };
+    this.state = { isAuthenticated: false, user: null, token: '' };
   }
 
-  onSubmit = () => {
-    // Credit to stop form post submission: https://api.jquery.com/event.preventdefault/
-    event.preventDefault();
-    const user = {
-      email: this.state.email,
-      password: this.state.password,
-    };
+  logout = () => {
+    this.setState({ isAuthenticated: false, token: '', user: null });
+  };
 
-    this.props.signinUser(user, this.props.history);
-    // Remove account info from local state for security!
-    this.setState({
-      email: '',
-      password: '',
+  facebookResponse = (response) => {
+    const tokenBlob = new Blob([JSON.stringify({ access_token: response.accessToken }, null, 2)], { type: 'application/json' });
+    const options = {
+      method: 'POST',
+      body: tokenBlob,
+      mode: 'cors',
+      cache: 'default',
+    };
+    fetch('http://localhost:4000/api/v1/auth/facebook', options).then((r) => {
+      const token = r.headers.get('x-auth-token');
+      r.json().then((user) => {
+        if (token) {
+          this.setState({ isAuthenticated: true, user, token });
+        }
+      });
     });
+  };
+
+  onFailure = (error) => {
+    // eslint-disable-next-line no-alert
+    alert(error);
   }
 
   render() {
+    const content = this.state.isAuthenticated
+      ? (
+        <div>
+          <p>Authenticated</p>
+          <div>
+            {this.state.user.email}
+          </div>
+          <div>
+            <button onClick={this.logout} className="button" type="submit">
+                    Log out
+            </button>
+          </div>
+        </div>
+      )
+      : (
+        <div>
+          <FacebookLogin
+            appId={config.FACEBOOK_APP_ID}
+            autoLoad={false}
+            fields="name,email,picture"
+            callback={this.facebookResponse}
+          />
+        </div>
+      );
+
     return (
-      <div>
-        <p>Let&apos;s sign you in!</p>
-        <input
-          onChange={() => { this.setState({ email: event.target.value }); }}
-          value={this.state.email}
-          placeholder="email"
-        />
-        <input
-          onChange={() => { this.setState({ password: event.target.value }); }}
-          value={this.state.password}
-          placeholder="password"
-        />
-        <button
-          type="submit"
-          onClick={this.onSubmit}
-        >
-        LogIn!
-        </button>
+      <div className="App">
+        {content}
       </div>
     );
   }
 }
 
-export default withRouter(connect(null, null)(LogIn));
+export default LogIn;
