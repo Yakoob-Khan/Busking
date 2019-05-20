@@ -62,7 +62,7 @@ export class MapView extends Component {
             lat: 12.3,
             lng: 43.2,
           }}
-          zoom={8}
+          zoom={2}
         >
           {this.renderEvents()}
           <InfoWindow marker={this.state.activeMarker} visible={this.state.showingInfoWindow} onClose={this.onClose}>
@@ -106,8 +106,8 @@ const mapStateToProps = state => (
 );
 
 // eslint-disable-next-line new-cap
-const WrappedView = GoogleApiWrapper({
+const WrappedMapView = GoogleApiWrapper({
   apiKey: 'AIzaSyCwOLP5P_hRzjqK5SrdZNviwXf3QyCJJBg',
 })(MapView);
 
-export default withRouter(connect(mapStateToProps, { fetchEvents })(WrappedView));
+export default withRouter(connect(mapStateToProps, { fetchEvents })(WrappedMapView));
