@@ -10,7 +10,7 @@ import NavBar from './NavBar';
 import LogIn from './LogIn';
 import SignUp from './SignUp';
 import Landing from './Landing';
-import MapView from './mapView';
+import WrappedMapView from './wrappedMapView';
 // import UserProfile from './userprofile';
 
 const FallBack = (props) => {
@@ -28,7 +28,7 @@ const App = (props) => {
           <Route path="/createEvent" component={NewEvent} />
           <Route path="/login" component={LogIn} />
           <Route path="/signup" component={SignUp} />
-          <Route path="/mapView" component={MapView} />
+          <Route path="/mapView" component={WrappedMapView} />
 
           <Route exact path="/events/:eventId" component={Event} />
           {/* <Route path="/payment" component={CheckoutForm} /> */}
