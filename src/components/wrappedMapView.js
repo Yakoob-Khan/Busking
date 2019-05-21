@@ -68,29 +68,31 @@ export class MapView extends Component {
         >
           {this.renderEvents()}
           <InfoWindow className="info-window" marker={this.state.activeMarker} visible={this.state.showingInfoWindow} onClose={this.onClose}>
-            <div key={this.state.selectedEvent.id}>
-              <p className="event-title-info">
-                {this.state.selectedEvent.title}
-              </p>
-              {/* Ratings credit to: https://github.com/ekeric13/react-ratings-declarative */}
-              <Ratings
-                rating={this.state.selectedEvent.averageRating}
-                widgetRatedColors="rgb(255, 250, 0)"
-                widgetDimensions="35px"
-              >
-                <Ratings.Widget />
-                <Ratings.Widget />
-                <Ratings.Widget />
-                <Ratings.Widget />
-                <Ratings.Widget />
-              </Ratings>
-            </div>
-            <div>
-              <Router>
-                <NavLink to={`events/${this.state.selectedEvent.id}`} key={this.state.selectedEvent.id} className="more">
+            <div className="info-container">
+              <div key={this.state.selectedEvent.id}>
+                <p className="event-title-info">
+                  {this.state.selectedEvent.title}
+                </p>
+                {/* Ratings credit to: https://github.com/ekeric13/react-ratings-declarative */}
+                <Ratings
+                  rating={this.state.selectedEvent.averageRating}
+                  widgetRatedColors="rgb(255, 250, 0)"
+                  widgetDimensions="35px"
+                >
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                </Ratings>
+              </div>
+              <div>
+                <Router>
+                  <NavLink to={`events/${this.state.selectedEvent.id}`} key={this.state.selectedEvent.id} className="more">
                   MORE
-                </NavLink>
-              </Router>
+                  </NavLink>
+                </Router>
+              </div>
             </div>
           </InfoWindow>
         </Map>
@@ -106,7 +108,7 @@ const mapStateToProps = state => (
 
 // eslint-disable-next-line new-cap
 const WrappedMapView = GoogleApiWrapper({
-  apiKey: 'AIzaSyCwOLP5P_hRzjqK5SrdZNviwXf3QyCJJBg',
+  apiKey: 'AIzaSyArATJi0Oo2tXNtsaFq0l3mySoMg0QuaSU',
 })(MapView);
 
 export default withRouter(connect(mapStateToProps, { fetchEvents })(WrappedMapView));
