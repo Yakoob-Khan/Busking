@@ -5,7 +5,7 @@ export const ActionTypes = {
   FETCH_EVENTS: 'FETCH_EVENTS',
   CREATE_EVENT: 'CREATE_EVENT',
   FETCH_EVENT: 'FETCH_EVENT',
-  AUTH_USER: 'AUTH_USER',
+  AUTH_USER_SUCCESS: 'AUTH_USER_SUCCESS',
   DEAUTH_USER: 'DEAUTH_USER',
   UPDATE_CURRENT_USER: 'UPDATE_CURRENT_USER',
   ERROR: 'ERROR',
@@ -13,6 +13,33 @@ export const ActionTypes = {
 };
 
 const ROOT_URL = 'http://localhost:9090/api';
+
+export const facebookResponse = (response) => {
+  console.log(response);
+  return (dispatch) => {
+    const tokenBlob = new Blob([JSON.stringify({ access_token: response.accessToken }, null, 2)], { type: 'application/json' });
+    const options = {
+      method: 'POST',
+      body: tokenBlob,
+      mode: 'cors',
+      cache: 'default',
+    };
+    fetch('http://localhost:9090/auth/facebook', options).then((r) => {
+      const token = r.headers.get('x-auth-token');
+      r.json().then((user) => {
+        if (token) {
+          dispatch({
+            type: ActionTypes.AUTH_USER_SUCCESS,
+            payload: { user, token },
+          });
+          // this.setState({ isAuthenticated: true, user, token });
+        } else {
+          dispatch({ type: ActionTypes.ERROR });
+        }
+      });
+    });
+  };
+};
 
 export function appError(message) {
   return {
