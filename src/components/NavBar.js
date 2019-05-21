@@ -13,8 +13,8 @@ class NavBar extends React.Component {
     return (
       <nav>
         <ul className="navbar">
-          <NavLink to="/events" exact className="nav-item">
-            SEE EVENTS
+          <NavLink to="/" exact className="nav-item">
+            HOME
           </NavLink>
           <NavLink to="/createEvent" exact className="nav-item">
             CREATE EVENT
@@ -22,9 +22,9 @@ class NavBar extends React.Component {
           <NavLink to="/login" className="nav-item">
             LOG IN
           </NavLink>
-          <NavLink to="/signup" className="nav-item">
+          {/* <NavLink to="/signup" className="nav-item">
             SIGN UP
-          </NavLink>
+          </NavLink> */}
         </ul>
       </nav>
     );
