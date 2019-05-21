@@ -15,6 +15,7 @@ class LogIn extends React.Component {
   };
 
   facebookResponse = (response) => {
+    console.log(response);
     const tokenBlob = new Blob([JSON.stringify({ access_token: response.accessToken }, null, 2)], { type: 'application/json' });
     const options = {
       method: 'POST',
@@ -22,7 +23,7 @@ class LogIn extends React.Component {
       mode: 'cors',
       cache: 'default',
     };
-    fetch('http://localhost:4000/api/v1/auth/facebook', options).then((r) => {
+    fetch('http://localhost:9090/auth/facebook', options).then((r) => {
       const token = r.headers.get('x-auth-token');
       r.json().then((user) => {
         if (token) {
@@ -44,6 +45,9 @@ class LogIn extends React.Component {
           <p>Authenticated</p>
           <div>
             {this.state.user.email}
+            {this.state.user.name}
+            <img alt="profile" src={this.state.user.photo} />
+            {console.log(this.state.user)}
           </div>
           <div>
             <button onClick={this.logout} className="button" type="submit">
