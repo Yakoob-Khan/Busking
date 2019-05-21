@@ -16,8 +16,36 @@ const ROOT_URL = 'http://localhost:9090/api';
 
 export const logoutUser = () => {
   return (dispatch) => {
+    localStorage.removeItem('token');
     dispatch({
       type: ActionTypes.DEAUTH_USER_SUCCESS,
+    });
+  };
+};
+
+export const facebookResponseLocal = (localToken) => {
+  return (dispatch) => {
+    console.log('called!');
+    const tokenBlob = new Blob([JSON.stringify({ access_token: localToken }, null, 2)], { type: 'application/json' });
+    const options = {
+      method: 'POST',
+      body: tokenBlob,
+      mode: 'cors',
+      cache: 'default',
+    };
+    fetch('http://localhost:9090/auth/facebook', options).then((r) => {
+      const token = r.headers.get('x-auth-token');
+      r.json().then((user) => {
+        if (token) {
+          // localStorage.setItem('token', token);
+          // console.log(localStorage.getItem('token'));
+          dispatch({
+            type: ActionTypes.AUTH_USER_SUCCESS,
+            payload: { user, token },
+          });
+          // this.setState({ isAuthenticated: true, user, token });
+        }
+      });
     });
   };
 };
@@ -25,7 +53,10 @@ export const logoutUser = () => {
 export const facebookResponse = (response) => {
   console.log(response);
   return (dispatch) => {
+    console.log(response.accessToken);
     const tokenBlob = new Blob([JSON.stringify({ access_token: response.accessToken }, null, 2)], { type: 'application/json' });
+    localStorage.setItem('token', response.accessToken);
+    console.log(localStorage.getItem('token'));
     const options = {
       method: 'POST',
       body: tokenBlob,
