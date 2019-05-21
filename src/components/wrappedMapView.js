@@ -24,80 +24,90 @@ export class MapView extends Component {
     this.props.fetchEvents();
   }
 
-    onMarkerClick = (props, marker, e) => {
+  onMarkerClick = (props, marker, e) => {
+    this.setState({
+      selectedEvent: props.event,
+      activeMarker: marker,
+      showingInfoWindow: true,
+    });
+  };
+
+  onClose = (props) => {
+    if (this.state.showingInfoWindow) {
       this.setState({
-        selectedEvent: props.event,
-        activeMarker: marker,
-        showingInfoWindow: true,
+        showingInfoWindow: false,
+        activeMarker: null,
       });
-    };
-
-    onClose = (props) => {
-      if (this.state.showingInfoWindow) {
-        this.setState({
-          showingInfoWindow: false,
-          activeMarker: null,
-        });
-      }
-    };
-
-
-    renderEvents = () => {
-      if (this.props.events.length !== 0) {
-        return this.props.events.map((event) => {
-          return (
-            <Marker key={event.id} event={event} position={{ lat: event.latitude, lng: event.longitude }} onClick={this.onMarkerClick} />
-          );
-        });
-      } else {
-        return (
-          <div />
-        );
-      }
     }
+  };
 
-    render() {
+
+  renderEvents = () => {
+    if (this.props.events.length !== 0) {
+      return this.props.events.map((event) => {
+        return (
+          <Marker key={event.id} event={event} position={{ lat: event.latitude, lng: event.longitude }} onClick={this.onMarkerClick} />
+        );
+      });
+    } else {
       return (
-        <Map
-          google={this.props.google}
-          center={{
-            lat: 12.3,
-            lng: 43.2,
-          }}
-          zoom={2}
-        >
-          {this.renderEvents()}
-          <InfoWindow className="info-window" marker={this.state.activeMarker} visible={this.state.showingInfoWindow} onClose={this.onClose}>
-            <div className="info-container">
-              <div key={this.state.selectedEvent.id}>
-                <p className="event-title-info">
-                  {this.state.selectedEvent.title}
-                </p>
-                {/* Ratings credit to: https://github.com/ekeric13/react-ratings-declarative */}
-                <Ratings
-                  rating={this.state.selectedEvent.averageRating}
-                  widgetRatedColors="rgb(255, 250, 0)"
-                  widgetDimensions="35px"
-                >
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                </Ratings>
-              </div>
-              <div>
-                <Router>
-                  <NavLink to={`events/${this.state.selectedEvent.id}`} key={this.state.selectedEvent.id} className="more">
-                  MORE
-                  </NavLink>
-                </Router>
-              </div>
-            </div>
-          </InfoWindow>
-        </Map>
+        <div />
       );
     }
+  }
+
+  getCurrentLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        return {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        };
+      });
+    } else {
+      // Browser doesn't support Geolocation
+      // handleLocationError(false, InfoWindow, map.getCenter());
+      console.log('your browswer does not support this 2019 shit');
+    }
+  }
+
+  render() {
+    return (
+      <Map
+        google={this.props.google}
+        center={this.getCurrentLocation()}
+        zoom={2}
+      >
+        {this.renderEvents()}
+        <InfoWindow className="info-window" marker={this.state.activeMarker} visible={this.state.showingInfoWindow} onClose={this.onClose}>
+          <div key={this.state.selectedEvent.id}>
+            <p className="event-title-info">
+              {this.state.selectedEvent.title}
+            </p>
+            {/* Ratings credit to: https://github.com/ekeric13/react-ratings-declarative */}
+            <Ratings
+              rating={this.state.selectedEvent.averageRating}
+              widgetRatedColors="rgb(255, 250, 0)"
+              widgetDimensions="35px"
+            >
+              <Ratings.Widget />
+              <Ratings.Widget />
+              <Ratings.Widget />
+              <Ratings.Widget />
+              <Ratings.Widget />
+            </Ratings>
+          </div>
+          <div>
+            <Router>
+              <NavLink to={`events/${this.state.selectedEvent.id}`} key={this.state.selectedEvent.id} className="more">
+                MORE
+              </NavLink>
+            </Router>
+          </div>
+        </InfoWindow>
+      </Map>
+    );
+  }
 }
 
 const mapStateToProps = state => (
