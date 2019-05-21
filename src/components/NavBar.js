@@ -20,7 +20,7 @@ class NavBar extends React.Component {
             CREATE EVENT
           </NavLink>
           <NavLink to="/login" className="nav-item">
-            LOG IN
+            LOG IN WITH FACEBOOK
           </NavLink>
           {/* <NavLink to="/signup" className="nav-item">
             SIGN UP
