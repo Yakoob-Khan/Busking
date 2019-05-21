@@ -14,25 +14,23 @@ class NavBar extends React.Component {
       <nav>
         <ul className="navbar">
           <li>
-            <span className="emoji" role="img" aria-label="home">&#127968;</span>
+            <span role="img" aria-label="home">&#11088;</span>
             <NavLink to="/" exact className="nav-item">
               Home
             </NavLink>
           </li>
           <li>
-            <span className="emoji" role="img" aria-label="see events">&#127927;</span>
+            <span role="img" aria-label="see events">&#127927;</span>
             <NavLink to="/createEvent" exact className="nav-item">
               Create Event
             </NavLink>
           </li>
           <li>
+            <span role="img" aria-label="see events">&#128075;</span>
             <NavLink to="/login" className="nav-item">
               Login with Facebook
             </NavLink>
           </li>
-          {/* <NavLink to="/signup" className="nav-item">
-            SIGN UP
-          </NavLink> */}
         </ul>
       </nav>
     );

@@ -45,6 +45,7 @@ class Events extends Component {
             <p className="event-title">
               {event.title}
             </p>
+            <img src={event.imageURL} alt="event" />
             {/* Ratings credit to: https://github.com/ekeric13/react-ratings-declarative */}
             <Ratings
               rating={event.averageRating}
@@ -74,15 +75,18 @@ class Events extends Component {
 
   render() {
     return (
-      <div className="allEvents">
-        <p className="events-header">See what&apos;s happening now!</p>
+      <div className="events-section">
+        <p className="events-header">Events nearby</p>
+        <p className="events-subheader">See what&apos;s happening now</p>
         <div className="events-button-container">
           {/* <NavLink to="/" onClick={this.onToggleMap} className="events-toggle">Map View</NavLink> */}
           {/* <NavLink to="/" onClick={this.onToggleMap} className="events-toggle">List View</NavLink> */}
           <button onClick={this.onToggleMap} className="events-toggle" type="button">Toggle View</button>
         </div>
-        {this.state.mapBool ? <WrappedMapView /> : this.renderEvents()}
-        {/* {this.renderEvents()} */}
+        <div className="allEvents">
+          {this.state.mapBool ? <WrappedMapView /> : this.renderEvents()}
+          {/* {this.renderEvents()} */}
+        </div>
       </div>
     );
   }
