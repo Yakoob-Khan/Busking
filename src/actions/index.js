@@ -6,13 +6,21 @@ export const ActionTypes = {
   CREATE_EVENT: 'CREATE_EVENT',
   FETCH_EVENT: 'FETCH_EVENT',
   AUTH_USER_SUCCESS: 'AUTH_USER_SUCCESS',
-  DEAUTH_USER: 'DEAUTH_USER',
+  DEAUTH_USER_SUCCESS: 'DEAUTH_USER_SUCCESS',
   UPDATE_CURRENT_USER: 'UPDATE_CURRENT_USER',
   ERROR: 'ERROR',
   CLEAR_ERROR: 'CLEAR_ERROR',
 };
 
 const ROOT_URL = 'http://localhost:9090/api';
+
+export const logoutUser = () => {
+  return (dispatch) => {
+    dispatch({
+      type: ActionTypes.DEAUTH_USER_SUCCESS,
+    });
+  };
+};
 
 export const facebookResponse = (response) => {
   console.log(response);

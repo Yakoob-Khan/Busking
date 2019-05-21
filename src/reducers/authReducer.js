@@ -14,7 +14,7 @@ const AuthReducer = (state = initialState, action) => {
     case ActionTypes.AUTH_USER_SUCCESS:
       return Object.assign({}, state, { isAuthenticated: true, user: action.payload.user, token: action.payload.token });
     case ActionTypes.DEAUTH_USER_SUCCESS:
-      return Object.assign({}, state, { authenticated: false, user: null, token: '' });
+      return Object.assign({}, state, { isAuthenticated: false, user: null, token: '' });
     // case ActionTypes.AUTH_ERROR:
     //   return Object.assign({}, state, { authenticated: false, current_user: undefined, made_error: true });
     // case ActionTypes.AUTH_ERROR_UPDATE_POST_TOGGLE:

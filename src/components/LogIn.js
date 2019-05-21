@@ -5,7 +5,7 @@ import FacebookLogin from 'react-facebook-login';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import config from '../config.json';
-import { facebookResponse } from '../actions';
+import { facebookResponse, logoutUser } from '../actions';
 
 class LogIn extends React.Component {
   constructor(props) {
@@ -53,7 +53,7 @@ class LogIn extends React.Component {
             {console.log(this.props.auth.user)}
           </div>
           <div>
-            <button onClick={this.logout} className="button" type="submit">
+            <button onClick={this.props.logoutUser} className="button" type="submit">
                     Log out
             </button>
           </div>
@@ -84,4 +84,4 @@ const mapStateToProps = reduxState => (
   }
 );
 
-export default withRouter(connect(mapStateToProps, { facebookResponse })(LogIn));
+export default withRouter(connect(mapStateToProps, { facebookResponse, logoutUser })(LogIn));
