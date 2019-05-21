@@ -23,17 +23,17 @@ const FallBack = (props) => {
   return <div>URL Not Found</div>;
 };
 class App extends Component {
-  constructor(props) {
-    super(props);
-    const token = localStorage.getItem('token');
-    if (token) {
-      console.log('local token');
-      console.log(token);
-      this.props.facebookResponseLocal(token);
-    } else {
-      console.log('no local token');
-    }
-  }
+  // constructor(props) {
+  //   super(props);
+  //   const token = localStorage.getItem('token');
+  //   if (token) {
+  //     console.log('local token');
+  //     console.log(token);
+  //     this.props.facebookResponseLocal(token);
+  //   } else {
+  //     console.log('no local token');
+  //   }
+  // }
 
   render() {
     return (

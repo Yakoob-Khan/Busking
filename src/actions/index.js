@@ -14,6 +14,26 @@ export const ActionTypes = {
 
 const ROOT_URL = 'http://localhost:9090/api';
 
+// export const testAPI = () => {
+//   return (dispatch) => {
+//     fetch('http://localhost:9090/auth/sessionTest').then((r) => {
+//       console.log(r);
+//     });
+//   };
+// };
+
+export const testAPI = () => {
+  return () => {
+    axios.get('http://localhost:9090/', { headers: { 'X-AUTHENTICATION': localStorage.getItem('token') } }).then((r) => {
+      console.log(r);
+    // dispatch({ type: ActionTypes.DELETE_POST, payload: response.data });
+    }).catch((e) => {
+      console.log(e);
+    });
+  };
+};
+
+
 export const logoutUser = () => {
   return (dispatch) => {
     localStorage.removeItem('token');
@@ -65,6 +85,7 @@ export const facebookResponse = (response) => {
     };
     fetch('http://localhost:9090/auth/facebook', options).then((r) => {
       const token = r.headers.get('x-auth-token');
+      console.log(r);
       r.json().then((user) => {
         if (token) {
           dispatch({
@@ -79,6 +100,7 @@ export const facebookResponse = (response) => {
     });
   };
 };
+
 
 export function appError(message) {
   return {
