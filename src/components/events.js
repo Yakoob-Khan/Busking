@@ -1,12 +1,30 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter, Link, NavLink } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import Ratings from 'react-ratings-declarative';
 import { fetchEvents } from '../actions';
+import WrappedMapView from './wrappedMapView';
 
 class Events extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      mapBool: false,
+    };
+
+    this.onToggleMap = this.onToggleMap.bind(this);
+    this.renderEvents = this.renderEvents.bind(this);
+  }
+
+
   componentDidMount() {
     this.props.fetchEvents();
+  }
+
+  onToggleMap(event) {
+    this.setState(prevState => ({
+      mapBool: !prevState.mapBool,
+    }));
   }
 
   // stars = (rating) => {
@@ -59,10 +77,12 @@ class Events extends Component {
       <div className="allEvents">
         <p className="events-header">See what&apos;s happening now!</p>
         <div className="events-button-container">
-          <NavLink to="/mapView" className="events-toggle">Map View</NavLink>
-          <NavLink to="/events" className="events-toggle">List View</NavLink>
+          {/* <NavLink to="/" onClick={this.onToggleMap} className="events-toggle">Map View</NavLink> */}
+          {/* <NavLink to="/" onClick={this.onToggleMap} className="events-toggle">List View</NavLink> */}
+          <button onClick={this.onToggleMap} className="events-toggle" type="button">Toggle View</button>
         </div>
-        {this.renderEvents()}
+        {this.state.mapBool ? <WrappedMapView /> : this.renderEvents()}
+        {/* {this.renderEvents()} */}
       </div>
     );
   }
