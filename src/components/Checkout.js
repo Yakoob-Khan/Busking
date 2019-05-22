@@ -28,7 +28,12 @@ const Checkout = ({ name, description, amount }) => (
     stripeKey={STRIPE_KEY}
     image="https://blog.iconfactory.com/wp-content/uploads/2016/05/OlliesTipJar.png"
     panelLabel="Tip"
-  />
+    label="Give a Tip"
+  >
+    <button id="stripe-checkout-button" className="event-button" type="button">
+      Send Tip
+    </button>
+  </StripeCheckout>
 );
 
 export default Checkout;

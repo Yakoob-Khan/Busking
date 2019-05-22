@@ -58,44 +58,48 @@ export class MapView extends Component {
 
     render() {
       return (
-        <Map
-          google={this.props.google}
-          center={{
-            lat: 12.3,
-            lng: 43.2,
-          }}
-          zoom={2}
-        >
-          {this.renderEvents()}
-          <InfoWindow className="info-window" marker={this.state.activeMarker} visible={this.state.showingInfoWindow} onClose={this.onClose}>
-            <div className="info-container">
-              <div key={this.state.selectedEvent.id}>
-                <p className="event-title-info">
-                  {this.state.selectedEvent.title}
-                </p>
-                {/* Ratings credit to: https://github.com/ekeric13/react-ratings-declarative */}
-                <Ratings
-                  rating={this.state.selectedEvent.averageRating}
-                  widgetRatedColors="rgb(255, 250, 0)"
-                  widgetDimensions="35px"
-                >
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                </Ratings>
+        <div>
+          <Map className="map-container"
+            google={this.props.google}
+            center={{
+              lat: 12.3,
+              lng: 43.2,
+            }}
+            zoom={2}
+          >
+            {this.renderEvents()}
+            <InfoWindow className="info-window" marker={this.state.activeMarker} visible={this.state.showingInfoWindow} onClose={this.onClose}>
+              <div className="info-container">
+                <div key={this.state.selectedEvent.id}>
+                  <p className="event-title-info">
+                    {this.state.selectedEvent.title}
+                  </p>
+                  {/* Ratings credit to: https://github.com/ekeric13/react-ratings-declarative */}
+                  <Ratings
+                    rating={this.state.selectedEvent.averageRating}
+                    widgetRatedColors="#0099CC"
+                    widgetEmptyColors="#6B6B6B"
+                    widgetSpacings="3px"
+                    widgetDimensions="24px"
+                  >
+                    <Ratings.Widget />
+                    <Ratings.Widget />
+                    <Ratings.Widget />
+                    <Ratings.Widget />
+                    <Ratings.Widget />
+                  </Ratings>
+                </div>
+                <div>
+                  <Router>
+                    <NavLink to={`events/${this.state.selectedEvent.id}`} key={this.state.selectedEvent.id} className="info-window-view-detail">
+                      view event details
+                    </NavLink>
+                  </Router>
+                </div>
               </div>
-              <div>
-                <Router>
-                  <NavLink to={`events/${this.state.selectedEvent.id}`} key={this.state.selectedEvent.id} className="more">
-                  MORE
-                  </NavLink>
-                </Router>
-              </div>
-            </div>
-          </InfoWindow>
-        </Map>
+            </InfoWindow>
+          </Map>
+        </div>
       );
     }
 }

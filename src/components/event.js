@@ -73,46 +73,71 @@ class Event extends Component {
 
 
   renderEvent = () => {
+    const eventImage = {
+      backgroundImage: `url(${this.props.event.imageURL})`,
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'cover',
+    };
     if (!this.state.isEditing) {
       return (
         <div className="event-page">
-          <img
-            alt="banner"
-            src={this.props.event.imageURL}
-            className="event-image"
-          />
-          <div>
-            <Ratings
-              rating={this.props.event.averageRating}
-              widgetRatedColors="rgb(255, 250, 0)"
-              widgetDimensions="35px"
-              changeRating={this.changeRating}
-            >
-              <Ratings.Widget />
-              <Ratings.Widget />
-              <Ratings.Widget />
-              <Ratings.Widget />
-              <Ratings.Widget />
-            </Ratings>
+          <div className="event-image-container" style={eventImage} />
+          <div id="event-location">
+            <p>Longitude: {this.props.event.longitude}</p>
+            <p>Latitude: {this.props.event.latitude}</p>
           </div>
-
-          <p id="event-title">{this.props.event.title}</p>
-          <p id="event-description">{this.props.event.description}</p>
-
-          <p>Longitude: {this.props.event.longitude}</p>
-          <p>Latitude: {this.props.event.latitude}</p>
-          <p>Event Creator: {this.props.event.eventCreator}</p>
-          <p>Average Rating: {this.props.event.averageRating}</p>
-          <button type="button" onClick={this.startEdit}> Update </button>
-          <button type="button" onClick={this.deleteEvent}> Delete </button>
-          <input
-            type="text"
-            name="tip"
-            value={this.state.tip}
-            placeholder="Tip Amount"
-            onChange={this.onFieldChange}
-          />
-          {/* <button type="button" onClick={this.payment}> Tip </button> */}
+          <div id="event-details">
+            <div id="event-details-left">
+              <p id="event-title">{this.props.event.title}</p>
+              <p id="event-description">{this.props.event.description}</p>
+              <p id="event-creator">Event Creator: {this.props.event.eventCreator}</p>
+              <button id="update-event-button"
+                className="event-button"
+                type="button"
+                onClick={this.startEdit}
+              >
+                <img src="./../src/assets/pencil.svg" alt="update event" />
+                update event
+              </button>
+              <button id="delete-event-button" className="event-button" type="button" onClick={this.deleteEvent}>Delete Event</button>
+              {/* <input
+                type="text"
+                name="tip"
+                value={this.state.tip}
+                placeholder="Tip Amount"
+                onChange={this.onFieldChange}
+              />
+              <button type="button" onClick={this.payment}> Tip </button> */}
+              <Checkout
+                // `#demo${this.state.id}`
+                name={`Send a tip to ${this.props.event.eventCreator}!`}
+                description="You're tip goes a long way!"
+                amount={this.state.tip}
+              />
+            </div>
+            <div id="event-details-right">
+              <div id="event-average-rating">
+                <Ratings
+                  rating={this.props.event.averageRating}
+                  widgetRatedColors="#0099CC"
+                  widgetHoverColors="rgb(0,153,204)"
+                  widgetEmptyColors="#6B6B6B"
+                  widgetSpacings="3px"
+                  widgetDimensions="32px"
+                  changeRating={this.changeRating}
+                >
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                </Ratings>
+                <p id="event-average-rating-label">
+                  Average Rating: {this.props.event.averageRating ? this.props.event.averageRating.toFixed(2) : ''}
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       );
     } else {
@@ -194,14 +219,8 @@ class Event extends Component {
 
   render() {
     return (
-      <div className="allEvents">
+      <div>
         {this.renderEvent()}
-        <Checkout
-        // `#demo${this.state.id}`
-          name={`Send a tip to ${this.props.event.eventCreator}!`}
-          description="You're tip goes a long way!"
-          amount={this.state.tip}
-        />
       </div>
     );
   }
