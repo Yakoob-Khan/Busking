@@ -3,6 +3,10 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Ratings from 'react-ratings-declarative';
 // import { Elements, StripeProvider } from 'react-stripe-elements';
+import PlacesAutocomplete, {
+  geocodeByAddress,
+  getLatLng,
+} from 'react-places-autocomplete';
 import Checkout from './Checkout';
 import {
   fetchEvent, updateEvent, deleteEvent, rateEvent,
@@ -20,6 +24,7 @@ class Event extends Component {
       imageURL: '',
       longitude: '',
       latitude: '',
+      address: '',
       eventCreator: '',
       rating: 0,
       tip: '',
@@ -51,6 +56,7 @@ class Event extends Component {
         imageURL: this.props.event.imageURL,
         longitude: this.props.event.longitude,
         latitude: this.props.event.latitude,
+        address: this.props.event.address,
         eventCreator: this.props.event.eventCreator,
       });
     }
@@ -64,6 +70,7 @@ class Event extends Component {
       imageURL: this.state.imageURL,
       longitude: this.state.longitude,
       latitude: this.state.latitude,
+      address: this.state.address,
       eventCreator: this.state.eventCreator,
     };
     this.setState({
@@ -74,6 +81,7 @@ class Event extends Component {
       longitude: '',
       latitude: '',
       eventCreator: '',
+      address: '',
     });
     this.props.updateEvent(update);
   }
@@ -109,6 +117,22 @@ class Event extends Component {
     this.props.rateEvent(this.props.event._id, this.state.rating);
   }
 
+  handleChange = (address) => {
+    this.setState({ address });
+  };
+
+  handleSelect = (address) => {
+    this.setState({ address });
+    geocodeByAddress(address)
+      .then(results => getLatLng(results[0]))
+      .then((latlng) => {
+        this.setState({
+          longitude: latlng.lng,
+          latitude: latlng.lat,
+        });
+      })
+      .catch(error => console.error('Error', error));
+  };
 
   renderEvent = () => {
     const eventImage = {
@@ -121,8 +145,9 @@ class Event extends Component {
         <div className="event-page">
           <div className="event-image-container" style={eventImage} />
           <div id="event-location">
-            <p>Longitude: {this.props.event.longitude}</p>
-            <p>Latitude: {this.props.event.latitude}</p>
+            {/* <p>Longitude: {this.props.event.longitude}</p>
+            <p>Latitude: {this.props.event.latitude}</p> */}
+            <p>{this.props.event.address}</p>
           </div>
           <div id="event-details">
             <div id="event-details-left">
@@ -229,7 +254,7 @@ class Event extends Component {
             </div>
 
 
-            Longitude:<br />
+            {/* Longitude:<br />
             <input
               type="text"
               name="longitude"
@@ -249,7 +274,49 @@ class Event extends Component {
               placeholder="Latitude"
               onChange={this.onFieldChange}
             />
-            <br />
+            <br /> */}
+
+            Location:<br />
+            <PlacesAutocomplete
+              value={this.state.address}
+              onChange={this.handleChange}
+              onSelect={this.handleSelect}
+            >
+              {({
+                getInputProps, suggestions, getSuggestionItemProps, loading,
+              }) => (
+                <div>
+                  <input
+                    {...getInputProps({
+                      placeholder: 'Search Places ...',
+                      className: 'location-search-input',
+                    })}
+                  />
+                  <div className="autocomplete-dropdown-container">
+                    {loading && <div>Loading...</div>}
+                    {suggestions.map((suggestion) => {
+                      const className = suggestion.active
+                        ? 'suggestion-item--active'
+                        : 'suggestion-item';
+                      // inline style for demonstration purpose
+                      const style = suggestion.active
+                        ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+                        : { backgroundColor: '#ffffff', cursor: 'pointer' };
+                      return (
+                        <div
+                          {...getSuggestionItemProps(suggestion, {
+                            className,
+                            style,
+                          })}
+                        >
+                          <span>{suggestion.description}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </PlacesAutocomplete>
 
             Event Creator:<br />
             <input
