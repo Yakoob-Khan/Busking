@@ -16,6 +16,7 @@ import LogIn from './LogIn';
 import SignUp from './SignUp';
 import Landing from './Landing';
 import WrappedMapView from './wrappedMapView';
+import MyProfile from './myProfile';
 import { facebookResponseLocal } from '../actions';
 // import UserProfile from './userprofile';
 
@@ -48,6 +49,7 @@ class App extends Component {
             <Route path="/signup" component={SignUp} />
             <Route path="/mapView" component={WrappedMapView} />
             <Route exact path="/events/:eventId" component={Event} />
+            <Route exact path="/myprofile" component={MyProfile} />
             {/* <Route path="/payment" component={CheckoutForm} /> */}
             {/* <Route exact path="/user" component={UserProfile} /> */}
             <Route component={FallBack} />
