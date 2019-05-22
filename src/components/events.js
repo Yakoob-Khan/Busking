@@ -44,25 +44,27 @@ class Events extends Component {
           backgroundImage: `url(${event.imageURL})`,
         };
         return (
-          <div className="event" key={event.id} style={eventStyle}>
+          <div className="event-container" key={event.id}>
+            <Link className="view-details" key={event.id} to={`events/${event.id}`}>
+              <div className="event" key={event.id} style={eventStyle} />
+            </Link>
             <p className="event-title">
               {event.title}
             </p>
             {/* Ratings credit to: https://github.com/ekeric13/react-ratings-declarative */}
-            <Ratings
-              rating={event.averageRating}
-              widgetRatedColors="rgb(255, 250, 0)"
-              widgetDimensions="35px"
-            >
-              <Ratings.Widget />
-              <Ratings.Widget />
-              <Ratings.Widget />
-              <Ratings.Widget />
-              <Ratings.Widget />
-            </Ratings>
-            <Link to={`events/${event.id}`} key={event.id} className="view-details">
-              view details
-            </Link>
+            <div className="event-rating">
+              <Ratings
+                rating={event.averageRating}
+                widgetRatedColors="white"
+                widgetDimensions="30px"
+              >
+                <Ratings.Widget />
+                <Ratings.Widget />
+                <Ratings.Widget />
+                <Ratings.Widget />
+                <Ratings.Widget />
+              </Ratings>
+            </div>
           </div>
         );
       });
