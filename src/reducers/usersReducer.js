@@ -3,6 +3,7 @@ import { ActionTypes } from '../actions';
 const initialState = {
   currentUser: {},
   user: {},
+  currentUserLocation: {},
 };
 
 const UsersReducer = (state = initialState, action) => {
@@ -11,6 +12,8 @@ const UsersReducer = (state = initialState, action) => {
       return Object.assign({}, state, { currentUser: action.payload });
     case ActionTypes.FETCH_USER:
       return Object.assign({}, state, { user: action.payload });
+    case ActionTypes.GET_USER_LOCATION:
+      return Object.assign({}, state, { currentUserLocation: action.payload });
     default:
       return state;
   }
