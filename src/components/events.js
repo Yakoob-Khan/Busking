@@ -56,6 +56,8 @@ class Events extends Component {
               <Ratings
                 rating={event.averageRating}
                 widgetRatedColors="white"
+                widgetEmptyColors="#6B6B6B"
+                widgetSpacings="4px"
                 widgetDimensions="30px"
               >
                 <Ratings.Widget />
@@ -87,7 +89,7 @@ class Events extends Component {
           {/* <NavLink to="/" onClick={this.onToggleMap} className="events-toggle">List View</NavLink> */}
           <button onClick={this.onToggleMap} className="events-toggle" type="button">Toggle View</button>
         </div>
-        <div className="allEvents">
+        <div className="events-container">
           {this.state.mapBool ? <WrappedMapView /> : this.renderEvents()}
           {/* {this.renderEvents()} */}
         </div>
