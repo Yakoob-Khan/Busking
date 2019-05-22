@@ -4,7 +4,9 @@ import {
   Map, GoogleApiWrapper, InfoWindow, Marker,
 } from 'google-maps-react';
 import { connect } from 'react-redux';
-import { withRouter, Link } from 'react-router-dom';
+import {
+  withRouter, NavLink, BrowserRouter as Router, Route, Switch,
+} from 'react-router-dom';
 import Ratings from 'react-ratings-declarative';
 import { fetchEvents } from '../actions';
 
@@ -14,7 +16,7 @@ export class MapView extends Component {
     this.state = {
       showingInfoWindow: false, // Hides or the shows the infoWindow
       activeMarker: {}, // Shows the active marker upon click
-      selectedPlace: {}, // Shows the infoWindow to the selected place upon a marker
+      selectedEvent: {}, // Shows the infoWindow to the selected Event upon a marker
     };
   }
 
@@ -24,7 +26,7 @@ export class MapView extends Component {
 
     onMarkerClick = (props, marker, e) => {
       this.setState({
-        selectedPlace: props,
+        selectedEvent: props.event,
         activeMarker: marker,
         showingInfoWindow: true,
       });
@@ -44,7 +46,7 @@ export class MapView extends Component {
       if (this.props.events.length !== 0) {
         return this.props.events.map((event) => {
           return (
-            <Marker key={event.id} averageRating={event.averageRating} name={event.title} position={{ lat: event.latitude, lng: event.longitude }} onClick={this.onMarkerClick} />
+            <Marker key={event.id} event={event} position={{ lat: event.latitude, lng: event.longitude }} onClick={this.onMarkerClick} />
           );
         });
       } else {
@@ -65,22 +67,17 @@ export class MapView extends Component {
           zoom={2}
         >
           {this.renderEvents()}
-          <InfoWindow marker={this.state.activeMarker} visible={this.state.showingInfoWindow} onClose={this.onClose}>
-            <div>
-              <div className="event">
-                {/* <img
-                alt="event-banner"
-                src="https://upload.wikimedia.org/wikipedia/commons/9/97/Peoria_skyline_banner.jpg"
-                id="event-banner"
-              /> */}
-                <p className="event-title">
-                  {this.state.selectedPlace.name}
+          <InfoWindow className="info-window" marker={this.state.activeMarker} visible={this.state.showingInfoWindow} onClose={this.onClose}>
+            <div className="info-container">
+              <div key={this.state.selectedEvent.id}>
+                <p className="event-title-info">
+                  {this.state.selectedEvent.title}
                 </p>
                 {/* Ratings credit to: https://github.com/ekeric13/react-ratings-declarative */}
                 <Ratings
-                  rating={this.state.selectedPlace.averageRating}
-                  widgetRatedColors="rgb(255, 250, 0)"
-                  widgetDimensions="35px"
+                  rating={this.state.selectedEvent.averageRating}
+                  widgetRatedColors="yellow"
+                  widgetDimensions="30px"
                 >
                   <Ratings.Widget />
                   <Ratings.Widget />
@@ -88,9 +85,13 @@ export class MapView extends Component {
                   <Ratings.Widget />
                   <Ratings.Widget />
                 </Ratings>
-                {/* <Link to={`events/${this.state.selectedPlace.key}`} key={this.state.selectedPlace.key} className="more-info">
-                MORE
-                </Link> */}
+              </div>
+              <div>
+                <Router>
+                  <NavLink to={`events/${this.state.selectedEvent.id}`} key={this.state.selectedEvent.id} className="more">
+                  MORE
+                  </NavLink>
+                </Router>
               </div>
             </div>
           </InfoWindow>
@@ -107,7 +108,7 @@ const mapStateToProps = state => (
 
 // eslint-disable-next-line new-cap
 const WrappedMapView = GoogleApiWrapper({
-  apiKey: 'AIzaSyCwOLP5P_hRzjqK5SrdZNviwXf3QyCJJBg',
+  apiKey: 'AIzaSyArATJi0Oo2tXNtsaFq0l3mySoMg0QuaSU',
 })(MapView);
 
 export default withRouter(connect(mapStateToProps, { fetchEvents })(WrappedMapView));
