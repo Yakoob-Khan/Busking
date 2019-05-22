@@ -132,7 +132,7 @@ class NewEvent extends Component {
             )}
           </PlacesAutocomplete>
 
-          Event Creator:<br />
+          {/* Event Creator:<br />
           <input
             type="text"
             name="eventCreator"
@@ -140,7 +140,7 @@ class NewEvent extends Component {
             placeholder="Event Creator"
             onChange={this.onFieldChange}
           />
-          <br />
+          <br /> */}
 
           <br /><br />
           <button type="button" onClick={this.submitForm}> Submit </button>
