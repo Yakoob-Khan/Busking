@@ -140,7 +140,7 @@ class Event extends Component {
       backgroundRepeat: 'no-repeat',
       backgroundSize: 'cover',
     };
-    if (!this.state.isEditing) {
+    if ((!this.state.isEditing) && (this.props.user) && (this.props.user.name === this.props.event.eventCreator)) {
       return (
         <div className="event-page">
           <div className="event-image-container" style={eventImage} />
@@ -170,6 +170,53 @@ class Event extends Component {
                 onChange={this.onFieldChange}
               />
               <button type="button" onClick={this.payment}> Tip </button> */}
+              <Checkout
+                // `#demo${this.state.id}`
+                name={`Send a tip to ${this.props.event.eventCreator}!`}
+                description="Your tip goes a long way!"
+                amount={this.state.tip}
+              />
+            </div>
+            <div id="event-details-right">
+              <div id="event-average-rating">
+                <Ratings
+                  rating={this.props.event.averageRating}
+                  widgetRatedColors="#0099CC"
+                  widgetHoverColors="rgb(0,153,204)"
+                  widgetEmptyColors="#6B6B6B"
+                  widgetSpacings="3px"
+                  widgetDimensions="32px"
+                  changeRating={this.changeRating}
+                >
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                </Ratings>
+                <p id="event-average-rating-label">
+                  Average Rating: {this.props.event.averageRating ? this.props.event.averageRating.toFixed(2) : ''}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    } else if (!this.state.isEditing) {
+      return (
+        <div className="event-page">
+          <div className="event-image-container" style={eventImage} />
+          <div id="event-location">
+            {/* <p>Longitude: {this.props.event.longitude}</p>
+            <p>Latitude: {this.props.event.latitude}</p> */}
+            <p>{this.props.event.address}</p>
+          </div>
+          <div id="event-details">
+            <div id="event-details-left">
+              <p id="event-title">{this.props.event.title}</p>
+              <p id="event-description">{this.props.event.description}</p>
+              <p id="event-creator">Event Creator: {this.props.event.eventCreator}</p>
+
               <Checkout
                 // `#demo${this.state.id}`
                 name={`Send a tip to ${this.props.event.eventCreator}!`}
@@ -349,6 +396,7 @@ class Event extends Component {
 const mapStateToProps = state => (
   {
     event: state.events.event,
+    user: state.auth.user,
   }
 );
 
