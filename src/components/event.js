@@ -16,6 +16,7 @@ class Event extends Component {
     this.state = {
       isEditing: false,
       title: '',
+      description: '',
       imageURL: '',
       longitude: '',
       latitude: '',
@@ -23,21 +24,58 @@ class Event extends Component {
       rating: 0,
       tip: '',
     };
+
+    this.onEdit = this.onEdit.bind(this);
+    this.startEdit = this.startEdit.bind(this);
+    this.deleteEvent = this.deleteEvent.bind(this);
+    this.onFieldChange = this.onFieldChange.bind(this);
+    // this.submitForm = this.submitForm.bind(this);
+    this.changeRating = this.changeRating.bind(this);
   }
 
   componentDidMount() {
     this.props.fetchEvent(this.props.match.params.eventId);
   }
 
+
+  onEdit(event) {
+    this.setState(prevState => ({
+      isEditing: !prevState.isEditing,
+    }));
+    if (this.state.isEditing) {
+      this.startEdit();
+    } else {
+      this.setState({
+        title: this.props.event.title,
+        description: this.props.event.description,
+        imageURL: this.props.event.imageURL,
+        longitude: this.props.event.longitude,
+        latitude: this.props.event.latitude,
+        eventCreator: this.props.event.eventCreator,
+      });
+    }
+  }
+
   startEdit = () => {
+    const update = {
+      id: this.props.event._id,
+      title: this.state.title,
+      description: this.state.description,
+      imageURL: this.state.imageURL,
+      longitude: this.state.longitude,
+      latitude: this.state.latitude,
+      eventCreator: this.state.eventCreator,
+    };
     this.setState({
-      isEditing: true,
-      title: this.props.event.title,
-      imageURL: this.props.event.imageURL,
-      longitude: this.props.eavent.longitude,
-      latitude: this.props.event.latitude,
-      eventCreator: this.props.event.eventCreator,
+      isEditing: false,
+      title: '',
+      description: '',
+      imageURL: '',
+      longitude: '',
+      latitude: '',
+      eventCreator: '',
     });
+    this.props.updateEvent(update);
   }
 
   deleteEvent = () => {
@@ -49,20 +87,20 @@ class Event extends Component {
   }
 
 
-  submitForm = () => {
-    const update = {
-      id: this.props.event._id,
-      title: this.state.title,
-      imageURL: this.state.imageURL,
-      longitude: this.state.longitude,
-      latitude: this.state.latitude,
-      eventCreator: this.state.eventCreator,
-    };
-    this.props.updateEvent(update);
-    this.setState({
-      isEditing: false,
-    });
-  }
+  // submitForm = () => {
+  //   const update = {
+  //     id: this.props.event._id,
+  //     title: this.state.title,
+  //     imageURL: this.state.imageURL,
+  //     longitude: this.state.longitude,
+  //     latitude: this.state.latitude,
+  //     eventCreator: this.state.eventCreator,
+  //   };
+  //   this.props.updateEvent(update);
+  //   this.setState({
+  //     isEditing: false,
+  //   });
+  // }
 
   changeRating = (newRating) => {
     this.setState({
@@ -91,15 +129,14 @@ class Event extends Component {
               <p id="event-title">{this.props.event.title}</p>
               <p id="event-description">{this.props.event.description}</p>
               <p id="event-creator">Event Creator: {this.props.event.eventCreator}</p>
-              <button id="update-event-button"
-                className="event-button"
-                type="button"
-                onClick={this.startEdit}
-              >
+              <button id="update-event-button" className="event-button" type="button" onClick={this.onEdit}>
                 <img src="./../src/assets/pencil.svg" alt="update event" />
-                update event
+                <p>update event</p>
               </button>
-              <button id="delete-event-button" className="event-button" type="button" onClick={this.deleteEvent}>Delete Event</button>
+              <button id="delete-event-button" className="event-button" type="button" onClick={this.deleteEvent}>
+                <img src="./../src/assets/basket.svg" alt="delete event" />
+                <p>delete event</p>
+              </button>
               {/* <input
                 type="text"
                 name="tip"
@@ -111,7 +148,7 @@ class Event extends Component {
               <Checkout
                 // `#demo${this.state.id}`
                 name={`Send a tip to ${this.props.event.eventCreator}!`}
-                description="You're tip goes a long way!"
+                description="Your tip goes a long way!"
                 amount={this.state.tip}
               />
             </div>
@@ -150,7 +187,19 @@ class Event extends Component {
               type="text"
               name="title"
               value={this.state.title}
+              // defaultValue={this.state.title}
               placeholder="Event Title"
+              onChange={this.onFieldChange}
+            />
+            <br />
+
+            Description:<br />
+            <input
+              type="text"
+              name="description"
+              value={this.state.description}
+              // defaultValue={this.state.description}
+              placeholder="Event Description"
               onChange={this.onFieldChange}
             />
             <br />
@@ -160,6 +209,7 @@ class Event extends Component {
               type="text"
               name="imageURL"
               value={this.state.imageURL}
+              // defaultValue={this.state.imageURL}
               placeholder="Image url"
               onChange={this.onFieldChange}
             />
@@ -184,6 +234,7 @@ class Event extends Component {
               type="text"
               name="longitude"
               value={this.state.longitude}
+              // defaultValue={this.state.longitude}
               placeholder="Longitude"
               onChange={this.onFieldChange}
             />
@@ -194,6 +245,7 @@ class Event extends Component {
               type="text"
               name="latitude"
               value={this.state.latitude}
+              // defaultValue={this.state.latitude}
               placeholder="Latitude"
               onChange={this.onFieldChange}
             />
@@ -204,13 +256,14 @@ class Event extends Component {
               type="text"
               name="eventCreator"
               value={this.state.eventCreator}
+              // defaultValue={this.state.eventCreator}
               placeholder="Event Creator"
               onChange={this.onFieldChange}
             />
             <br />
 
             <br /><br />
-            <button type="button" onClick={this.submitForm}> Submit </button>
+            <button type="button" onClick={this.onEdit}> Submit </button>
           </form>
         </div>
       );
