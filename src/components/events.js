@@ -40,12 +40,14 @@ class Events extends Component {
   renderEvents = () => {
     if (this.props.events.length !== 0) {
       return this.props.events.map((event) => {
+        const eventStyle = {
+          backgroundImage: `url(${event.imageURL})`,
+        };
         return (
-          <div className="event" key={event.id}>
+          <div className="event" key={event.id} style={eventStyle}>
             <p className="event-title">
               {event.title}
             </p>
-            <img src={event.imageURL} alt="event" />
             {/* Ratings credit to: https://github.com/ekeric13/react-ratings-declarative */}
             <Ratings
               rating={event.averageRating}
@@ -58,8 +60,8 @@ class Events extends Component {
               <Ratings.Widget />
               <Ratings.Widget />
             </Ratings>
-            <Link to={`events/${event.id}`} key={event.id} className="more-info">
-              MORE
+            <Link to={`events/${event.id}`} key={event.id} className="view-details">
+              view details
             </Link>
           </div>
         );
