@@ -273,12 +273,13 @@ nav {
   font-family: 'Raleway', sans-serif;
   font-size: 12px;
   font-weight: 400;
-  margin: 4px;
+  margin: 10px;
   opacity: 0.8;
   outline: none;
   img {
-    margin: 0 0 12px 0;
+    margin: 0 0 8px 0;
     filter: drop-shadow(1px 1px 1px black);
+    height: 100px;
   }
 }
 #update-event-button:hover,

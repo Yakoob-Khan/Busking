@@ -129,15 +129,14 @@ class Event extends Component {
               <p id="event-title">{this.props.event.title}</p>
               <p id="event-description">{this.props.event.description}</p>
               <p id="event-creator">Event Creator: {this.props.event.eventCreator}</p>
-              <button id="update-event-button"
-                className="event-button"
-                type="button"
-                onClick={this.onEdit}
-              >
+              <button id="update-event-button" className="event-button" type="button" onClick={this.onEdit}>
                 <img src="./../src/assets/pencil.svg" alt="update event" />
-                update event
+                <p>update event</p>
               </button>
-              <button id="delete-event-button" className="event-button" type="button" onClick={this.deleteEvent}>Delete Event</button>
+              <button id="delete-event-button" className="event-button" type="button" onClick={this.deleteEvent}>
+                <img src="./../src/assets/basket.svg" alt="delete event" />
+                <p>delete event</p>
+              </button>
               {/* <input
                 type="text"
                 name="tip"
@@ -149,7 +148,7 @@ class Event extends Component {
               <Checkout
                 // `#demo${this.state.id}`
                 name={`Send a tip to ${this.props.event.eventCreator}!`}
-                description="You're tip goes a long way!"
+                description="Your tip goes a long way!"
                 amount={this.state.tip}
               />
             </div>
