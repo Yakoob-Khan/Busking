@@ -153,12 +153,16 @@ nav {
   margin: 10px 0;
 }
 .event-title {
-  top: 5px;
   font-size: 24px;
   font-weight: 800;
   color: white;
-  margin-top: 1%;
-  margin-bottom: 1%;
+  margin-top: 0;
+  margin-bottom: 100px;
+  text-transform: capitalize;
+  text-shadow: 1px 1px 1px black;
+}
+.view-details {
+  text-shadow: 1px 1px 1px black;
 }
 #event-banner {
   width: 100%;
