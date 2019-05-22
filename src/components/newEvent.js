@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import PlacesAutocomplete, {
+  geocodeByAddress,
+  getLatLng,
+} from 'react-places-autocomplete';
 import { createEvent } from '../actions';
 
 class NewEvent extends Component {
@@ -13,6 +17,7 @@ class NewEvent extends Component {
       latitude: '',
       eventCreator: '',
       description: '',
+      address: '',
     };
     this.onFieldChange = this.onFieldChange.bind(this);
   }
@@ -32,6 +37,24 @@ class NewEvent extends Component {
     };
     this.props.createEvent(newEvent, this.props.history);
   }
+
+  handleChange = (address) => {
+    this.setState({ address });
+  };
+
+  handleSelect = (address) => {
+    this.setState({ address });
+    geocodeByAddress(address)
+      .then(results => getLatLng(results[0]))
+      .then((latlng) => {
+        // console.log('Success', latlng);
+        this.setState({
+          longitude: latlng.lng,
+          latitude: latlng.lat,
+        });
+      })
+      .catch(error => console.error('Error', error));
+  };
 
   render() {
     return (
@@ -67,25 +90,47 @@ class NewEvent extends Component {
           />
           <br />
 
-          Longitude:<br />
-          <input
-            type="text"
-            name="longitude"
-            value={this.state.longitude}
-            placeholder="Longitude"
-            onChange={this.onFieldChange}
-          />
-          <br />
-
-          Latitude:<br />
-          <input
-            type="text"
-            name="latitude"
-            value={this.state.latitude}
-            placeholder="Latitude"
-            onChange={this.onFieldChange}
-          />
-          <br />
+          Location:<br />
+          <PlacesAutocomplete
+            value={this.state.address}
+            onChange={this.handleChange}
+            onSelect={this.handleSelect}
+          >
+            {({
+              getInputProps, suggestions, getSuggestionItemProps, loading,
+            }) => (
+              <div>
+                <input
+                  {...getInputProps({
+                    placeholder: 'Search Places ...',
+                    className: 'location-search-input',
+                  })}
+                />
+                <div className="autocomplete-dropdown-container">
+                  {loading && <div>Loading...</div>}
+                  {suggestions.map((suggestion) => {
+                    const className = suggestion.active
+                      ? 'suggestion-item--active'
+                      : 'suggestion-item';
+                    // inline style for demonstration purpose
+                    const style = suggestion.active
+                      ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+                      : { backgroundColor: '#ffffff', cursor: 'pointer' };
+                    return (
+                      <div
+                        {...getSuggestionItemProps(suggestion, {
+                          className,
+                          style,
+                        })}
+                      >
+                        <span>{suggestion.description}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </PlacesAutocomplete>
 
           Event Creator:<br />
           <input
