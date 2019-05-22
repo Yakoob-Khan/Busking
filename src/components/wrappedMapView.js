@@ -76,8 +76,8 @@ export class MapView extends Component {
                 {/* Ratings credit to: https://github.com/ekeric13/react-ratings-declarative */}
                 <Ratings
                   rating={this.state.selectedEvent.averageRating}
-                  widgetRatedColors="yellow"
-                  widgetDimensions="30px"
+                  widgetRatedColors="rgb(255, 250, 0)"
+                  widgetDimensions="35px"
                 >
                   <Ratings.Widget />
                   <Ratings.Widget />
