@@ -1,3 +1,5 @@
+/* eslint-disable no-useless-constructor */
+/* eslint-disable react/prefer-stateless-function */
 /* eslint-disable react/no-unused-state */
 /* eslint-disable no-restricted-globals */
 import React from 'react';
@@ -10,12 +12,6 @@ import { facebookResponse, logoutUser, testAPI } from '../actions';
 class LogIn extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { isAuthenticated: false, user: null, token: '' };
-  }
-
-  onFailure = (error) => {
-    // eslint-disable-next-line no-alert
-    alert(error);
   }
 
   render() {
