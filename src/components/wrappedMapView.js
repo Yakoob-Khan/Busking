@@ -8,7 +8,7 @@ import {
   withRouter, NavLink, BrowserRouter as Router, Route, Switch,
 } from 'react-router-dom';
 import Ratings from 'react-ratings-declarative';
-import { fetchEvents } from '../actions';
+import { fetchEvents, getCurrentLocation } from '../actions';
 
 export class MapView extends Component {
   constructor(props) {
@@ -22,6 +22,7 @@ export class MapView extends Component {
 
   componentDidMount() {
     this.props.fetchEvents();
+    this.props.getCurrentLocation();
   }
 
   onMarkerClick = (props, marker, e) => {
@@ -97,53 +98,41 @@ export class MapView extends Component {
     }
   }
 
-  getCurrentLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        return {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        };
-      });
-    } else {
-      // Browser doesn't support Geolocation
-      // handleLocationError(false, InfoWindow, map.getCenter());
-      console.log('your browswer does not support this 2019 shit');
-    }
-  }
-
   render() {
     return (
       <Map
         google={this.props.google}
-        center={this.getCurrentLocation()}
-        zoom={2}
+        center={this.props.currentUserLocation}
+        zoom={15}
       >
         {this.renderEvents()}
+        <Marker position={this.props.currentUserLocation} onClick={this.onMarkerClick} />
         <InfoWindow className="info-window" marker={this.state.activeMarker} visible={this.state.showingInfoWindow} onClose={this.onClose}>
-          <div key={this.state.selectedEvent.id}>
-            <p className="event-title-info">
-              {this.state.selectedEvent.title}
-            </p>
-            {/* Ratings credit to: https://github.com/ekeric13/react-ratings-declarative */}
-            <Ratings
-              rating={this.state.selectedEvent.averageRating}
-              widgetRatedColors="rgb(255, 250, 0)"
-              widgetDimensions="35px"
-            >
-              <Ratings.Widget />
-              <Ratings.Widget />
-              <Ratings.Widget />
-              <Ratings.Widget />
-              <Ratings.Widget />
-            </Ratings>
-          </div>
           <div>
-            <Router>
-              <NavLink to={`events/${this.state.selectedEvent.id}`} key={this.state.selectedEvent.id} className="more">
-                MORE
-              </NavLink>
-            </Router>
+            <div key={this.state.selectedEvent.id}>
+              <p className="event-title-info">
+                {this.state.selectedEvent.title}
+              </p>
+              {/* Ratings credit to: https://github.com/ekeric13/react-ratings-declarative */}
+              <Ratings
+                rating={this.state.selectedEvent.averageRating}
+                widgetRatedColors="rgb(255, 250, 0)"
+                widgetDimensions="35px"
+              >
+                <Ratings.Widget />
+                <Ratings.Widget />
+                <Ratings.Widget />
+                <Ratings.Widget />
+                <Ratings.Widget />
+              </Ratings>
+            </div>
+            <div>
+              <Router>
+                <NavLink to={`events/${this.state.selectedEvent.id}`} key={this.state.selectedEvent.id} className="more">
+                  MORE
+                </NavLink>
+              </Router>
+            </div>
           </div>
         </InfoWindow>
       </Map>
@@ -154,6 +143,7 @@ export class MapView extends Component {
 const mapStateToProps = state => (
   {
     events: state.events.allEvents,
+    currentUserLocation: state.users.currentUserLocation,
   }
 );
 
@@ -162,4 +152,4 @@ const WrappedMapView = GoogleApiWrapper({
   apiKey: 'AIzaSyArATJi0Oo2tXNtsaFq0l3mySoMg0QuaSU',
 })(MapView);
 
-export default withRouter(connect(mapStateToProps, { fetchEvents })(WrappedMapView));
+export default withRouter(connect(mapStateToProps, { fetchEvents, getCurrentLocation })(WrappedMapView));
