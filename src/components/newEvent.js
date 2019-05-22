@@ -34,6 +34,7 @@ class NewEvent extends Component {
       latitude: this.state.latitude,
       eventCreator: this.state.eventCreator,
       description: this.state.description,
+      address: this.state.address,
     };
     this.props.createEvent(newEvent, this.props.history);
   }
@@ -47,7 +48,6 @@ class NewEvent extends Component {
     geocodeByAddress(address)
       .then(results => getLatLng(results[0]))
       .then((latlng) => {
-        // console.log('Success', latlng);
         this.setState({
           longitude: latlng.lng,
           latitude: latlng.lat,
