@@ -178,6 +178,9 @@ class Event extends Component {
               />
             </div>
             <div id="event-details-right">
+              <div id="event-creator-photo">
+                <img src={this.props.event.eventCreatorPhoto} alt="Event Creator" />
+              </div>
               <div id="event-average-rating">
                 <Ratings
                   rating={this.props.event.averageRating}
@@ -225,6 +228,9 @@ class Event extends Component {
               />
             </div>
             <div id="event-details-right">
+              <div id="event-creator-photo">
+                <img src={this.props.event.eventCreatorPhoto} alt="Event Creator" />
+              </div>
               <div id="event-average-rating">
                 <Ratings
                   rating={this.props.event.averageRating}
