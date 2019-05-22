@@ -133,7 +133,7 @@ export function fetchEvents() {
 
 export function createEvent(newEvent, history) {
   return (dispatch) => {
-    axios.post(`${ROOT_URL}/events`, newEvent)
+    axios.post(`${ROOT_URL}/events`, newEvent, { headers: { authorization: localStorage.getItem('jwtToken') } })
       .then((response) => {
         history.push('/events');
       })
