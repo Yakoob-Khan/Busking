@@ -24,7 +24,7 @@ const ROOT_URL = 'http://localhost:9090/api';
 
 export const testAPI = () => {
   return () => {
-    axios.get('http://localhost:9090/', { headers: { 'X-AUTHENTICATION': localStorage.getItem('token') } }).then((r) => {
+    axios.get('http://localhost:9090/', { headers: { authorization: localStorage.getItem('jwtToken') } }).then((r) => {
       console.log(r);
     // dispatch({ type: ActionTypes.DELETE_POST, payload: response.data });
     }).catch((e) => {
@@ -85,7 +85,7 @@ export const facebookResponse = (response) => {
     };
     fetch('http://localhost:9090/auth/facebook', options).then((r) => {
       const token = r.headers.get('x-auth-token');
-      console.log(r);
+      localStorage.setItem('jwtToken', token);
       r.json().then((user) => {
         if (token) {
           dispatch({
