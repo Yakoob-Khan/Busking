@@ -1,56 +1,65 @@
+/* eslint-disable react/no-unused-state */
 /* eslint-disable no-restricted-globals */
 import React from 'react';
+import FacebookLogin from 'react-facebook-login';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import config from '../config.json';
+import { facebookResponse, logoutUser, testAPI } from '../actions';
 
 class LogIn extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      email: '',
-      password: '',
-    };
+    this.state = { isAuthenticated: false, user: null, token: '' };
   }
 
-  onSubmit = () => {
-    // Credit to stop form post submission: https://api.jquery.com/event.preventdefault/
-    event.preventDefault();
-    const user = {
-      email: this.state.email,
-      password: this.state.password,
-    };
-
-    this.props.signinUser(user, this.props.history);
-    // Remove account info from local state for security!
-    this.setState({
-      email: '',
-      password: '',
-    });
+  onFailure = (error) => {
+    // eslint-disable-next-line no-alert
+    alert(error);
   }
 
   render() {
+    const content = this.props.auth.isAuthenticated
+      ? (
+        <div>
+          <p>Authenticated</p>
+          <div>
+            {this.props.auth.user.email}
+            {this.props.auth.user.name}
+            <img alt="profile" src={this.props.auth.user.photo} />
+            {console.log(this.props.auth.user)}
+          </div>
+          <div>
+            <button onClick={this.props.logoutUser} className="button" type="submit">
+                    Log out
+            </button>
+            <button onClick={this.props.testAPI} className="button" type="submit">TEST API</button>
+          </div>
+        </div>
+      )
+      : (
+        <div>
+          <FacebookLogin
+            appId={config.FACEBOOK_APP_ID}
+            autoLoad={false}
+            fields="name,email,picture"
+            callback={this.props.facebookResponse}
+          />
+        </div>
+      );
+
     return (
-      <div>
-        <p>Let&apos;s sign you in!</p>
-        <input
-          onChange={() => { this.setState({ email: event.target.value }); }}
-          value={this.state.email}
-          placeholder="email"
-        />
-        <input
-          onChange={() => { this.setState({ password: event.target.value }); }}
-          value={this.state.password}
-          placeholder="password"
-        />
-        <button
-          type="submit"
-          onClick={this.onSubmit}
-        >
-        LogIn!
-        </button>
+      <div className="App">
+        {content}
       </div>
     );
   }
 }
 
-export default withRouter(connect(null, null)(LogIn));
+const mapStateToProps = reduxState => (
+  {
+    auth: reduxState.auth,
+  }
+);
+
+export default withRouter(connect(mapStateToProps, { facebookResponse, logoutUser, testAPI })(LogIn));
