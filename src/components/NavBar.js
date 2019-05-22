@@ -9,6 +9,28 @@ class NavBar extends React.Component {
     this.state = {};
   }
 
+  renderLogIn = () => {
+    if (this.props.auth.isAuthenticated) {
+      return (
+        <li className="nav-item">
+          <NavLink to="/myprofile" className="nav-link">
+            <span role="img" aria-label="see events" className="emoji">&#128075;</span>
+          My Profile
+          </NavLink>
+        </li>
+      );
+    } else {
+      return (
+        <li className="nav-item">
+          <NavLink to="/login" className="nav-link">
+            <span role="img" aria-label="see events" className="emoji">&#128075;</span>
+          Login with Facebook
+          </NavLink>
+        </li>
+      );
+    }
+  }
+
   render() {
     return (
       <nav>
@@ -25,22 +47,17 @@ class NavBar extends React.Component {
               Create Event
             </NavLink>
           </li>
-          <li className="nav-item">
-            <NavLink to="/login" className="nav-link">
-              <span role="img" aria-label="see events" className="emoji">&#128075;</span>
-              Login with Facebook
-            </NavLink>
-          </li>
+          {this.renderLogIn()}
         </ul>
       </nav>
     );
   }
 }
 
-// function mapStateToProps(state) {
-//   return {
-//     auth: state.auth.authenticated,
-//   };
-// }
+const mapStateToProps = state => (
+  {
+    auth: state.auth,
+  }
+);
 
-export default withRouter(connect(null, null)(NavBar));
+export default withRouter(connect(mapStateToProps, { })(NavBar));
