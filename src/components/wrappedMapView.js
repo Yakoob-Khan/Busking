@@ -99,14 +99,30 @@ export class MapView extends Component {
   }
 
   render() {
+    const points = this.props.events.map(event => (
+      { lat: event.latitude, lng: event.longitude }
+    ));
+    const bounds = new this.props.google.maps.LatLngBounds();
+    for (let i = 0; i < points.length; i + 1) {
+      bounds.extend(points[i]);
+    }
     return (
       <Map
         google={this.props.google}
         center={this.props.currentUserLocation}
         zoom={15}
+        bounds={bounds}
       >
         {this.renderEvents()}
-        <Marker position={this.props.currentUserLocation} onClick={this.onMarkerClick} />
+        <Marker
+          title="Your position"
+          position={this.props.currentUserLocation}
+          icon={{
+            url: '/src/assets/placeholder.png',
+            anchor: new window.google.maps.Point(32, 32),
+            scaledSize: new window.google.maps.Size(32, 32),
+          }}
+        />
         <InfoWindow className="info-window" marker={this.state.activeMarker} visible={this.state.showingInfoWindow} onClose={this.onClose}>
           <div>
             <div key={this.state.selectedEvent.id}>
