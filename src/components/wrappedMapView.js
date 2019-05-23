@@ -76,48 +76,50 @@ export class MapView extends Component {
 
   render() {
     return (
-      <Map
-        google={this.props.google}
-        bounds={this.getBounds()}
-        zoom={12}
-      >
-        {this.renderEvents()}
-        <Marker
-          title="Your current location"
-          position={this.props.currentUserLocation}
-          icon={{
-            url: `${this.props.user.photo}`,
-            anchor: new window.google.maps.Point(32, 32),
-            scaledSize: new window.google.maps.Size(40, 40),
-          }}
-        />
-        <InfoWindow className="info-window" marker={this.state.activeMarker} visible={this.state.showingInfoWindow} onClose={this.onClose}>
-          <div>
-            <div key={this.state.selectedEvent.id}>
-              <p className="event-title-info">
-                {this.state.selectedEvent.title}
-              </p>
-              {/* Ratings credit to: https://github.com/ekeric13/react-ratings-declarative */}
-              <Ratings
-                rating={this.state.selectedEvent.averageRating}
-                widgetRatedColors="rgb(255, 250, 0)"
-                widgetDimensions="35px"
-              >
-                <Ratings.Widget />
-                <Ratings.Widget />
-                <Ratings.Widget />
-                <Ratings.Widget />
-                <Ratings.Widget />
-              </Ratings>
-            </div>
-            <Router>
-              <NavLink to={`events/${this.state.selectedEvent.id}`} key={this.state.selectedEvent.id} className="more">
+      <div>
+        <Map className="map-container"
+          google={this.props.google}
+          bounds={this.getBounds()}
+          zoom={8}
+        >
+          {this.renderEvents()}
+          <Marker
+            title="Your current location"
+            position={this.props.currentUserLocation}
+            icon={{
+              url: `${this.props.user.photo}`,
+              anchor: new window.google.maps.Point(32, 32),
+              scaledSize: new window.google.maps.Size(40, 40),
+            }}
+          />
+          <InfoWindow className="info-window" marker={this.state.activeMarker} visible={this.state.showingInfoWindow} onClose={this.onClose}>
+            <div>
+              <div key={this.state.selectedEvent.id}>
+                <p className="event-title-info">
+                  {this.state.selectedEvent.title}
+                </p>
+                {/* Ratings credit to: https://github.com/ekeric13/react-ratings-declarative */}
+                <Ratings
+                  rating={this.state.selectedEvent.averageRating}
+                  widgetRatedColors="rgb(255, 250, 0)"
+                  widgetDimensions="35px"
+                >
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                </Ratings>
+              </div>
+              <Router>
+                <NavLink to={`events/${this.state.selectedEvent.id}`} key={this.state.selectedEvent.id} className="more">
                 MORE
-              </NavLink>
-            </Router>
-          </div>
-        </InfoWindow>
-      </Map>
+                </NavLink>
+              </Router>
+            </div>
+          </InfoWindow>
+        </Map>
+      </div>
     );
   }
 }
