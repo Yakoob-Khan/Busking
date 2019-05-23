@@ -16,12 +16,12 @@ class NavBar extends React.Component {
   renderLogIn = () => {
     if (this.props.auth.isAuthenticated) {
       return (
-        <li className="nav-item">
-          <NavLink to="/myprofile" className="nav-link">
+        <NavLink to="/myprofile" className="nav-link">
+          <li className="nav-item">
             <span role="img" aria-label="see events" className="emoji">&#128075;</span>
-          My Profile
-          </NavLink>
-        </li>
+            My Profile
+          </li>
+        </NavLink>
       );
     } else {
       return (
@@ -49,18 +49,18 @@ class NavBar extends React.Component {
     return (
       <nav>
         <ul className="navbar">
-          <li className="nav-item">
-            <NavLink to="/" exact className="nav-link">
+          <NavLink to="/" exact className="nav-link">
+            <li className="nav-item">
               <span role="img" aria-label="home" className="emoji">&#11088;</span>
               Home
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink to="/createEvent" exact className="nav-link">
+            </li>
+          </NavLink>
+          <NavLink to="/createEvent" exact className="nav-link">
+            <li className="nav-item">
               <span role="img" aria-label="see events" className="emoji">&#127927;</span>
               Create Event
-            </NavLink>
-          </li>
+            </li>
+          </NavLink>
           {this.renderLogIn()}
         </ul>
       </nav>
