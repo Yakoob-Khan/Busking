@@ -5,6 +5,7 @@ import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
 } from 'react-places-autocomplete';
+import { GoogleApiWrapper } from 'google-maps-react';
 import { createEvent } from '../actions';
 
 class NewEvent extends Component {
@@ -164,4 +165,9 @@ class NewEvent extends Component {
   }
 }
 
-export default withRouter(connect(null, { createEvent })(NewEvent));
+// eslint-disable-next-line new-cap
+const WrappedNewEvent = GoogleApiWrapper({
+  apiKey: 'AIzaSyAE7HAvGXDK-LG6BfkEM0mgafvwo_Nda1Y',
+})(NewEvent);
+
+export default withRouter(connect(null, { createEvent })(WrappedNewEvent));
