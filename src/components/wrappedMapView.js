@@ -18,6 +18,7 @@ export class MapView extends Component {
       activeMarker: {}, // Shows the active marker upon click
       selectedEvent: {}, // Shows the infoWindow to the selected Event upon a marker
     };
+    this.getBounds = this.getBounds.bind(this);
   }
 
   componentDidMount() {
@@ -57,20 +58,28 @@ export class MapView extends Component {
     }
   }
 
-  render() {
+  getBounds = () => {
     const points = this.props.events.map(event => (
       { lat: event.latitude, lng: event.longitude }
     ));
-    const bounds = new this.props.google.maps.LatLngBounds();
-    for (let i = 0; i < points.length; i + 1) {
-      bounds.extend(points[i]);
+    const userLoc = this.props.currentUserLocation;
+    // empty object check adapted from https://stackoverflow.com/questions/679915/how-do-i-test-for-an-empty-javascript-object
+    if (!(Object.entries(userLoc).length === 0 && userLoc.constructor === Object)) {
+      points.push(this.props.currentUserLocation);
     }
+    const bounds = new this.props.google.maps.LatLngBounds();
+    points.forEach((point) => {
+      bounds.extend(point);
+    });
+    return bounds;
+  }
+
+  render() {
     return (
       <Map
         google={this.props.google}
-        center={this.props.currentUserLocation}
-        zoom={15}
-        bounds={bounds}
+        bounds={this.getBounds()}
+        zoom={12}
       >
         {this.renderEvents()}
         <Marker
@@ -101,13 +110,11 @@ export class MapView extends Component {
                 <Ratings.Widget />
               </Ratings>
             </div>
-            <div>
-              <Router>
-                <NavLink to={`events/${this.state.selectedEvent.id}`} key={this.state.selectedEvent.id} className="more">
-                  MORE
-                </NavLink>
-              </Router>
-            </div>
+            <Router>
+              <NavLink to={`events/${this.state.selectedEvent.id}`} key={this.state.selectedEvent.id} className="more">
+                MORE
+              </NavLink>
+            </Router>
           </div>
         </InfoWindow>
       </Map>
@@ -122,9 +129,11 @@ const mapStateToProps = state => (
   }
 );
 
+// 'AIzaSyAE7HAvGXDK-LG6BfkEM0mgafvwo_Nda1Y'
+
 // eslint-disable-next-line new-cap
 const WrappedMapView = GoogleApiWrapper({
-  apiKey: 'AIzaSyArATJi0Oo2tXNtsaFq0l3mySoMg0QuaSU',
+  apiKey: 'AIzaSyAE7HAvGXDK-LG6BfkEM0mgafvwo_Nda1Y',
 })(MapView);
 
 export default withRouter(connect(mapStateToProps, { fetchEvents, getCurrentLocation })(WrappedMapView));
