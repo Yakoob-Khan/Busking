@@ -137,54 +137,64 @@ class MyProfile extends Component {
   }
 
   render() {
+    const content = this.props.auth
+      ? (
+        <div>
+          <div className="user-pic">
+            <img src={this.props.user.photo} alt="Profile Pic" />
+          </div>
+          <div className="user-name">
+            <p>{this.props.user.name}</p>
+          </div>
+          <div className="user-email">
+            <p>{this.props.user.email}</p>
+          </div>
+          <div id="event-average-rating">
+            <Ratings
+              rating={this.props.user.averageRating}
+              widgetRatedColors="#0099CC"
+              widgetHoverColors="rgb(0,153,204)"
+              widgetEmptyColors="#6B6B6B"
+              widgetSpacings="3px"
+              widgetDimensions="32px"
+              // changeRating={this.changeRating}
+            >
+              <Ratings.Widget />
+              <Ratings.Widget />
+              <Ratings.Widget />
+              <Ratings.Widget />
+              <Ratings.Widget />
+            </Ratings>
+            <p id="event-average-rating-label">
+              Average Rating: {this.props.user.averageRating ? this.props.user.averageRating.toFixed(2) : ''}
+            </p>
+          </div>
+          <div className="events-hosted">
+            <p>Events Hosted:</p>
+            {this.renderEventsHosted()}
+          </div>
+          <div className="events-attended">
+            <p>Events Attended:</p>
+            {this.renderEventsAttended()}
+          </div>
+          <div className="followers">
+            <p>Followers:</p>
+            {this.renderFollowers()}
+          </div>
+          <div className="following">
+            <p>Following:</p>
+            {this.renderFollowing()}
+          </div>
+        </div>
+      )
+      : (
+        <div>
+          Please authenticate
+        </div>
+      );
+
     return (
-      <div>
-        <div className="user-pic">
-          <img src={this.props.user.photo} alt="Profile Pic" />
-        </div>
-        <div className="user-name">
-          <p>{this.props.user.name}</p>
-        </div>
-        <div className="user-email">
-          <p>{this.props.user.email}</p>
-        </div>
-        <div id="event-average-rating">
-          <Ratings
-            rating={this.props.user.averageRating}
-            widgetRatedColors="#0099CC"
-            widgetHoverColors="rgb(0,153,204)"
-            widgetEmptyColors="#6B6B6B"
-            widgetSpacings="3px"
-            widgetDimensions="32px"
-            // changeRating={this.changeRating}
-          >
-            <Ratings.Widget />
-            <Ratings.Widget />
-            <Ratings.Widget />
-            <Ratings.Widget />
-            <Ratings.Widget />
-          </Ratings>
-          <p id="event-average-rating-label">
-            Average Rating: {this.props.user.averageRating ? this.props.user.averageRating.toFixed(2) : ''}
-          </p>
-        </div>
-        <div className="events-hosted">
-          <p>Events Hosted:</p>
-          {this.renderEventsHosted()}
-        </div>
-        <div className="events-attended">
-          <p>Events Attended:</p>
-          {this.renderEventsAttended()}
-        </div>
-        <div className="followers">
-          <p>Followers:</p>
-          {this.renderFollowers()}
-        </div>
-        <div className="following">
-          <p>Following:</p>
-          {this.renderFollowing()}
-        </div>
-      </div>
+      <div>{content}</div>
     );
   }
 }
@@ -192,6 +202,7 @@ class MyProfile extends Component {
 const mapStateToProps = state => (
   {
     user: state.auth.user,
+    auth: state.auth.isAuthenticated,
   }
 );
 
