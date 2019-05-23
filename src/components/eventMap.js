@@ -88,15 +88,6 @@ export class EventMap extends Component {
     });
   }
 
-  makeVisible = () => {
-    const map2ndWrapper = document.getElementById('directions');
-    if (map2ndWrapper) {
-      map2ndWrapper.firstChild.style.width = '70%';
-      map2ndWrapper.firstChild.style.height = '80%';
-      map2ndWrapper.firstChild.style.position = 'relative';
-    }
-  }
-
   onModeChange = (event) => {
     this.setState({ currentMode: event.target.value });
   }
@@ -104,7 +95,9 @@ export class EventMap extends Component {
   render() {
     const event = this.props.event;
     const userLoc = this.props.currentUserLocation;
+    const style = { width: '70%', height: '80%' };
     if (!this.isObjectEmpty(event) && !this.isObjectEmpty(userLoc)) {
+      this.calcRoute();
       return (
         <div id="map-3rd-wrapper">
           <div>
@@ -120,23 +113,23 @@ export class EventMap extends Component {
             </div>
           </div>
           <div id="directions">
-            {this.makeVisible()}
             <Map
               // Adapted from https://github.com/tomchentw/react-google-maps/issues/189
               ref={(map) => { window.map = map; }}
               google={this.props.google}
               center={this.props.currentUserLocation}
+              style={style}
             >
-              {this.calcRoute()}
+
               {this.renderEvent()}
 
               <Marker
-                title="Your position"
+                title="Your current location"
                 position={this.props.currentUserLocation}
                 icon={{
-                  url: '/src/assets/placeholder.png',
+                  url: `${this.props.user.photo}`,
                   anchor: new window.google.maps.Point(32, 32),
-                  scaledSize: new window.google.maps.Size(32, 32),
+                  scaledSize: new window.google.maps.Size(60, 60),
                 }}
               />
               <InfoWindow className="info-window" marker={this.state.activeMarker} visible={this.state.showingInfoWindow} onClose={this.onClose}>
@@ -163,6 +156,7 @@ const mapStateToProps = state => (
   {
     event: state.events.event,
     currentUserLocation: state.users.currentUserLocation,
+    user: state.auth.user,
   }
 );
 

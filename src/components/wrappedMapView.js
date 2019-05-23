@@ -124,12 +124,12 @@ export class MapView extends Component {
       >
         {this.renderEvents()}
         <Marker
-          title="Your position"
+          title="Your current location"
           position={this.props.currentUserLocation}
           icon={{
-            url: '/src/assets/placeholder.png',
+            url: `${this.props.user.photo}`,
             anchor: new window.google.maps.Point(32, 32),
-            scaledSize: new window.google.maps.Size(32, 32),
+            scaledSize: new window.google.maps.Size(40, 40),
           }}
         />
         <InfoWindow className="info-window" marker={this.state.activeMarker} visible={this.state.showingInfoWindow} onClose={this.onClose}>
@@ -167,10 +167,10 @@ const mapStateToProps = state => (
   {
     events: state.events.allEvents,
     currentUserLocation: state.users.currentUserLocation,
+    user: state.auth.user,
   }
 );
 
-// 'AIzaSyAE7HAvGXDK-LG6BfkEM0mgafvwo_Nda1Y'
 
 // eslint-disable-next-line new-cap
 const WrappedMapView = GoogleApiWrapper({
