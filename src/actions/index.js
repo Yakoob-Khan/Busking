@@ -11,6 +11,7 @@ export const ActionTypes = {
   ERROR: 'ERROR',
   CLEAR_ERROR: 'CLEAR_ERROR',
   GET_USER_LOCATION: 'GET_USER_LOCATION',
+  FETCH_USER: 'FETCH_USER',
 };
 
 const ROOT_URL = 'http://localhost:9090/api';
@@ -220,6 +221,21 @@ export function updateCurrentUser(updatedUser) {
       })
       .catch((error) => {
         dispatch(appError(`Update user failed: ${error.response.data}`));
+      });
+  };
+}
+
+export function fetchUser(id) {
+  return (dispatch) => {
+    axios.get(`${ROOT_URL}/users/${id}`)
+      .then((response) => {
+        dispatch({
+          type: ActionTypes.FETCH_USER,
+          payload: response.data,
+        });
+      })
+      .catch((error) => {
+        dispatch(appError(`Error retrieving user :( ${error.response.data}`));
       });
   };
 }

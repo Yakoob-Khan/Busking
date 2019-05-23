@@ -16,7 +16,7 @@ class NewEvent extends Component {
       imageURL: '',
       longitude: '',
       latitude: '',
-      eventCreator: '',
+      // eventCreator: '',
       description: '',
       address: '',
     };
@@ -33,7 +33,7 @@ class NewEvent extends Component {
       imageURL: this.state.imageURL,
       longitude: this.state.longitude,
       latitude: this.state.latitude,
-      eventCreator: this.state.eventCreator,
+      // eventCreator: this.state.eventCreator,
       description: this.state.description,
       address: this.state.address,
     };
