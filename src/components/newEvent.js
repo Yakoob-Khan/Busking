@@ -57,94 +57,108 @@ class NewEvent extends Component {
   };
 
   render() {
+    const divStyle = {
+      margin: '-18px auto 0 auto',
+      position: 'absolute',
+    };
     return (
-      <div>
-        <h2>New Event</h2>
-        <form>
-          Event Title:<br />
-          <input
-            type="text"
-            name="title"
-            value={this.state.title}
-            placeholder="Event Title"
-            onChange={this.onFieldChange}
-          />
-          <br />
-          Event Description:<br />
-          <input
-            type="text"
-            name="description"
-            value={this.state.description}
-            placeholder="Event Description"
-            onChange={this.onFieldChange}
-          />
-          <br />
-
-          ImageUrl:<br />
-          <input
-            type="text"
-            name="imageURL"
-            value={this.state.imageURL}
-            placeholder="Image url"
-            onChange={this.onFieldChange}
-          />
-          <br />
-
-          Location:<br />
-          <PlacesAutocomplete
-            value={this.state.address}
-            onChange={this.handleChange}
-            onSelect={this.handleSelect}
-          >
-            {({
-              getInputProps, suggestions, getSuggestionItemProps, loading,
-            }) => (
-              <div>
-                <input
-                  {...getInputProps({
-                    placeholder: 'Search Places ...',
-                    className: 'location-search-input',
-                  })}
-                />
-                <div className="autocomplete-dropdown-container">
-                  {loading && <div>Loading...</div>}
-                  {suggestions.map((suggestion) => {
-                    const className = suggestion.active
-                      ? 'suggestion-item--active'
-                      : 'suggestion-item';
-                    // inline style for demonstration purpose
-                    const style = suggestion.active
-                      ? { backgroundColor: '#fafafa', cursor: 'pointer' }
-                      : { backgroundColor: '#ffffff', cursor: 'pointer' };
-                    return (
-                      <div
-                        {...getSuggestionItemProps(suggestion, {
-                          className,
-                          style,
-                        })}
-                      >
-                        <span>{suggestion.description}</span>
-                      </div>
-                    );
-                  })}
+      <div id="new-event-background">
+        <div id="new-event-form">
+          <h2 id="new-event-form-header">New Event</h2>
+          <form>
+            <label className="input-label" htmlFor="new-event-title">Event Title
+              <input
+                type="text"
+                name="title"
+                id="new-event-title"
+                value={this.state.title}
+                placeholder="Tony's Guitar Performance"
+                onChange={this.onFieldChange}
+              />
+            </label>
+            <label className="input-label" htmlFor="new-event-description">Event Description
+              <input
+                type="text"
+                name="description"
+                id="new-event-description"
+                value={this.state.description}
+                placeholder="Check out my latest gig."
+                onChange={this.onFieldChange}
+              />
+            </label>
+            <label className="input-label" htmlFor="new-event-image">Event Image
+              <input
+                type="text"
+                name="imageURL"
+                id="new-event-image"
+                value={this.state.imageURL}
+                placeholder="image URL"
+                onChange={this.onFieldChange}
+              />
+            </label>
+            <p className="input-label" id="new-event-location-label">Event Location</p>
+            <PlacesAutocomplete
+              id="new-event-location"
+              value={this.state.address}
+              onChange={this.handleChange}
+              onSelect={this.handleSelect}
+            >
+              {({
+                getInputProps, suggestions, getSuggestionItemProps, loading,
+              }) => (
+                <div>
+                  <input
+                    {...getInputProps({
+                      placeholder: 'Enter a location...',
+                      className: 'location-search-input',
+                    })}
+                  />
+                  <div className="autocomplete-dropdown-container" style={divStyle}>
+                    {loading && <div>Loading...</div>}
+                    {suggestions.map((suggestion) => {
+                      const className = suggestion.active
+                        ? 'suggestion-item--active'
+                        : 'suggestion-item';
+                      // inline style for demonstration purpose
+                      const style = suggestion.active
+                        ? {
+                          backgroundColor: 'rgba(158, 163, 190, 1)',
+                          borderRadius: '20px',
+                          cursor: 'pointer',
+                          color: 'white',
+                          marginBottom: '2px',
+                          padding: '10px 20px',
+                          width: '45.5vw',
+                        }
+                        : {
+                          backgroundColor: 'rgba(158, 163, 190, 0.6)',
+                          borderRadius: '20px',
+                          cursor: 'pointer',
+                          color: 'white',
+                          marginBottom: '2px',
+                          padding: '10px 20px',
+                          width: '45.5vw',
+                        };
+                      return (
+                        <div
+                          {...getSuggestionItemProps(suggestion, {
+                            className,
+                            style,
+                          })}
+                        >
+                          <span>{suggestion.description}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
-            )}
-          </PlacesAutocomplete>
-
-          {/* Event Creator:<br />
-          <input
-            type="text"
-            name="eventCreator"
-            value={this.state.eventCreator}
-            placeholder="Event Creator"
-            onChange={this.onFieldChange}
-          />
-          <br /> */}
-
-          <br /><br />
-          <button type="button" onClick={this.submitForm}> Submit </button>
-        </form>
+              )}
+            </PlacesAutocomplete>
+            <div id="create-new-event-button-container">
+              <button id="create-new-event-button" type="button" onClick={this.submitForm}>Create</button>
+            </div>
+          </form>
+        </div>
       </div>
     );
   }
