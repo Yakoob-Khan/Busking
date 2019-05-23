@@ -294,14 +294,16 @@ nav {
   cursor: pointer;
   opacity: 1;
 }
-/* CREATE EVENT */
-#new-event-background {
+/* CREATE & UPDATE EVENT */
+#new-event-background,
+#update-event-background {
   background-image: url("./../src/assets/mountain-background.jpg");
   background-size: cover;
   height: 100vh;
   padding-top: 50px;
 }
-#new-event-form {
+#new-event-form,
+#update-event-form {
   background-color: rgba(26,34,76,0.8);
   border-radius: 3px;
   color: white;
@@ -311,7 +313,8 @@ nav {
   padding: 3% 5%;
   width: 50%;
 }
-#new-event-form-header {
+#new-event-form-header,
+#update-event-form-header {
   border-bottom: 1px solid white;
   font-weight: 400;
   letter-spacing: 0.8px;
@@ -325,7 +328,8 @@ nav {
   margin-left: 16px;
   text-transform: uppercase;
 }
-#new-event-location-label {
+#new-event-location-label,
+#update-event-location-label {
   margin-top: -10px;
 }
 input {
@@ -356,12 +360,18 @@ input {
   color: white;
   opacity: 0.5;
 }
-#create-new-event-button-container {
-  margin-top: 54px;
+#create-new-event-button-container,
+#make-changes-button-container {
+  margin-top: 34px;
   text-align: center;
   width: 100%;
+  z-index: 0;
 }
-#create-new-event-button {
+#make-changes-button-container {
+  margin-top: 30px;
+}
+#create-new-event-button,
+#make-changes-button {
   background-color: $accent-color;
   border: none;
   border-radius: 20px;
@@ -374,7 +384,8 @@ input {
   text-transform: uppercase;
   width: 24%;
 }
-#create-new-event-button:hover {
+#create-new-event-button:hover,
+#make-changes-button:hover {
   cursor: pointer;
   opacity: 1;
 }

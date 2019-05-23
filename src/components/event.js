@@ -256,135 +256,110 @@ class Event extends Component {
         </div>
       );
     } else {
+      const divStyle = {
+        margin: '-18px auto 0 auto',
+        position: 'absolute',
+        zIndex: '100',
+      };
       return (
-        <div>
-          <h2>Update Event</h2>
-          <form>
-            Event Title:<br />
-            <input
-              type="text"
-              name="title"
-              value={this.state.title}
-              // defaultValue={this.state.title}
-              placeholder="Event Title"
-              onChange={this.onFieldChange}
-            />
-            <br />
-
-            Description:<br />
-            <input
-              type="text"
-              name="description"
-              value={this.state.description}
-              // defaultValue={this.state.description}
-              placeholder="Event Description"
-              onChange={this.onFieldChange}
-            />
-            <br />
-
-            ImageUrl:<br />
-            <input
-              type="text"
-              name="imageURL"
-              value={this.state.imageURL}
-              // defaultValue={this.state.imageURL}
-              placeholder="Image url"
-              onChange={this.onFieldChange}
-            />
-            <br />
-            <div>
-              <Ratings
-                rating={this.props.event.averageRating}
-                widgetRatedColors="rgb(255, 250, 0)"
-                widgetDimensions="35px"
+        <div id="update-event-background">
+          <div id="update-event-form">
+            <h2 id="update-event-form-header">Update Event</h2>
+            <form>
+              <label className="input-label" htmlFor="update-event-title">Event Title
+                <input
+                  type="text"
+                  name="title"
+                  id="update-event-title"
+                  value={this.state.title}
+                  // defaultValue={this.state.title}
+                  placeholder="Event Title"
+                  onChange={this.onFieldChange}
+                />
+              </label>
+              <label className="input-label" htmlFor="update-event-description">Description
+                <input
+                  type="text"
+                  name="description"
+                  id="update-event-description"
+                  value={this.state.description}
+                  // defaultValue={this.state.description}
+                  placeholder="Event Description"
+                  onChange={this.onFieldChange}
+                />
+              </label>
+              <label className="input-label" htmlFor="update-event-image">Event Image
+                <input
+                  type="text"
+                  name="imageURL"
+                  id="update-event-image"
+                  value={this.state.imageURL}
+                  // defaultValue={this.state.imageURL}
+                  placeholder="Image url"
+                  onChange={this.onFieldChange}
+                />
+              </label>
+              <p className="input-label" id="update-event-location-label">Event Location</p>
+              <PlacesAutocomplete
+                value={this.state.address}
+                onChange={this.handleChange}
+                onSelect={this.handleSelect}
               >
-                <Ratings.Widget />
-                <Ratings.Widget />
-                <Ratings.Widget />
-                <Ratings.Widget />
-                <Ratings.Widget />
-              </Ratings>
-            </div>
-
-
-            {/* Longitude:<br />
-            <input
-              type="text"
-              name="longitude"
-              value={this.state.longitude}
-              // defaultValue={this.state.longitude}
-              placeholder="Longitude"
-              onChange={this.onFieldChange}
-            />
-            <br />
-
-            Latitude:<br />
-            <input
-              type="text"
-              name="latitude"
-              value={this.state.latitude}
-              // defaultValue={this.state.latitude}
-              placeholder="Latitude"
-              onChange={this.onFieldChange}
-            />
-            <br /> */}
-
-            Location:<br />
-            <PlacesAutocomplete
-              value={this.state.address}
-              onChange={this.handleChange}
-              onSelect={this.handleSelect}
-            >
-              {({
-                getInputProps, suggestions, getSuggestionItemProps, loading,
-              }) => (
-                <div>
-                  <input
-                    {...getInputProps({
-                      placeholder: 'Search Places ...',
-                      className: 'location-search-input',
-                    })}
-                  />
-                  <div className="autocomplete-dropdown-container">
-                    {loading && <div>Loading...</div>}
-                    {suggestions.map((suggestion) => {
-                      const className = suggestion.active
-                        ? 'suggestion-item--active'
-                        : 'suggestion-item';
-                      // inline style for demonstration purpose
-                      const style = suggestion.active
-                        ? { backgroundColor: '#fafafa', cursor: 'pointer' }
-                        : { backgroundColor: '#ffffff', cursor: 'pointer' };
-                      return (
-                        <div
-                          {...getSuggestionItemProps(suggestion, {
-                            className,
-                            style,
-                          })}
-                        >
-                          <span>{suggestion.description}</span>
-                        </div>
-                      );
-                    })}
+                {({
+                  getInputProps, suggestions, getSuggestionItemProps, loading,
+                }) => (
+                  <div>
+                    <input
+                      {...getInputProps({
+                        placeholder: 'Enter a location',
+                        className: 'location-search-input',
+                      })}
+                    />
+                    <div className="autocomplete-dropdown-container" style={divStyle}>
+                      {loading && <div>Loading...</div>}
+                      {suggestions.map((suggestion) => {
+                        const className = suggestion.active
+                          ? 'suggestion-item--active'
+                          : 'suggestion-item';
+                        const style = suggestion.active
+                          ? {
+                            backgroundColor: 'rgba(158, 163, 190, 1)',
+                            borderRadius: '20px',
+                            cursor: 'pointer',
+                            color: 'white',
+                            marginBottom: '2px',
+                            padding: '10px 20px',
+                            width: '45.5vw',
+                          }
+                          : {
+                            backgroundColor: 'rgba(158, 163, 190, 0.6)',
+                            borderRadius: '20px',
+                            cursor: 'pointer',
+                            color: 'white',
+                            marginBottom: '2px',
+                            padding: '10px 20px',
+                            width: '45.5vw',
+                          };
+                        return (
+                          <div
+                            {...getSuggestionItemProps(suggestion, {
+                              className,
+                              style,
+                            })}
+                          >
+                            <span>{suggestion.description}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
-              )}
-            </PlacesAutocomplete>
-
-            {/* Event Creator:<br />
-            <input
-              type="text"
-              name="eventCreator"
-              value={this.state.eventCreator}
-              // defaultValue={this.state.eventCreator}
-              placeholder="Event Creator"
-              onChange={this.onFieldChange}
-            />
-            <br /> */}
-
-            <br /><br />
-            <button type="button" onClick={this.onEdit}> Submit </button>
-          </form>
+                )}
+              </PlacesAutocomplete>
+              <div id="make-changes-button-container">
+                <button id="make-changes-button" type="button" onClick={this.onEdit}>make changes</button>
+              </div>
+            </form>
+          </div>
         </div>
       );
     }

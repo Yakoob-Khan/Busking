@@ -60,6 +60,7 @@ class NewEvent extends Component {
     const divStyle = {
       margin: '-18px auto 0 auto',
       position: 'absolute',
+      zIndex: '100',
     };
     return (
       <div id="new-event-background">
@@ -109,7 +110,7 @@ class NewEvent extends Component {
                 <div>
                   <input
                     {...getInputProps({
-                      placeholder: 'Enter a location...',
+                      placeholder: 'Enter a location',
                       className: 'location-search-input',
                     })}
                   />
@@ -119,7 +120,6 @@ class NewEvent extends Component {
                       const className = suggestion.active
                         ? 'suggestion-item--active'
                         : 'suggestion-item';
-                      // inline style for demonstration purpose
                       const style = suggestion.active
                         ? {
                           backgroundColor: 'rgba(158, 163, 190, 1)',
