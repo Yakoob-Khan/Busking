@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import Ratings from 'react-ratings-declarative';
-import { updateCurrentUser } from '../actions';
+import { updateCurrentUser, logoutUser } from '../actions';
 
 
 class MyProfile extends Component {
@@ -140,6 +140,9 @@ class MyProfile extends Component {
     const content = this.props.auth
       ? (
         <div>
+          <button onClick={this.props.logoutUser} className="button" type="submit">
+                    Log out
+          </button>
           <div className="user-pic">
             <img src={this.props.user.photo} alt="Profile Pic" />
           </div>
@@ -206,4 +209,4 @@ const mapStateToProps = state => (
   }
 );
 
-export default withRouter(connect(mapStateToProps, { updateCurrentUser })(MyProfile));
+export default withRouter(connect(mapStateToProps, { updateCurrentUser, logoutUser })(MyProfile));

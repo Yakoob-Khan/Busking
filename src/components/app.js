@@ -25,8 +25,7 @@ const FallBack = (props) => {
   return <div>URL Not Found</div>;
 };
 class App extends Component {
-  constructor(props) {
-    super(props);
+  componentDidMount() {
     const token = localStorage.getItem('jwtToken');
     if (token) {
       console.log('local token');
@@ -36,6 +35,17 @@ class App extends Component {
       console.log('no local token');
     }
   }
+
+  // componentWillUpdate() {
+  //   const token = localStorage.getItem('jwtToken');
+  //   if (token) {
+  //     console.log('local token');
+  //     console.log(token);
+  //     this.props.facebookResponseLocal(token);
+  //   } else {
+  //     console.log('no local token');
+  //   }
+  // }
 
   render() {
     return (

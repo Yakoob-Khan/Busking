@@ -3,11 +3,13 @@
 /* eslint-disable react/no-unused-state */
 /* eslint-disable no-restricted-globals */
 import React from 'react';
-import FacebookLogin from 'react-facebook-login';
+// import FacebookLogin from 'react-facebook-login';
+// import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
+
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import config from '../config.json';
-import { facebookResponse, logoutUser, testAPI } from '../actions';
+// import config from '../config.json';
+import { logoutUser, testAPI } from '../actions';
 
 class LogIn extends React.Component {
   constructor(props) {
@@ -35,12 +37,20 @@ class LogIn extends React.Component {
       )
       : (
         <div>
-          <FacebookLogin
+          {/* <FacebookLogin
             appId={config.FACEBOOK_APP_ID}
             autoLoad={false}
             fields="name,email,picture"
             callback={this.props.facebookResponse}
-          />
+          /> */}
+          {/* <FacebookLogin
+            appId={config.FACEBOOK_APP_ID}
+            autoLoad
+            callback={this.props.facebookResponse}
+            render={renderProps => (
+              <button type="button" onClick={renderProps.onClick}>This is my custom FB button</button>
+            )}
+          /> */}
         </div>
       );
 
@@ -58,4 +68,5 @@ const mapStateToProps = reduxState => (
   }
 );
 
-export default withRouter(connect(mapStateToProps, { facebookResponse, logoutUser, testAPI })(LogIn));
+// export default withRouter(connect(mapStateToProps, { facebookResponse, logoutUser, testAPI })(LogIn));
+export default withRouter(connect(mapStateToProps, { logoutUser, testAPI })(LogIn));

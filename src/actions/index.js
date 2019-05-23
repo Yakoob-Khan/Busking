@@ -91,8 +91,6 @@ export const facebookResponse = (response) => {
   return (dispatch) => {
     console.log(response.accessToken);
     const tokenBlob = new Blob([JSON.stringify({ access_token: response.accessToken }, null, 2)], { type: 'application/json' });
-    localStorage.setItem('token', response.accessToken);
-    console.log(localStorage.getItem('token'));
     const options = {
       method: 'POST',
       body: tokenBlob,
