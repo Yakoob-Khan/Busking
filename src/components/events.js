@@ -59,6 +59,7 @@ class Events extends Component {
                 widgetEmptyColors="#6B6B6B"
                 widgetSpacings="4px"
                 widgetDimensions="30px"
+                // svgs={<span role="img" aria-label="home" className="emoji">&#11088;</span>}
               >
                 <Ratings.Widget />
                 <Ratings.Widget />
