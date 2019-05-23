@@ -108,6 +108,7 @@ export const facebookResponse = (response) => {
             type: ActionTypes.AUTH_USER_SUCCESS,
             payload: { user, token },
           });
+          dispatch({ type: ActionTypes.UPDATE_CURRENT_USER, payload: { user } });
           // this.setState({ isAuthenticated: true, user, token });
         } else {
           dispatch({ type: ActionTypes.ERROR });

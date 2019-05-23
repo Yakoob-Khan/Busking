@@ -12,7 +12,7 @@ import {
   fetchEvent, updateEvent, deleteEvent, rateEvent,
 } from '../actions';
 // import PaymentRequestForm from './PaymentRequestForm';
-
+import WrappedEventMap from './eventMap';
 
 class Event extends Component {
   constructor(props) {
@@ -42,6 +42,16 @@ class Event extends Component {
     this.props.fetchEvent(this.props.match.params.eventId);
   }
 
+  startEdit = () => {
+    this.setState({
+      isEditing: true,
+      title: this.props.event.title,
+      imageURL: this.props.event.imageURL,
+      longitude: this.props.event.longitude,
+      latitude: this.props.event.latitude,
+      eventCreator: this.props.event.eventCreator,
+    });
+  }
 
   onEdit(event) {
     this.setState(prevState => ({
@@ -369,6 +379,15 @@ class Event extends Component {
     return (
       <div>
         {this.renderEvent()}
+        <Checkout
+          // `#demo${this.state.id}`
+          name={`Send a tip to ${this.props.event.eventCreator}!`}
+          description="You're tip goes a long way!"
+          amount={this.state.tip}
+        />
+        <div id="map-wrapper">
+          <WrappedEventMap />
+        </div>
       </div>
     );
   }
