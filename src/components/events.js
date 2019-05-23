@@ -16,7 +16,6 @@ class Events extends Component {
     this.renderEvents = this.renderEvents.bind(this);
   }
 
-
   componentDidMount() {
     this.props.fetchEvents();
   }
@@ -47,26 +46,33 @@ class Events extends Component {
           <div className="event-container" key={event.id}>
             <Link className="view-details" key={event.id} to={`events/${event.id}`}>
               <div className="event" key={event.id} style={eventStyle} />
+              <p className="event-title">
+                {event.title}
+              </p>
+              <p className="event-description">
+                {event.description}
+              </p>
+              <p className="event-address">
+                {event.address}
+              </p>
+
+              {/* Ratings credit to: https://github.com/ekeric13/react-ratings-declarative */}
+              <div className="event-rating">
+                <Ratings
+                  rating={event.averageRating}
+                  widgetRatedColors="#0099CC"
+                  widgetEmptyColors="#6B6B6B"
+                  widgetSpacings="1px"
+                  widgetDimensions="12px"
+                >
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                </Ratings>
+              </div>
             </Link>
-            <p className="event-title">
-              {event.title}
-            </p>
-            {/* Ratings credit to: https://github.com/ekeric13/react-ratings-declarative */}
-            <div className="event-rating">
-              <Ratings
-                rating={event.averageRating}
-                widgetRatedColors="white"
-                widgetEmptyColors="#6B6B6B"
-                widgetSpacings="4px"
-                widgetDimensions="30px"
-              >
-                <Ratings.Widget />
-                <Ratings.Widget />
-                <Ratings.Widget />
-                <Ratings.Widget />
-                <Ratings.Widget />
-              </Ratings>
-            </div>
           </div>
         );
       });
