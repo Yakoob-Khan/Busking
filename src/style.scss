@@ -226,59 +226,97 @@ nav {
   color: $accent-color;
 }
 /* EVENT PAGE */
-.event-page {
-  position: relative;
+#event-page-background {
+  background-color: rgb(235, 235, 235);
+  height: 100vh;
+  padding-top: 70px;
 }
-.event-image-container {
-  height: 30vh;
-}
-#event-location {
-  color: white;
-  font-family: 'Raleway', sans-serif;
-  font-size: 24px;
-  position: absolute;
-  top: 0;
-  left: 40px;
-  text-shadow: 1px 1px 1px black;
-}
-#event-details {
-  color: $primary-font-color;
+#event-page {
+  background-color: white;
+  box-shadow: 1px 1px 2px gray;
   display: flex;
-  flex-direction: row;
-  font-family: 'Raleway', sans-serif;
-  width: 80%;
+  height: 60vh;
   margin: 0 auto;
+  width: 80%;
 }
 #event-details-left {
-  width: 50%;
-  margin-right: 4%;
+  width: 40vw;
+}
+#event-details-right {
+  margin: 20px 40px;
+}
+#event-details {
+  font-family: "Raleway", sans-serif;
+  letter-spacing: 0.6px;
 }
 #event-title {
-  font-weight: 600;
-  font-size: 32px;
-  margin: 30px 0 14px 0;
+  border-left: 4px solid $accent-color;
+  color: $primary-font-color;
+  font-size: 24px;
+  font-weight: 800;
+  margin: 0 0 0 -40px;
+  padding-left: 36px;
 }
-#event-description {
-  font-weight: 400;
-  font-size: 20px;
-  letter-spacing: 0.04em;
-  margin: 0;
+#event-location {
+  color: $primary-font-color;
+  font-size: 16px;
+  margin-top: 2px;
+  margin-bottom: 0;
+}
+#event-details-group-2 {
+  display: flex;
+  align-items: center;
+  margin: 30px auto;
+}
+#event-details-group-2-left {
+  border-right: 1px dotted gray;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-right: 30px;
+  text-align: center;
+}
+#event-creator-photo {
+  border-radius: 100px;
+  height: 100px;
+  width: 100px;
 }
 #event-creator {
+  color: $primary-font-color;
+  font-size: 9px;
+  margin: 8px 0 0 0;
+  text-transform: uppercase;
+}
+#event-creator-name {
+  color: $primary-font-color;
+  font-size: 14px;
   font-weight: 600;
+  margin-top: 2px;
+  margin-bottom: 0;
+  width: 100px;
+}
+#event-details-group-2-right {
+  color: $primary-font-color;
+  margin-left: 30px;
+}
+#event-description {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
 }
 #event-average-rating { 
-  margin: 30px 0 0 0;
+  margin: 10px 0 0 0;
 }
 #event-average-rating-label {
-  margin-top: 10px;
-  font-size: 20px;
+  font-size: 12px;
+  margin-top: 2px;
+  margin-bottom: 0;
 }
 #update-event-button,
 #delete-event-button,
 #stripe-checkout-button {
   background-color: none;
-  border: none;
+  border: 1px solid lightgray;
   color: $primary-font-color;
   font-family: 'Raleway', sans-serif;
   font-size: 12px;
@@ -286,11 +324,13 @@ nav {
   margin: 10px;
   opacity: 0.8;
   outline: none;
-  img {
-    margin: 0 0 8px 0;
-    filter: drop-shadow(1px 1px 1px black);
-    height: 100px;
-  }
+  padding: 0 10px;
+  text-transform: capitalize;
+  // img {
+  //   margin: 0 0 8px 0;
+  //   filter: drop-shadow(1px 1px 1px black);
+  //   height: 100px;
+  // }
 }
 #update-event-button:hover,
 #delete-event-button:hover,

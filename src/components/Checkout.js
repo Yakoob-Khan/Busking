@@ -31,7 +31,7 @@ const Checkout = ({ name, description, amount }) => (
     label="Give a Tip"
   >
     <button id="stripe-checkout-button" className="event-button" type="button">
-      <img src="./../src/assets/bowl.svg" alt="send tip" />
+      {/* <img src="./../src/assets/bowl.svg" alt="send tip" /> */}
       <p>Send Tip</p>
     </button>
   </StripeCheckout>

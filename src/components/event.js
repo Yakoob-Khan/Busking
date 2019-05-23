@@ -12,7 +12,7 @@ import {
   fetchEvent, updateEvent, deleteEvent, rateEvent,
 } from '../actions';
 // import PaymentRequestForm from './PaymentRequestForm';
-import WrappedEventMap from './eventMap';
+// import WrappedEventMap from './eventMap';
 
 class Event extends Component {
   constructor(props) {
@@ -161,64 +161,70 @@ class Event extends Component {
     };
     if ((!this.state.isEditing) && (this.props.user) && (this.props.user.name === this.props.event.eventCreator)) {
       return (
-        <div className="event-page">
-          <div className="event-image-container" style={eventImage} />
-          <div id="event-location">
-            {/* <p>Longitude: {this.props.event.longitude}</p>
-            <p>Latitude: {this.props.event.latitude}</p> */}
-            <p>{this.props.event.address}</p>
-          </div>
-          <div id="event-details">
-            <div id="event-details-left">
-              <p id="event-title">{this.props.event.title}</p>
-              <p id="event-description">{this.props.event.description}</p>
-              <p id="event-creator">Event Creator: {this.props.event.eventCreator}</p>
-              <button id="update-event-button" className="event-button" type="button" onClick={this.onEdit}>
-                <img src="./../src/assets/pencil.svg" alt="update event" />
-                <p>update event</p>
-              </button>
-              <button id="delete-event-button" className="event-button" type="button" onClick={this.deleteEvent}>
-                <img src="./../src/assets/basket.svg" alt="delete event" />
-                <p>delete event</p>
-              </button>
-              {/* <input
+        <div id="event-page-background">
+          <div id="event-page">
+            <div id="event-details-left" style={eventImage} />
+            <div id="event-details-right">
+              <div id="event-details">
+                <div id="event-details-group-1">
+                  <p id="event-title">{this.props.event.title}</p>
+                  <p id="event-location">{this.props.event.address}</p>
+                  {/* <p id="event-time"></p> */}
+                </div>
+                <div id="event-details-group-2">
+                  <div id="event-details-group-2-left">
+                    <img id="event-creator-photo" src={this.props.event.eventCreatorPhoto} alt="Event Creator" />
+                    <p id="event-creator">Event Creator</p>
+                    <p id="event-creator-name">{this.props.event.eventCreator}</p>
+                  </div>
+                  <div id="event-details-group-2-right">
+                    <p id="event-description">{this.props.event.description}</p>
+                    <div id="event-average-rating">
+                      <Ratings
+                        rating={this.props.event.averageRating}
+                        widgetRatedColors="#0099CC"
+                        widgetHoverColors="rgb(0,153,204)"
+                        widgetEmptyColors="#6B6B6B"
+                        widgetSpacings="2px"
+                        widgetDimensions="18px"
+                        changeRating={this.changeRating}
+                      >
+                        <Ratings.Widget />
+                        <Ratings.Widget />
+                        <Ratings.Widget />
+                        <Ratings.Widget />
+                        <Ratings.Widget />
+                      </Ratings>
+                      <p id="event-average-rating-label">
+                      Average Rating: {this.props.event.averageRating ? this.props.event.averageRating.toFixed(2) : ''}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div id="event-details-group-3">
+                  <button id="update-event-button" className="event-button" type="button" onClick={this.onEdit}>
+                    {/* <img src="./../src/assets/pencil.svg" alt="update event" /> */}
+                    <p>update event</p>
+                  </button>
+                  <button id="delete-event-button" className="event-button" type="button" onClick={this.deleteEvent}>
+                    {/* <img src="./../src/assets/basket.svg" alt="delete event" /> */}
+                    <p>delete event</p>
+                  </button>
+                  {/* <input
                 type="text"
                 name="tip"
                 value={this.state.tip}
                 placeholder="Tip Amount"
                 onChange={this.onFieldChange}
-              />
-              <button type="button" onClick={this.payment}> Tip </button> */}
-              <Checkout
-                // `#demo${this.state.id}`
-                name={`Send a tip to ${this.props.event.eventCreator}!`}
-                description="Your tip goes a long way!"
-                amount={this.state.tip}
-              />
-            </div>
-            <div id="event-details-right">
-              <div id="event-creator-photo">
-                <img src={this.props.event.eventCreatorPhoto} alt="Event Creator" />
-              </div>
-              <div id="event-average-rating">
-                <Ratings
-                  rating={this.props.event.averageRating}
-                  widgetRatedColors="#0099CC"
-                  widgetHoverColors="rgb(0,153,204)"
-                  widgetEmptyColors="#6B6B6B"
-                  widgetSpacings="3px"
-                  widgetDimensions="32px"
-                  changeRating={this.changeRating}
-                >
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                </Ratings>
-                <p id="event-average-rating-label">
-                  Average Rating: {this.props.event.averageRating ? this.props.event.averageRating.toFixed(2) : ''}
-                </p>
+                />
+                <button type="button" onClick={this.payment}> Tip </button> */}
+                  <Checkout
+                  // `#demo${this.state.id}`
+                    name={`Send a tip to ${this.props.event.eventCreator}!`}
+                    description="Your tip goes a long way!"
+                    amount={this.state.tip}
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -226,49 +232,54 @@ class Event extends Component {
       );
     } else if (!this.state.isEditing) {
       return (
-        <div className="event-page">
-          <div className="event-image-container" style={eventImage} />
-          <div id="event-location">
-            {/* <p>Longitude: {this.props.event.longitude}</p>
-            <p>Latitude: {this.props.event.latitude}</p> */}
-            <p>{this.props.event.address}</p>
-          </div>
-          <div id="event-details">
-            <div id="event-details-left">
-              <p id="event-title">{this.props.event.title}</p>
-              <p id="event-description">{this.props.event.description}</p>
-              <p id="event-creator">Event Creator: {this.props.event.eventCreator}</p>
-
-              <Checkout
-                // `#demo${this.state.id}`
-                name={`Send a tip to ${this.props.event.eventCreator}!`}
-                description="Your tip goes a long way!"
-                amount={this.state.tip}
-              />
-            </div>
+        <div id="event-page-background">
+          <div id="event-page">
+            <div id="event-details-left" style={eventImage} />
             <div id="event-details-right">
-              <div id="event-creator-photo">
-                <img src={this.props.event.eventCreatorPhoto} alt="Event Creator" />
-              </div>
-              <div id="event-average-rating">
-                <Ratings
-                  rating={this.props.event.averageRating}
-                  widgetRatedColors="#0099CC"
-                  widgetHoverColors="rgb(0,153,204)"
-                  widgetEmptyColors="#6B6B6B"
-                  widgetSpacings="3px"
-                  widgetDimensions="32px"
-                  changeRating={this.changeRating}
-                >
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                </Ratings>
-                <p id="event-average-rating-label">
-                  Average Rating: {this.props.event.averageRating ? this.props.event.averageRating.toFixed(2) : ''}
-                </p>
+              <div id="event-details">
+                <div id="event-details-group-1">
+                  <p id="event-title">{this.props.event.title}</p>
+                  <p id="event-location">{this.props.event.address}</p>
+                  {/* <p id="event-time"></p> */}
+                </div>
+                <div id="event-details-group-2">
+                  <div id="event-details-group-2-left">
+                    <img id="event-creator-photo" src={this.props.event.eventCreatorPhoto} alt="Event Creator" />
+                    <p id="event-creator">Event Creator</p>
+                    <p id="event-creator-name">{this.props.event.eventCreator}</p>
+                  </div>
+                  <div id="event-details-group-2-right">
+                    <p id="event-description">{this.props.event.description}</p>
+                    <div id="event-average-rating">
+                      <Ratings
+                        rating={this.props.event.averageRating}
+                        widgetRatedColors="#0099CC"
+                        widgetHoverColors="rgb(0,153,204)"
+                        widgetEmptyColors="#6B6B6B"
+                        widgetSpacings="3px"
+                        widgetDimensions="32px"
+                        changeRating={this.changeRating}
+                      >
+                        <Ratings.Widget />
+                        <Ratings.Widget />
+                        <Ratings.Widget />
+                        <Ratings.Widget />
+                        <Ratings.Widget />
+                      </Ratings>
+                      <p id="event-average-rating-label">
+                      Average Rating: {this.props.event.averageRating ? this.props.event.averageRating.toFixed(2) : ''}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div id="event-details-group-3">
+                  <Checkout
+                  // `#demo${this.state.id}`
+                    name={`Send a tip to ${this.props.event.eventCreator}!`}
+                    description="Your tip goes a long way!"
+                    amount={this.state.tip}
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -388,9 +399,9 @@ class Event extends Component {
     return (
       <div>
         {this.renderEvent()}
-        <div id="map-wrapper">
+        {/* <div id="map-wrapper">
           <WrappedEventMap />
-        </div>
+        </div> */}
       </div>
     );
   }
