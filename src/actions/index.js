@@ -10,6 +10,7 @@ export const ActionTypes = {
   UPDATE_CURRENT_USER: 'UPDATE_CURRENT_USER',
   ERROR: 'ERROR',
   CLEAR_ERROR: 'CLEAR_ERROR',
+  GET_USER_LOCATION: 'GET_USER_LOCATION',
 };
 
 const ROOT_URL = 'http://localhost:9090/api';
@@ -107,6 +108,7 @@ export const facebookResponse = (response) => {
             type: ActionTypes.AUTH_USER_SUCCESS,
             payload: { user, token },
           });
+          dispatch({ type: ActionTypes.UPDATE_CURRENT_USER, payload: { user } });
           // this.setState({ isAuthenticated: true, user, token });
         } else {
           dispatch({ type: ActionTypes.ERROR });
@@ -219,5 +221,25 @@ export function updateCurrentUser(updatedUser) {
       .catch((error) => {
         dispatch(appError(`Update user failed: ${error.response.data}`));
       });
+  };
+}
+
+export function getCurrentLocation() {
+  return (dispatch) => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        dispatch({
+          type: ActionTypes.GET_USER_LOCATION,
+          payload: {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          },
+        });
+      });
+    } else {
+      // Browser doesn't support Geolocation
+      console.log('your browswer does not support this 2019 shit');
+      dispatch(appError('your browswer does not support this 2019 shit'));
+    }
   };
 }

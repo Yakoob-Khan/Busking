@@ -12,7 +12,7 @@ import {
   fetchEvent, updateEvent, deleteEvent, rateEvent,
 } from '../actions';
 // import PaymentRequestForm from './PaymentRequestForm';
-
+import WrappedEventMap from './eventMap';
 
 class Event extends Component {
   constructor(props) {
@@ -60,6 +60,25 @@ class Event extends Component {
         eventCreator: this.props.event.eventCreator,
       });
     }
+  }
+
+  startEdit = () => {
+    this.setState({
+      isEditing: true,
+      title: this.props.event.title,
+      imageURL: this.props.event.imageURL,
+      longitude: this.props.event.longitude,
+      latitude: this.props.event.latitude,
+      eventCreator: this.props.event.eventCreator,
+    });
+  }
+
+  deleteEvent = () => {
+    this.props.deleteEvent(this.props.event._id, this.props.history);
+  }
+
+  onFieldChange = (event) => {
+    this.setState({ [event.target.name]: event.target.value });
   }
 
   startEdit = () => {
@@ -369,6 +388,9 @@ class Event extends Component {
     return (
       <div>
         {this.renderEvent()}
+        <div id="map-wrapper">
+          <WrappedEventMap />
+        </div>
       </div>
     );
   }
