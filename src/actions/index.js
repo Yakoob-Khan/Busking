@@ -13,11 +13,12 @@ export const ActionTypes = {
   GET_USER_LOCATION: 'GET_USER_LOCATION',
 };
 
-const ROOT_URL = 'http://localhost:9090/api';
+const ROOT_URL = 'https://busking-api.herokuapp.com/';
+// const ROOT_URL = 'http://localhost:9090/api';
 
 export const testAPI = () => {
   return () => {
-    axios.get('http://localhost:9090/', { headers: { authorization: localStorage.getItem('jwtToken') } }).then((r) => {
+    axios.get(`${ROOT_URL}`, { headers: { authorization: localStorage.getItem('jwtToken') } }).then((r) => {
       console.log(r);
     // dispatch({ type: ActionTypes.DELETE_POST, payload: response.data });
     }).catch((e) => {
@@ -29,7 +30,7 @@ export const testAPI = () => {
 export const facebookResponseLocal = (localToken) => {
   return (dispatch) => {
     console.log('hit facebook facebook');
-    axios.get('http://localhost:9090/auth/facebook/refresh', { headers: { authorization: localToken } }).then((r) => {
+    axios.get(`${ROOT_URL}auth/facebook/refresh`, { headers: { authorization: localToken } }).then((r) => {
       const user = r.data;
       console.log(user);
       if (r.status === 200) {
@@ -98,7 +99,7 @@ export const facebookResponse = (response) => {
       mode: 'cors',
       cache: 'default',
     };
-    fetch('http://localhost:9090/auth/facebook', options).then((r) => {
+    fetch(`${ROOT_URL}auth/facebook`, options).then((r) => {
       const token = r.headers.get('x-auth-token');
       localStorage.setItem('jwtToken', token);
       r.json().then((user) => {
@@ -134,7 +135,7 @@ export function clearError() {
 
 export function fetchEvents() {
   return (dispatch) => {
-    axios.get(`${ROOT_URL}/events`)
+    axios.get(`${ROOT_URL}api/events`)
       .then((response) => {
         dispatch({
           type: ActionTypes.FETCH_EVENTS,
@@ -150,7 +151,7 @@ export function fetchEvents() {
 
 export function createEvent(newEvent, history) {
   return (dispatch) => {
-    axios.post(`${ROOT_URL}/events`, newEvent, { headers: { authorization: localStorage.getItem('jwtToken') } })
+    axios.post(`${ROOT_URL}api/events`, newEvent, { headers: { authorization: localStorage.getItem('jwtToken') } })
       .then((response) => {
         history.push('/events');
       })
@@ -163,7 +164,7 @@ export function createEvent(newEvent, history) {
 
 export function fetchEvent(id) {
   return (dispatch) => {
-    axios.get(`${ROOT_URL}/events/${id}`)
+    axios.get(`${ROOT_URL}api/events/${id}`)
       .then((response) => {
         dispatch({
           type: ActionTypes.FETCH_EVENT,
@@ -178,7 +179,7 @@ export function fetchEvent(id) {
 
 export function updateEvent(update) {
   return (dispatch) => {
-    axios.put(`${ROOT_URL}/events/${update.id}`, update)
+    axios.put(`${ROOT_URL}api/events/${update.id}`, update)
       .then((response) => {
         dispatch(fetchEvent(update.id));
       })
@@ -190,7 +191,7 @@ export function updateEvent(update) {
 
 export function deleteEvent(id, history) {
   return (dispatch) => {
-    axios.delete(`${ROOT_URL}/events/${id}`)
+    axios.delete(`${ROOT_URL}api/events/${id}`)
       .then((response) => {
         history.push('/');
       })
@@ -202,7 +203,7 @@ export function deleteEvent(id, history) {
 
 export function rateEvent(id, rating) {
   return (dispatch) => {
-    axios.post(`${ROOT_URL}/events/rate/${id}`, { rating })
+    axios.post(`${ROOT_URL}api/events/rate/${id}`, { rating })
       .then((response) => {
         dispatch(fetchEvent(id));
       })
