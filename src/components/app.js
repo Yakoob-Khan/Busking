@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 // eslint-disable-next-line import/no-duplicates
 // import { withRouter } from 'react-router-dom';
 import Events from './events';
-import NewEvent from './newEvent';
+import WrappedNewEvent from './newEvent';
 import Event from './event';
 import NavBar from './NavBar';
 import LogIn from './LogIn';
@@ -55,7 +55,7 @@ class App extends Component {
           <Switch>
             <Route exact path="/" component={Landing} />
             <Route exact path="/events" component={Events} />
-            <Route path="/createEvent" component={requireAuth(NewEvent)} />
+            <Route path="/createEvent" component={requireAuth(WrappedNewEvent)} />
             <Route path="/login" component={LogIn} />
             <Route path="/signup" component={SignUp} />
             <Route path="/mapView" component={WrappedMapView} />
