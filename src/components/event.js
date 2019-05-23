@@ -388,12 +388,6 @@ class Event extends Component {
     return (
       <div>
         {this.renderEvent()}
-        <Checkout
-          // `#demo${this.state.id}`
-          name={`Send a tip to ${this.props.event.eventCreator}!`}
-          description="You're tip goes a long way!"
-          amount={this.state.tip}
-        />
         <div id="map-wrapper">
           <WrappedEventMap />
         </div>
