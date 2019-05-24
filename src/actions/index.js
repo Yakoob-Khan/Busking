@@ -245,7 +245,7 @@ export function fetchUser(id) {
   };
 }
 
-export function followUser(followId, history) {
+export function followUser(followId) {
   return (dispatch) => {
     axios.get(`${ROOT_URL}/users/follow/${followId}`, { headers: { authorization: localStorage.getItem('jwtToken') } })
       .then((response) => {
@@ -253,7 +253,6 @@ export function followUser(followId, history) {
           type: ActionTypes.FOLLOW_USER,
           payload: response.data,
         });
-        history.push('/users/followId');
       })
       .catch((error) => {
         dispatch(appError(`Error retrieving user :( ${error.response.data}`));
@@ -261,7 +260,7 @@ export function followUser(followId, history) {
   };
 }
 
-export function unFollowUser(unfollowId, history) {
+export function unFollowUser(unfollowId) {
   return (dispatch) => {
     axios.get(`${ROOT_URL}/users/unfollow/${unfollowId}`, { headers: { authorization: localStorage.getItem('jwtToken') } })
       .then((response) => {
@@ -269,7 +268,6 @@ export function unFollowUser(unfollowId, history) {
           type: ActionTypes.UNFOLLOW_USER,
           payload: response.data,
         });
-        history.push('/users/unfollowId');
       })
       .catch((error) => {
         dispatch(appError(`Error retrieving user :( ${error.response.data}`));

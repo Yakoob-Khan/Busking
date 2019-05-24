@@ -160,23 +160,26 @@ class UserProfile extends Component {
   }
 
   handleFollow = () => {
-    this.props.followUser(this.props.user.id, this.props.history);
+    this.props.followUser(this.props.user.id);
   }
 
   handleUnFollow = () => {
-    this.props.unFollowUser(this.props.user.id, this.props.history);
+    this.props.unFollowUser(this.props.user.id);
   }
 
   renderFollowButton = () => {
     if (this.props.user.id !== this.props.loggedUser.id) {
+      console.log(this.props.user.followers);
       if (this.props.user.followers.filter(follower => (follower.id === this.props.loggedUser.id)).length > 0) {
         return (
           <button type="button" id="unfollow-button" onClick={this.handleUnFollow}>unfollow</button>
         );
-      } else {
+      } else if (this.props.user.followers.filter(follower => (follower.id === this.props.loggedUser.id)).length === 0) {
         return (
           <button type="button" id="follow-button" onClick={this.handleFollow}>follow</button>
         );
+      } else {
+        return null;
       }
     } else {
       return null;
