@@ -53,14 +53,15 @@ export const facebookResponseLocal = (localToken) => {
 };
 
 
-export const logoutUser = () => {
+export function logoutUser(history) {
   return (dispatch) => {
     localStorage.removeItem('jwtToken');
     dispatch({
       type: ActionTypes.DEAUTH_USER_SUCCESS,
     });
+    // history.push('/');
   };
-};
+}
 
 
 // export const facebookResponseLocal = (localToken) => {

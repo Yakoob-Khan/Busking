@@ -226,7 +226,7 @@ class UserProfile extends Component {
         )
         : (
           <div>
-          Please authenticate
+            Redirect back to home page here.
           </div>
         );
       return (
