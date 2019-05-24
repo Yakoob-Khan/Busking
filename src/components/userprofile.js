@@ -34,29 +34,29 @@ class UserProfile extends Component {
           backgroundImage: `url(${event.imageURL})`,
         };
         return (
-          <div className="event-container" key={event.id}>
+          <div className="hosted-event-container event-container" key={event.id}>
             <Link className="view-details" key={event.id} to={`/events/${event.id}`}>
               <div className="event" key={event.id} style={eventStyle} />
+              <p className="event-title">{event.title}</p>
+              <p className="event-description">{event.description}</p>
+              <p className="event-address">{event.address}</p>
+              {/* Ratings credit to: https://github.com/ekeric13/react-ratings-declarative */}
+              <div className="event-rating">
+                <Ratings
+                  rating={event.averageRating}
+                  widgetRatedColors="#0099CC"
+                  widgetEmptyColors="#6B6B6B"
+                  widgetSpacings="1px"
+                  widgetDimensions="12px"
+                >
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                </Ratings>
+              </div>
             </Link>
-            <p className="event-title">
-              {event.title}
-            </p>
-            {/* Ratings credit to: https://github.com/ekeric13/react-ratings-declarative */}
-            <div className="event-rating">
-              <Ratings
-                rating={event.averageRating}
-                widgetRatedColors="white"
-                widgetEmptyColors="#6B6B6B"
-                widgetSpacings="4px"
-                widgetDimensions="30px"
-              >
-                <Ratings.Widget />
-                <Ratings.Widget />
-                <Ratings.Widget />
-                <Ratings.Widget />
-                <Ratings.Widget />
-              </Ratings>
-            </div>
           </div>
         );
       });
@@ -77,20 +77,20 @@ class UserProfile extends Component {
         };
         return (
           <div className="event-container" key={event.id}>
-            <Link className="view-details" key={event.id} to={`/events/${event.id}`}>
-              <div className="event" key={event.id} style={eventStyle} />
+            <Link key={event.id} to={`/events/${event.id}`}>
+              <div key={event.id} style={eventStyle} />
             </Link>
-            <p className="event-title">
+            <p>
               {event.title}
             </p>
             {/* Ratings credit to: https://github.com/ekeric13/react-ratings-declarative */}
-            <div className="event-rating">
+            <div>
               <Ratings
                 rating={event.averageRating}
-                widgetRatedColors="white"
+                widgetRatedColors="#0099CC"
                 widgetEmptyColors="#6B6B6B"
-                widgetSpacings="4px"
-                widgetDimensions="30px"
+                widgetSpacings="2px"
+                widgetDimensions="18px"
               >
                 <Ratings.Widget />
                 <Ratings.Widget />
@@ -190,37 +190,48 @@ class UserProfile extends Component {
     if (!this.isObjectEmpty(this.props.user)) {
       const content = this.props.auth
         ? (
-          <div>
-            <img id="user-profile-picture" src={this.props.user.photo} alt={this.props.user.name} />
-            <p id="user-profile-name">{this.props.user.name}</p>
-            <p id="user-profile-email">{this.props.user.email}</p>
-            {this.renderFollowButton()}
-            <button onClick={this.props.logoutUser} className="button" type="submit">
-              Log out
-            </button>
-            <div id="user-profile-stats">
-              <div id="user-profile-stat-1">
-                <p id="user-profile-average-rating-label">Average Rating</p>
-                <p id="user-profile-average-rating">
-                  {this.props.user.averageRating ? this.props.user.averageRating.toFixed(2) : 'No Ratings'}
-                </p>
+          <div id="user-profile">
+            <div id="user-profile-background" />
+            <div id="user-profile-details-container">
+              <div id="user-profile-details">
+                <div id="user-profile-basic-details">
+                  <img id="user-profile-picture" src={this.props.user.photo} alt={this.props.user.name} />
+                  <p id="user-profile-name">{this.props.user.name}</p>
+                  <p id="user-profile-email">{this.props.user.email}</p>
+                  {this.renderFollowButton()}
+                  <button onClick={this.props.logoutUser} id="log-out-button" className="button" type="submit">
+                    Log out
+                  </button>
+                </div>
+                <div id="user-profile-stats">
+                  <div id="user-profile-stat-1" className="user-profile-stat">
+                    <p id="user-profile-average-rating-label" className="user-profile-stat-label">Average Rating</p>
+                    <p id="user-profile-average-rating" className="user-profile-stat-value">
+                      {this.props.user.averageRating ? this.props.user.averageRating.toFixed(2) : 'No Ratings'}
+                    </p>
+                  </div>
+                  <div id="user-profile-stat-2" className="user-profile-stat">
+                    <p id="user-profile-followers-label" className="user-profile-stat-label">Followers</p>
+                    <p id="user-profile-followers" className="user-profile-stat-value">{this.getNumOfFollowers()}</p>
+                  </div>
+                  <div id="user-profile-stat-3" className="user-profile-stat">
+                    <p id="user-profile-following-label" className="user-profile-stat-label">Following</p>
+                    <p id="user-profile-following" className="user-profile-stat-value">{this.getNumOfFollowing()}</p>
+                  </div>
+                  <div id="user-profile-stat-4" className="user-profile-stat">
+                    <p id="user-profile-events-attended-label" className="user-profile-stat-label">Events Attended</p>
+                    <p id="user-profile-events-attended" className="user-profile-stat-value">{this.getNumOfEventsAttended()}</p>
+                  </div>
+                </div>
               </div>
-              <div id="user-profile-stat-2">
-                <p id="user-profile-followers-label">Followers</p>
-                <p id="user-profile-followers">{this.getNumOfFollowers()}</p>
+              <div id="user-profile-events-hosted-section">
+                <div id="events-hosted-section-inner-div">
+                  <p id="user-profile-events-hosted-label">Events Hosted</p>
+                  <div id="hosted-events-grid">
+                    {this.renderEventsHosted()}
+                  </div>
+                </div>
               </div>
-              <div id="user-profile-stat-3">
-                <p id="user-profile-following-label">Following</p>
-                <p id="user-profile-following">{this.getNumOfFollowing()}</p>
-              </div>
-              <div id="user-profile-stat-4">
-                <p id="user-profile-events-attended-label">Events Attended</p>
-                <p id="user-profile-events-attended">{this.getNumOfEventsAttended()}</p>
-              </div>
-            </div>
-            <div id="user-profile-events-hosted-section">
-              <p id="user-profile-events-hosted-label">Events Hosted</p>
-              {this.renderEventsHosted()}
             </div>
           </div>
         )
