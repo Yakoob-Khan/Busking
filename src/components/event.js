@@ -40,8 +40,8 @@ class Event extends Component {
 
   componentDidMount() {
     this.props.fetchEvent(this.props.match.params.eventId);
+    this.props.fetchUser(this.props.event.host);
   }
-
 
   onEdit(event) {
     this.setState(prevState => ({
@@ -60,6 +60,11 @@ class Event extends Component {
         eventCreator: this.props.event.eventCreator,
       });
     }
+  }
+
+  isObjectEmpty = (object) => {
+    // empty object check adapted from https://stackoverflow.com/questions/679915/how-do-i-test-for-an-empty-javascript-object
+    return Object.entries(object).length === 0 && object.constructor === Object;
   }
 
   startEdit = () => {
@@ -396,15 +401,18 @@ class Event extends Component {
   }
 
   render() {
-    this.props.fetchUser(this.props.event.host);
-    return (
-      <div>
-        {this.renderEvent()}
-        <div id="map-wrapper">
-          <WrappedEventMap />
+    if (!this.isObjectEmpty(this.props.users.user) && !this.isObjectEmpty(this.props.event)) {
+      return (
+        <div>
+          {this.renderEvent()}
+          <div id="map-wrapper">
+            <WrappedEventMap />
+          </div>
         </div>
-      </div>
-    );
+      );
+    } else {
+      return <div>Loading...</div>;
+    }
   }
 }
 
