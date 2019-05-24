@@ -162,7 +162,7 @@ export function createEvent(newEvent, history) {
   };
 }
 
-export function fetchEvent(id) {
+export function fetchEvent(id, callback) {
   return (dispatch) => {
     axios.get(`${ROOT_URL}/events/${id}`)
       .then((response) => {
@@ -170,6 +170,7 @@ export function fetchEvent(id) {
           type: ActionTypes.FETCH_EVENT,
           payload: response.data,
         });
+        callback();
       })
       .catch((error) => {
         dispatch(appError(`Error retrieving event :( ${error.response.data}`));
