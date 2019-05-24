@@ -13,7 +13,6 @@ import WrappedNewEvent from './newEvent';
 import Event from './event';
 import NavBar from './NavBar';
 import LogIn from './LogIn';
-import SignUp from './SignUp';
 import Landing from './Landing';
 import WrappedMapView from './wrappedMapView';
 import { facebookResponseLocal } from '../actions';
@@ -57,7 +56,6 @@ class App extends Component {
             <Route exact path="/events" component={Events} />
             <Route path="/createEvent" component={requireAuth(WrappedNewEvent)} />
             <Route path="/login" component={LogIn} />
-            <Route path="/signup" component={SignUp} />
             <Route path="/mapView" component={WrappedMapView} />
             <Route exact path="/events/:eventId" component={Event} />
             <Route exact path="/users/:userId" component={UserProfile} />
