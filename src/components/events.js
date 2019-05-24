@@ -29,10 +29,6 @@ class Events extends Component {
     }));
   }
 
-  // calculateRating = () => {
-  //   console.log(this.props.event);
-  // }
-
 
   renderEvents = () => {
     if (this.props.events.length !== 0) {
@@ -89,13 +85,10 @@ class Events extends Component {
         <p className="events-header" id="events-nearby">Events nearby</p>
         <p className="events-subheader">See what&apos;s happening now</p>
         <div className="events-button-container">
-          {/* <NavLink to="/" onClick={this.onToggleMap} className="events-toggle">Map View</NavLink> */}
-          {/* <NavLink to="/" onClick={this.onToggleMap} className="events-toggle">List View</NavLink> */}
-          <button onClick={this.onToggleMap} className="events-toggle" type="button">Toggle View</button>
+          <button onClick={this.onToggleMap} className="events-toggle" type="button">{this.state.mapBool ? 'Toggle Grid' : 'Toggle Map' }</button>
         </div>
         <div className="events-container">
           {this.state.mapBool ? <WrappedMapView /> : this.renderEvents()}
-          {/* {this.renderEvents()} */}
         </div>
       </div>
     );
