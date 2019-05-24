@@ -88,7 +88,7 @@ class Events extends Component {
   render() {
     return (
       <div className="events-section">
-        <p className="events-header">Events nearby</p>
+        <p className="events-header" id="events-nearby">Events nearby</p>
         <p className="events-subheader">See what&apos;s happening now</p>
         <div className="events-button-container">
           {/* <NavLink to="/" onClick={this.onToggleMap} className="events-toggle">Map View</NavLink> */}
