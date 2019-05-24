@@ -10,7 +10,7 @@ const Landing = () => {
       <div id="landing">
         <h1 id="landing-title">Welcome to</h1>
         <h1 id="landing-title-app-name">Busking</h1>
-        <p id="landing-subtitle">See who&apos;s performing anywhere.</p>
+        <p id="landing-subtitle">See who&apos;s performing everywhere.</p>
       </div>
       <Events />
     </div>

@@ -364,21 +364,21 @@ class Event extends Component {
                         const style = suggestion.active
                           ? {
                             backgroundColor: 'rgba(158, 163, 190, 1)',
-                            borderRadius: '20px',
+                            borderRadius: '3px',
                             cursor: 'pointer',
                             color: 'white',
                             marginBottom: '2px',
-                            padding: '10px 20px',
-                            width: '45.5vw',
+                            padding: '10px',
+                            width: '47vw',
                           }
                           : {
                             backgroundColor: 'rgba(158, 163, 190, 0.6)',
-                            borderRadius: '20px',
+                            borderRadius: '3px',
                             cursor: 'pointer',
                             color: 'white',
                             marginBottom: '2px',
-                            padding: '10px 20px',
-                            width: '45.5vw',
+                            padding: '10px',
+                            width: '47vw',
                           };
                         return (
                           <div
