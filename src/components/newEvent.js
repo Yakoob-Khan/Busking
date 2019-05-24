@@ -63,6 +63,11 @@ class NewEvent extends Component {
       position: 'absolute',
       zIndex: '100',
     };
+    if (this.props.loggedUser) {
+      console.log('user logged in');
+    } else {
+      console.log('user not logged in');
+    }
     return (
       <div id="new-event-background">
         <div id="new-event-form">
@@ -166,9 +171,16 @@ class NewEvent extends Component {
   }
 }
 
+const mapStateToProps = state => (
+  {
+    user: state.users.user,
+    auth: state.auth.isAuthenticated,
+    loggedUser: state.auth.user,
+  }
+);
 // eslint-disable-next-line new-cap
 const WrappedNewEvent = GoogleApiWrapper({
   apiKey: 'AIzaSyAE7HAvGXDK-LG6BfkEM0mgafvwo_Nda1Y',
 })(NewEvent);
 
-export default withRouter(connect(null, { createEvent })(WrappedNewEvent));
+export default withRouter(connect(mapStateToProps, { createEvent })(WrappedNewEvent));
