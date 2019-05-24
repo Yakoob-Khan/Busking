@@ -40,6 +40,7 @@ class Event extends Component {
 
   componentDidMount() {
     this.props.fetchEvent(this.props.match.params.eventId, () => this.props.fetchUser(this.props.event.host));
+    window.scrollTo(0, 0);
   }
 
   onEdit(event) {
