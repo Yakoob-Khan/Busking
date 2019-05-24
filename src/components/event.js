@@ -163,7 +163,7 @@ class Event extends Component {
       backgroundRepeat: 'no-repeat',
       backgroundSize: 'cover',
     };
-    if ((!this.state.isEditing) && (this.props.user) && (this.props.user.name === this.props.event.eventCreator)) {
+    if ((!this.state.isEditing) && (this.props.user) && (this.props.user.id === this.props.event.host)) {
       return (
         <div id="event-page-background">
           <div id="event-page">
