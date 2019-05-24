@@ -79,13 +79,14 @@ class NewEvent extends Component {
               />
             </label>
             <label className="input-label" htmlFor="new-event-description">Event Description
-              <input
+              <textarea
                 type="text"
                 name="description"
                 id="new-event-description"
                 value={this.state.description}
                 placeholder="Check out my latest gig."
                 onChange={this.onFieldChange}
+                maxLength="250"
               />
             </label>
             <label className="input-label" htmlFor="new-event-image">Event Image

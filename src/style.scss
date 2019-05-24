@@ -376,9 +376,10 @@ nav {
 #update-event-location-label {
   margin-top: -10px;
 }
-input {
+input,
+textarea {
   border: none;
-  border-radius: 20px;
+  border-radius: 100px;
   background-color: rgba(158, 163, 190, 0.6);
   color: white;
   display: block;
