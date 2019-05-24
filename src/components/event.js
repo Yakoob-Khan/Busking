@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import Ratings from 'react-ratings-declarative';
 // import { Elements, StripeProvider } from 'react-stripe-elements';
 import PlacesAutocomplete, {
@@ -9,7 +9,7 @@ import PlacesAutocomplete, {
 } from 'react-places-autocomplete';
 import Checkout from './Checkout';
 import {
-  fetchEvent, updateEvent, deleteEvent, rateEvent,
+  fetchEvent, updateEvent, deleteEvent, rateEvent, fetchUser,
 } from '../actions';
 // import PaymentRequestForm from './PaymentRequestForm';
 import WrappedEventMap from './eventMap';
@@ -26,8 +26,9 @@ class Event extends Component {
       latitude: '',
       address: '',
       eventCreator: '',
-      rating: 0,
       tip: '',
+      startTime: '',
+      endTime: '',
     };
 
     this.onEdit = this.onEdit.bind(this);
@@ -39,9 +40,9 @@ class Event extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchEvent(this.props.match.params.eventId);
+    this.props.fetchEvent(this.props.match.params.eventId, () => this.props.fetchUser(this.props.event.host));
+    window.scrollTo(0, 0);
   }
-
 
   onEdit(event) {
     this.setState(prevState => ({
@@ -58,19 +59,15 @@ class Event extends Component {
         latitude: this.props.event.latitude,
         address: this.props.event.address,
         eventCreator: this.props.event.eventCreator,
+        startTime: this.props.event.startTime,
+        endTime: this.props.event.endTime,
       });
     }
   }
 
-  startEdit = () => {
-    this.setState({
-      isEditing: true,
-      title: this.props.event.title,
-      imageURL: this.props.event.imageURL,
-      longitude: this.props.event.longitude,
-      latitude: this.props.event.latitude,
-      eventCreator: this.props.event.eventCreator,
-    });
+  isObjectEmpty = (object) => {
+    // empty object check adapted from https://stackoverflow.com/questions/679915/how-do-i-test-for-an-empty-javascript-object
+    return Object.entries(object).length === 0 && object.constructor === Object;
   }
 
   deleteEvent = () => {
@@ -82,6 +79,19 @@ class Event extends Component {
   }
 
   startEdit = () => {
+    if (this.state.imageURL.length === 0) {
+      const defaultImages = [
+        'https://www.jetsetter.com/uploads/sites/7/2018/05/L-ddNDL7-1380x690.jpeg',
+        'https://purewows3.imgix.net/images/articles/2017_03/beautiful_city_paris.png?auto=format,compress&cs=strip',
+        'https://besthqwallpapers.com/img/original/48870/spanish-steps-fontana-della-barcaccia-piazza-di-spagna-rome-italy.jpg',
+        'https://handluggageonly.co.uk/wp-content/uploads/2017/03/Hong-Kong-At-Night.jpg',
+        'https://learnallnow.com/wp-content/uploads/2018/06/los-angeles-dest1215.jpg',
+      ];
+      const listLength = defaultImages.length;
+      const randomIndex = Math.floor(Math.random() * listLength);
+      const randomlySelectedDefaultImage = defaultImages[randomIndex];
+      this.state.imageURL = randomlySelectedDefaultImage;
+    }
     const update = {
       id: this.props.event._id,
       title: this.state.title,
@@ -91,6 +101,8 @@ class Event extends Component {
       latitude: this.state.latitude,
       address: this.state.address,
       eventCreator: this.state.eventCreator,
+      startTime: this.state.startTime,
+      endTime: this.state.endTime,
     };
     this.setState({
       isEditing: false,
@@ -113,27 +125,8 @@ class Event extends Component {
     this.setState({ [event.target.name]: event.target.value });
   }
 
-
-  // submitForm = () => {
-  //   const update = {
-  //     id: this.props.event._id,
-  //     title: this.state.title,
-  //     imageURL: this.state.imageURL,
-  //     longitude: this.state.longitude,
-  //     latitude: this.state.latitude,
-  //     eventCreator: this.state.eventCreator,
-  //   };
-  //   this.props.updateEvent(update);
-  //   this.setState({
-  //     isEditing: false,
-  //   });
-  // }
-
   changeRating = (newRating) => {
-    this.setState({
-      rating: newRating,
-    });
-    this.props.rateEvent(this.props.event._id, this.state.rating);
+    this.props.rateEvent(this.props.event._id, newRating, this.props.history);
   }
 
   handleChange = (address) => {
@@ -159,118 +152,148 @@ class Event extends Component {
       backgroundRepeat: 'no-repeat',
       backgroundSize: 'cover',
     };
-    if ((!this.state.isEditing) && (this.props.user) && (this.props.user.name === this.props.event.eventCreator)) {
+    if ((!this.state.isEditing) && (this.props.user) && (this.props.user.id === this.props.event.host)) {
       return (
-        <div className="event-page">
-          <div className="event-image-container" style={eventImage} />
-          <div id="event-location">
-            {/* <p>Longitude: {this.props.event.longitude}</p>
-            <p>Latitude: {this.props.event.latitude}</p> */}
-            <p>{this.props.event.address}</p>
-          </div>
-          <div id="event-details">
-            <div id="event-details-left">
-              <p id="event-title">{this.props.event.title}</p>
-              <p id="event-description">{this.props.event.description}</p>
-              <p id="event-creator">Event Creator: {this.props.event.eventCreator}</p>
-              <button id="update-event-button" className="event-button" type="button" onClick={this.onEdit}>
-                <img src="./../src/assets/pencil.svg" alt="update event" />
-                <p>update event</p>
-              </button>
-              <button id="delete-event-button" className="event-button" type="button" onClick={this.deleteEvent}>
-                <img src="./../src/assets/basket.svg" alt="delete event" />
-                <p>delete event</p>
-              </button>
-              {/* <input
-                type="text"
-                name="tip"
-                value={this.state.tip}
-                placeholder="Tip Amount"
-                onChange={this.onFieldChange}
-              />
-              <button type="button" onClick={this.payment}> Tip </button> */}
-              <Checkout
-                // `#demo${this.state.id}`
-                name={`Send a tip to ${this.props.event.eventCreator}!`}
-                description="Your tip goes a long way!"
-                amount={this.state.tip}
-              />
-            </div>
+        <div id="event-page-background">
+          <div id="event-page">
+            <div id="event-details-left" style={eventImage} />
             <div id="event-details-right">
-              <div id="event-creator-photo">
-                <img src={this.props.event.eventCreatorPhoto} alt="Event Creator" />
-              </div>
-              <div id="event-average-rating">
-                <Ratings
-                  rating={this.props.event.averageRating}
-                  widgetRatedColors="#0099CC"
-                  widgetHoverColors="rgb(0,153,204)"
-                  widgetEmptyColors="#6B6B6B"
-                  widgetSpacings="3px"
-                  widgetDimensions="32px"
-                  changeRating={this.changeRating}
-                >
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                </Ratings>
-                <p id="event-average-rating-label">
-                  Average Rating: {this.props.event.averageRating ? this.props.event.averageRating.toFixed(2) : ''}
-                </p>
+              <div id="event-details">
+                <div id="event-details-group-1">
+                  <p id="event-title">{this.props.event.title}</p>
+                  <p id="event-location">{this.props.event.address}</p>
+                  <p id="event-time">
+                    <span>{this.props.event.startTime}</span>
+                    <span> &#45; </span>
+                    <span>{this.props.event.endTime}</span>
+                  </p>
+                </div>
+                <div id="event-details-group-2">
+                  <Link id="event-creator-link" to={`/users/${this.props.users.user._id}`}>
+                    <div id="event-details-group-2-left">
+                      <img id="event-creator-photo" src={this.props.users.user.photo} alt="Event Creator" />
+                      <p id="event-creator">Event Creator</p>
+                      <p id="event-creator-name">{this.props.users.user.name}</p>
+                    </div>
+                  </Link>
+                  <div id="event-details-group-2-right">
+                    <p id="event-description">{this.props.event.description}</p>
+                    <div id="event-average-rating">
+                      <Ratings
+                        // rating={this.props.event.sumOfRating / this.props.event.numberOfRatings}
+                        rating={this.props.event.averageRating}
+                        widgetRatedColors="#0099CC"
+                        widgetHoverColors="rgb(0,153,204)"
+                        widgetEmptyColors="#6B6B6B"
+                        widgetSpacings="2px"
+                        widgetDimensions="18px"
+                        // changeRating={this.changeRating}
+                      >
+                        <Ratings.Widget />
+                        <Ratings.Widget />
+                        <Ratings.Widget />
+                        <Ratings.Widget />
+                        <Ratings.Widget />
+                      </Ratings>
+                      <p id="event-average-rating-label">
+                      Average Rating: {this.props.event.averageRating ? this.props.event.averageRating.toFixed(2) : ''}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div id="event-details-group-3">
+                  <button id="update-event-button" className="event-button" type="button" onClick={this.onEdit}>
+                    {/* <img src="./../src/assets/pencil.svg" alt="update event" /> */}
+                    <p>update event</p>
+                  </button>
+                  <button id="delete-event-button" className="event-button" type="button" onClick={this.deleteEvent}>
+                    {/* <img src="./../src/assets/basket.svg" alt="delete event" /> */}
+                    <p>delete event</p>
+                  </button>
+                  {/* <input
+                    type="text"
+                    name="tip"
+                    value={this.state.tip}
+                    placeholder="Tip Amount"
+                    onChange={this.onFieldChange}
+                    />
+                    <button type="button" onClick={this.payment}> Tip </button> */}
+                  <Checkout
+                    // `#demo${this.state.id}`
+                    name={`Send a tip to ${this.props.users.user.name}!`}
+                    description="Your tip goes a long way!"
+                    amount={this.state.tip}
+                  />
+                </div>
               </div>
             </div>
+          </div>
+          <div id="map-wrapper">
+            <WrappedEventMap />
           </div>
         </div>
       );
     } else if (!this.state.isEditing) {
       return (
-        <div className="event-page">
-          <div className="event-image-container" style={eventImage} />
-          <div id="event-location">
-            {/* <p>Longitude: {this.props.event.longitude}</p>
-            <p>Latitude: {this.props.event.latitude}</p> */}
-            <p>{this.props.event.address}</p>
-          </div>
-          <div id="event-details">
-            <div id="event-details-left">
-              <p id="event-title">{this.props.event.title}</p>
-              <p id="event-description">{this.props.event.description}</p>
-              <p id="event-creator">Event Creator: {this.props.event.eventCreator}</p>
-
-              <Checkout
-                // `#demo${this.state.id}`
-                name={`Send a tip to ${this.props.event.eventCreator}!`}
-                description="Your tip goes a long way!"
-                amount={this.state.tip}
-              />
-            </div>
+        <div id="event-page-background">
+          <div id="event-page">
+            <div id="event-details-left" style={eventImage} />
             <div id="event-details-right">
-              <div id="event-creator-photo">
-                <img src={this.props.event.eventCreatorPhoto} alt="Event Creator" />
-              </div>
-              <div id="event-average-rating">
-                <Ratings
-                  rating={this.props.event.averageRating}
-                  widgetRatedColors="#0099CC"
-                  widgetHoverColors="rgb(0,153,204)"
-                  widgetEmptyColors="#6B6B6B"
-                  widgetSpacings="3px"
-                  widgetDimensions="32px"
-                  changeRating={this.changeRating}
-                >
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                </Ratings>
-                <p id="event-average-rating-label">
-                  Average Rating: {this.props.event.averageRating ? this.props.event.averageRating.toFixed(2) : ''}
-                </p>
+              <div id="event-details">
+                <div id="event-details-group-1">
+                  <p id="event-title">{this.props.event.title}</p>
+                  <p id="event-location">{this.props.event.address}</p>
+                  <p id="event-time">
+                    <span>{this.props.event.startTime}</span>
+                    <span> &#45; </span>
+                    <span>{this.props.event.endTime}</span>
+                  </p>
+                </div>
+                <div id="event-details-group-2">
+                  <Link id="event-creator-link" to={`/users/${this.props.users.user._id}`}>
+                    <div id="event-details-group-2-left">
+                      <img id="event-creator-photo" src={this.props.users.user.photo} alt="Event Creator" />
+                      <p id="event-creator">Event Creator</p>
+                      <p id="event-creator-name">{this.props.users.user.name}</p>
+                    </div>
+                  </Link>
+                  <div id="event-details-group-2-right">
+                    <p id="event-description">{this.props.event.description}</p>
+                    <div id="event-average-rating">
+                      <Ratings
+                        rating={this.props.event.averageRating}
+                        widgetRatedColors="#0099CC"
+                        widgetHoverColors="rgb(0,153,204)"
+                        widgetEmptyColors="#6B6B6B"
+                        widgetSpacings="3px"
+                        widgetDimensions="32px"
+                        changeRating={this.changeRating}
+                      >
+                        <Ratings.Widget />
+                        <Ratings.Widget />
+                        <Ratings.Widget />
+                        <Ratings.Widget />
+                        <Ratings.Widget />
+                      </Ratings>
+                      <p id="event-average-rating-label">
+                      Average Rating: {this.props.event.averageRating ? this.props.event.averageRating.toFixed(2) : ''}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div id="event-details-group-3">
+                  <Checkout
+                  // `#demo${this.state.id}`
+                    name={`Send a tip to ${this.props.users.user.name}!`}
+                    description="Your tip goes a long way!"
+                    amount={this.state.tip}
+                  />
+                </div>
               </div>
             </div>
+          </div>
+          <div id="map-wrapper">
+            <WrappedEventMap />
           </div>
         </div>
       );
@@ -297,7 +320,7 @@ class Event extends Component {
                 />
               </label>
               <label className="input-label" htmlFor="update-event-description">Description
-                <input
+                <textarea
                   type="text"
                   name="description"
                   id="update-event-description"
@@ -305,6 +328,8 @@ class Event extends Component {
                   // defaultValue={this.state.description}
                   placeholder="Event Description"
                   onChange={this.onFieldChange}
+                  maxLength="250"
+                  rows="2"
                 />
               </label>
               <label className="input-label" htmlFor="update-event-image">Event Image
@@ -315,6 +340,26 @@ class Event extends Component {
                   value={this.state.imageURL}
                   // defaultValue={this.state.imageURL}
                   placeholder="Image url"
+                  onChange={this.onFieldChange}
+                />
+              </label>
+              <label className="input-label" htmlFor="new-event-startTime">Event Start Time
+                <input
+                  type="text"
+                  name="startTime"
+                  id="new-event-time"
+                  value={this.state.startTime}
+                  placeholder="Start Time"
+                  onChange={this.onFieldChange}
+                />
+              </label>
+              <label className="input-label" htmlFor="new-event-endTime">Event End Time
+                <input
+                  type="text"
+                  name="endTime"
+                  id="new-event-time"
+                  value={this.state.endTime}
+                  placeholder="End Time"
                   onChange={this.onFieldChange}
                 />
               </label>
@@ -343,21 +388,21 @@ class Event extends Component {
                         const style = suggestion.active
                           ? {
                             backgroundColor: 'rgba(158, 163, 190, 1)',
-                            borderRadius: '20px',
+                            borderRadius: '3px',
                             cursor: 'pointer',
                             color: 'white',
                             marginBottom: '2px',
-                            padding: '10px 20px',
-                            width: '45.5vw',
+                            padding: '10px',
+                            width: '47vw',
                           }
                           : {
                             backgroundColor: 'rgba(158, 163, 190, 0.6)',
-                            borderRadius: '20px',
+                            borderRadius: '3px',
                             cursor: 'pointer',
                             color: 'white',
                             marginBottom: '2px',
-                            padding: '10px 20px',
-                            width: '45.5vw',
+                            padding: '10px',
+                            width: '47vw',
                           };
                         return (
                           <div
@@ -385,14 +430,18 @@ class Event extends Component {
   }
 
   render() {
-    return (
-      <div>
-        {this.renderEvent()}
-        <div id="map-wrapper">
-          <WrappedEventMap />
+    if (!this.isObjectEmpty(this.props.users.user) && !this.isObjectEmpty(this.props.event)) {
+      return (
+        <div>
+          {this.renderEvent()}
+          {/* <div id="map-wrapper">
+            <WrappedEventMap />
+          </div> */}
         </div>
-      </div>
-    );
+      );
+    } else {
+      return <div>Loading...</div>;
+    }
   }
 }
 
@@ -400,9 +449,10 @@ const mapStateToProps = state => (
   {
     event: state.events.event,
     user: state.auth.user,
+    users: state.users,
   }
 );
 
 export default withRouter(connect(mapStateToProps, {
-  fetchEvent, updateEvent, deleteEvent, rateEvent,
+  fetchEvent, updateEvent, deleteEvent, rateEvent, fetchUser,
 })(Event));

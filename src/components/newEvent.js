@@ -5,6 +5,7 @@ import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
 } from 'react-places-autocomplete';
+import { GoogleApiWrapper } from 'google-maps-react';
 import { createEvent } from '../actions';
 
 class NewEvent extends Component {
@@ -15,9 +16,10 @@ class NewEvent extends Component {
       imageURL: '',
       longitude: '',
       latitude: '',
-      eventCreator: '',
       description: '',
       address: '',
+      startTime: '',
+      endTime: '',
     };
     this.onFieldChange = this.onFieldChange.bind(this);
   }
@@ -27,14 +29,28 @@ class NewEvent extends Component {
   }
 
   submitForm = () => {
+    if (this.state.imageURL.length === 0) {
+      const defaultImages = [
+        'https://www.jetsetter.com/uploads/sites/7/2018/05/L-ddNDL7-1380x690.jpeg',
+        'https://purewows3.imgix.net/images/articles/2017_03/beautiful_city_paris.png?auto=format,compress&cs=strip',
+        'https://besthqwallpapers.com/img/original/48870/spanish-steps-fontana-della-barcaccia-piazza-di-spagna-rome-italy.jpg',
+        'https://handluggageonly.co.uk/wp-content/uploads/2017/03/Hong-Kong-At-Night.jpg',
+        'https://learnallnow.com/wp-content/uploads/2018/06/los-angeles-dest1215.jpg',
+      ];
+      const listLength = defaultImages.length;
+      const randomIndex = Math.floor(Math.random() * listLength);
+      const randomlySelectedDefaultImage = defaultImages[randomIndex];
+      this.state.imageURL = randomlySelectedDefaultImage;
+    }
     const newEvent = {
       title: this.state.title,
       imageURL: this.state.imageURL,
       longitude: this.state.longitude,
       latitude: this.state.latitude,
-      eventCreator: this.state.eventCreator,
       description: this.state.description,
       address: this.state.address,
+      startTime: this.state.startTime,
+      endTime: this.state.endTime,
     };
     this.props.createEvent(newEvent, this.props.history);
   }
@@ -62,6 +78,11 @@ class NewEvent extends Component {
       position: 'absolute',
       zIndex: '100',
     };
+    if (this.props.loggedUser) {
+      console.log('user logged in');
+    } else {
+      console.log('user not logged in');
+    }
     return (
       <div id="new-event-background">
         <div id="new-event-form">
@@ -78,13 +99,14 @@ class NewEvent extends Component {
               />
             </label>
             <label className="input-label" htmlFor="new-event-description">Event Description
-              <input
+              <textarea
                 type="text"
                 name="description"
                 id="new-event-description"
                 value={this.state.description}
                 placeholder="Check out my latest gig."
                 onChange={this.onFieldChange}
+                maxLength="250"
               />
             </label>
             <label className="input-label" htmlFor="new-event-image">Event Image
@@ -94,6 +116,26 @@ class NewEvent extends Component {
                 id="new-event-image"
                 value={this.state.imageURL}
                 placeholder="image URL"
+                onChange={this.onFieldChange}
+              />
+            </label>
+            <label className="input-label" htmlFor="new-event-startTime">Event Start Time
+              <input
+                type="text"
+                name="startTime"
+                id="new-event-time"
+                value={this.state.startTime}
+                placeholder="Start Time"
+                onChange={this.onFieldChange}
+              />
+            </label>
+            <label className="input-label" htmlFor="new-event-endTime">Event End Time
+              <input
+                type="text"
+                name="endTime"
+                id="new-event-time"
+                value={this.state.endTime}
+                placeholder="End Time"
                 onChange={this.onFieldChange}
               />
             </label>
@@ -123,21 +165,21 @@ class NewEvent extends Component {
                       const style = suggestion.active
                         ? {
                           backgroundColor: 'rgba(158, 163, 190, 1)',
-                          borderRadius: '20px',
+                          borderRadius: '3px',
                           cursor: 'pointer',
                           color: 'white',
                           marginBottom: '2px',
-                          padding: '10px 20px',
-                          width: '45.5vw',
+                          padding: '10px',
+                          width: '47vw',
                         }
                         : {
                           backgroundColor: 'rgba(158, 163, 190, 0.6)',
-                          borderRadius: '20px',
+                          borderRadius: '3px',
                           cursor: 'pointer',
                           color: 'white',
                           marginBottom: '2px',
-                          padding: '10px 20px',
-                          width: '45.5vw',
+                          padding: '10px',
+                          width: '47vw',
                         };
                       return (
                         <div
@@ -164,4 +206,16 @@ class NewEvent extends Component {
   }
 }
 
-export default withRouter(connect(null, { createEvent })(NewEvent));
+const mapStateToProps = state => (
+  {
+    user: state.users.user,
+    auth: state.auth.isAuthenticated,
+    loggedUser: state.auth.user,
+  }
+);
+// eslint-disable-next-line new-cap
+const WrappedNewEvent = GoogleApiWrapper({
+  apiKey: 'AIzaSyAE7HAvGXDK-LG6BfkEM0mgafvwo_Nda1Y',
+})(NewEvent);
+
+export default withRouter(connect(mapStateToProps, { createEvent })(WrappedNewEvent));
