@@ -26,7 +26,7 @@ class UserProfile extends Component {
   }
 
   renderEventsHosted = () => {
-    // console.log(this.props.user);
+    console.log(this.props.user);
     if (this.props.user.eventsHosted.length !== 0) {
       return this.props.user.eventsHosted.map((event) => {
         const eventStyle = {
