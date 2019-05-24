@@ -26,7 +26,6 @@ class Event extends Component {
       latitude: '',
       address: '',
       eventCreator: '',
-      rating: 0,
       tip: '',
     };
 
@@ -119,10 +118,7 @@ class Event extends Component {
   }
 
   changeRating = (newRating) => {
-    this.setState({
-      rating: newRating,
-    });
-    this.props.rateEvent(this.props.event._id, this.state.rating);
+    this.props.rateEvent(this.props.event._id, newRating, this.props.history);
   }
 
   handleChange = (address) => {
@@ -148,6 +144,7 @@ class Event extends Component {
       backgroundRepeat: 'no-repeat',
       backgroundSize: 'cover',
     };
+    console.log(this.props.event);
     if ((!this.state.isEditing) && (this.props.user) && (this.props.user.id === this.props.event.host)) {
       return (
         <div id="event-page-background">
@@ -172,13 +169,14 @@ class Event extends Component {
                     <p id="event-description">{this.props.event.description}</p>
                     <div id="event-average-rating">
                       <Ratings
+                        // rating={this.props.event.sumOfRating / this.props.event.numberOfRatings}
                         rating={this.props.event.averageRating}
                         widgetRatedColors="#0099CC"
                         widgetHoverColors="rgb(0,153,204)"
                         widgetEmptyColors="#6B6B6B"
                         widgetSpacings="2px"
                         widgetDimensions="18px"
-                        changeRating={this.changeRating}
+                        // changeRating={this.changeRating}
                       >
                         <Ratings.Widget />
                         <Ratings.Widget />

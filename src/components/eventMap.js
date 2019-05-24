@@ -32,6 +32,7 @@ export class EventMap extends Component {
     }
   }
 
+
   onMarkerClick = (props, marker, e) => {
     this.setState({
       selectedEvent: props.event,
@@ -86,6 +87,7 @@ export class EventMap extends Component {
       }
     });
   }
+
 
   onModeChange = (event) => {
     this.setState({ currentMode: event.target.value });
