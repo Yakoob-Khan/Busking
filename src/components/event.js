@@ -26,8 +26,9 @@ class Event extends Component {
       latitude: '',
       address: '',
       eventCreator: '',
-      rating: 0,
       tip: '',
+      startTime: '',
+      endTime: '',
     };
 
     this.onEdit = this.onEdit.bind(this);
@@ -40,6 +41,7 @@ class Event extends Component {
 
   componentDidMount() {
     this.props.fetchEvent(this.props.match.params.eventId, () => this.props.fetchUser(this.props.event.host));
+    window.scrollTo(0, 0);
   }
 
   onEdit(event) {
@@ -57,6 +59,8 @@ class Event extends Component {
         latitude: this.props.event.latitude,
         address: this.props.event.address,
         eventCreator: this.props.event.eventCreator,
+        startTime: this.props.event.startTime,
+        endTime: this.props.event.endTime,
       });
     }
   }
@@ -64,17 +68,6 @@ class Event extends Component {
   isObjectEmpty = (object) => {
     // empty object check adapted from https://stackoverflow.com/questions/679915/how-do-i-test-for-an-empty-javascript-object
     return Object.entries(object).length === 0 && object.constructor === Object;
-  }
-
-  startEdit = () => {
-    this.setState({
-      isEditing: true,
-      title: this.props.event.title,
-      imageURL: this.props.event.imageURL,
-      longitude: this.props.event.longitude,
-      latitude: this.props.event.latitude,
-      eventCreator: this.props.event.eventCreator,
-    });
   }
 
   deleteEvent = () => {
@@ -86,6 +79,19 @@ class Event extends Component {
   }
 
   startEdit = () => {
+    if (this.state.imageURL.length === 0) {
+      const defaultImages = [
+        'https://www.jetsetter.com/uploads/sites/7/2018/05/L-ddNDL7-1380x690.jpeg',
+        'https://purewows3.imgix.net/images/articles/2017_03/beautiful_city_paris.png?auto=format,compress&cs=strip',
+        'https://besthqwallpapers.com/img/original/48870/spanish-steps-fontana-della-barcaccia-piazza-di-spagna-rome-italy.jpg',
+        'https://handluggageonly.co.uk/wp-content/uploads/2017/03/Hong-Kong-At-Night.jpg',
+        'https://learnallnow.com/wp-content/uploads/2018/06/los-angeles-dest1215.jpg',
+      ];
+      const listLength = defaultImages.length;
+      const randomIndex = Math.floor(Math.random() * listLength);
+      const randomlySelectedDefaultImage = defaultImages[randomIndex];
+      this.state.imageURL = randomlySelectedDefaultImage;
+    }
     const update = {
       id: this.props.event._id,
       title: this.state.title,
@@ -95,6 +101,8 @@ class Event extends Component {
       latitude: this.state.latitude,
       address: this.state.address,
       eventCreator: this.state.eventCreator,
+      startTime: this.state.startTime,
+      endTime: this.state.endTime,
     };
     this.setState({
       isEditing: false,
@@ -117,27 +125,8 @@ class Event extends Component {
     this.setState({ [event.target.name]: event.target.value });
   }
 
-
-  // submitForm = () => {
-  //   const update = {
-  //     id: this.props.event._id,
-  //     title: this.state.title,
-  //     imageURL: this.state.imageURL,
-  //     longitude: this.state.longitude,
-  //     latitude: this.state.latitude,
-  //     eventCreator: this.state.eventCreator,
-  //   };
-  //   this.props.updateEvent(update);
-  //   this.setState({
-  //     isEditing: false,
-  //   });
-  // }
-
   changeRating = (newRating) => {
-    this.setState({
-      rating: newRating,
-    });
-    this.props.rateEvent(this.props.event._id, this.state.rating);
+    this.props.rateEvent(this.props.event._id, newRating, this.props.history);
   }
 
   handleChange = (address) => {
@@ -173,10 +162,14 @@ class Event extends Component {
                 <div id="event-details-group-1">
                   <p id="event-title">{this.props.event.title}</p>
                   <p id="event-location">{this.props.event.address}</p>
-                  {/* <p id="event-time"></p> */}
+                  <p id="event-time">
+                    <span>{this.props.event.startTime}</span>
+                    <span> &#45; </span>
+                    <span>{this.props.event.endTime}</span>
+                  </p>
                 </div>
                 <div id="event-details-group-2">
-                  <Link to={`/users/${this.props.users.user._id}`}>
+                  <Link id="event-creator-link" to={`/users/${this.props.users.user._id}`}>
                     <div id="event-details-group-2-left">
                       <img id="event-creator-photo" src={this.props.users.user.photo} alt="Event Creator" />
                       <p id="event-creator">Event Creator</p>
@@ -187,13 +180,14 @@ class Event extends Component {
                     <p id="event-description">{this.props.event.description}</p>
                     <div id="event-average-rating">
                       <Ratings
+                        // rating={this.props.event.sumOfRating / this.props.event.numberOfRatings}
                         rating={this.props.event.averageRating}
                         widgetRatedColors="#0099CC"
                         widgetHoverColors="rgb(0,153,204)"
                         widgetEmptyColors="#6B6B6B"
                         widgetSpacings="2px"
                         widgetDimensions="18px"
-                        changeRating={this.changeRating}
+                        // changeRating={this.changeRating}
                       >
                         <Ratings.Widget />
                         <Ratings.Widget />
@@ -217,15 +211,15 @@ class Event extends Component {
                     <p>delete event</p>
                   </button>
                   {/* <input
-                type="text"
-                name="tip"
-                value={this.state.tip}
-                placeholder="Tip Amount"
-                onChange={this.onFieldChange}
-                />
-                <button type="button" onClick={this.payment}> Tip </button> */}
+                    type="text"
+                    name="tip"
+                    value={this.state.tip}
+                    placeholder="Tip Amount"
+                    onChange={this.onFieldChange}
+                    />
+                    <button type="button" onClick={this.payment}> Tip </button> */}
                   <Checkout
-                  // `#demo${this.state.id}`
+                    // `#demo${this.state.id}`
                     name={`Send a tip to ${this.props.users.user.name}!`}
                     description="Your tip goes a long way!"
                     amount={this.state.tip}
@@ -233,6 +227,9 @@ class Event extends Component {
                 </div>
               </div>
             </div>
+          </div>
+          <div id="map-wrapper">
+            <WrappedEventMap />
           </div>
         </div>
       );
@@ -246,10 +243,14 @@ class Event extends Component {
                 <div id="event-details-group-1">
                   <p id="event-title">{this.props.event.title}</p>
                   <p id="event-location">{this.props.event.address}</p>
-                  {/* <p id="event-time"></p> */}
+                  <p id="event-time">
+                    <span>{this.props.event.startTime}</span>
+                    <span> &#45; </span>
+                    <span>{this.props.event.endTime}</span>
+                  </p>
                 </div>
                 <div id="event-details-group-2">
-                  <Link to={`/users/${this.props.users.user._id}`}>
+                  <Link id="event-creator-link" to={`/users/${this.props.users.user._id}`}>
                     <div id="event-details-group-2-left">
                       <img id="event-creator-photo" src={this.props.users.user.photo} alt="Event Creator" />
                       <p id="event-creator">Event Creator</p>
@@ -290,6 +291,9 @@ class Event extends Component {
                 </div>
               </div>
             </div>
+          </div>
+          <div id="map-wrapper">
+            <WrappedEventMap />
           </div>
         </div>
       );
@@ -336,6 +340,26 @@ class Event extends Component {
                   value={this.state.imageURL}
                   // defaultValue={this.state.imageURL}
                   placeholder="Image url"
+                  onChange={this.onFieldChange}
+                />
+              </label>
+              <label className="input-label" htmlFor="new-event-startTime">Event Start Time
+                <input
+                  type="text"
+                  name="startTime"
+                  id="new-event-time"
+                  value={this.state.startTime}
+                  placeholder="Start Time"
+                  onChange={this.onFieldChange}
+                />
+              </label>
+              <label className="input-label" htmlFor="new-event-endTime">Event End Time
+                <input
+                  type="text"
+                  name="endTime"
+                  id="new-event-time"
+                  value={this.state.endTime}
+                  placeholder="End Time"
                   onChange={this.onFieldChange}
                 />
               </label>
@@ -410,11 +434,9 @@ class Event extends Component {
       return (
         <div>
           {this.renderEvent()}
-          {console.log(this.props.event)}
-
-          <div id="map-wrapper">
+          {/* <div id="map-wrapper">
             <WrappedEventMap />
-          </div>
+          </div> */}
         </div>
       );
     } else {

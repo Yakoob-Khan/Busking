@@ -12,6 +12,8 @@ export const ActionTypes = {
   CLEAR_ERROR: 'CLEAR_ERROR',
   GET_USER_LOCATION: 'GET_USER_LOCATION',
   FETCH_USER: 'FETCH_USER',
+  FOLLOW_USER: 'FOLLOW_USER',
+  UNFOLLOW_USER: 'UNFOLLOW_USER',
 };
 
 const ROOT_URL = 'http://localhost:9090/api';
@@ -62,14 +64,15 @@ export const facebookResponseLocal = (localToken) => {
 };
 
 
-export const logoutUser = () => {
+export function logoutUser(history) {
   return (dispatch) => {
     localStorage.removeItem('jwtToken');
     dispatch({
       type: ActionTypes.DEAUTH_USER_SUCCESS,
     });
+    // history.push('/');
   };
-};
+}
 
 
 // export const facebookResponseLocal = (localToken) => {
@@ -167,7 +170,7 @@ export function createEvent(newEvent, history) {
         history.push('/events');
       })
       .catch((error) => {
-        dispatch(appError(`Error creating post :( ${error.response.data}`));
+        dispatch(appError(`Error creating post :( ${error}`));
         console.log(error);
       });
   };
@@ -184,7 +187,7 @@ export function fetchEvent(id, callback) {
         callback();
       })
       .catch((error) => {
-        dispatch(appError(`Error retrieving event :( ${error.response.data}`));
+        dispatch(appError(`Error retrieving event :( ${error}`));
       });
   };
 }
@@ -196,7 +199,7 @@ export function updateEvent(update) {
         dispatch(fetchEvent(update.id));
       })
       .catch((error) => {
-        dispatch(appError(`Error updating post :( ${error.response.data}`));
+        dispatch(appError(`Error updating post :( ${error}`));
       });
   };
 }
@@ -208,19 +211,20 @@ export function deleteEvent(id, history) {
         history.push('/');
       })
       .catch((error) => {
-        dispatch(appError(`Error deleting post :( ${error.response.data}`));
+        dispatch(appError(`Error deleting post :( ${error}`));
       });
   };
 }
 
-export function rateEvent(id, rating) {
+export function rateEvent(id, rating, history) {
   return (dispatch) => {
     axios.post(`${ROOT_URL}/events/rate/${id}`, { rating })
       .then((response) => {
         dispatch(fetchEvent(id));
+        history.push(`/events/${id}`);
       })
       .catch((error) => {
-        dispatch(appError(`Error rating post :( ${error.response.data}`));
+        dispatch(appError(`Error rating post :( ${error}`));
       });
   };
 }
@@ -232,7 +236,7 @@ export function updateCurrentUser(updatedUser) {
         dispatch({ type: ActionTypes.UPDATE_CURRENT_USER, payload: response.data });
       })
       .catch((error) => {
-        dispatch(appError(`Update user failed: ${error.response.data}`));
+        dispatch(appError(`Update user failed: ${error}`));
       });
   };
 }
@@ -245,6 +249,38 @@ export function fetchUser(id) {
           type: ActionTypes.FETCH_USER,
           payload: response.data,
         });
+      })
+      .catch((error) => {
+        dispatch(appError(`Error retrieving user :( ${error}`));
+      });
+  };
+}
+
+export function followUser(followId, history) {
+  return (dispatch) => {
+    axios.get(`${ROOT_URL}/users/follow/${followId}`, { headers: { authorization: localStorage.getItem('jwtToken') } })
+      .then((response) => {
+        dispatch({
+          type: ActionTypes.FOLLOW_USER,
+          payload: response.data,
+        });
+        history.push('/users/followId');
+      })
+      .catch((error) => {
+        dispatch(appError(`Error retrieving user :( ${error.response.data}`));
+      });
+  };
+}
+
+export function unFollowUser(unfollowId, history) {
+  return (dispatch) => {
+    axios.get(`${ROOT_URL}/users/unfollow/${unfollowId}`, { headers: { authorization: localStorage.getItem('jwtToken') } })
+      .then((response) => {
+        dispatch({
+          type: ActionTypes.UNFOLLOW_USER,
+          payload: response.data,
+        });
+        history.push('/users/unfollowId');
       })
       .catch((error) => {
         dispatch(appError(`Error retrieving user :( ${error.response.data}`));

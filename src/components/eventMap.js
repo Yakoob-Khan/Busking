@@ -27,9 +27,11 @@ export class EventMap extends Component {
     this.props.getCurrentLocation();
     const map1stWrapper = document.getElementById('map-wrapper').firstChild;
     if (map1stWrapper) {
-      map1stWrapper.style.height = '100%';
+      map1stWrapper.style.width = '80%';
+      map1stWrapper.style.margin = '0 auto';
     }
   }
+
 
   onMarkerClick = (props, marker, e) => {
     this.setState({
@@ -75,12 +77,10 @@ export class EventMap extends Component {
       destination: end,
       travelMode: this.state.currentMode,
     };
-
     if (window.map) {
       this.directionsDisplay.setMap(window.map.map);
       this.directionsDisplay.setPanel(document.getElementById('directionsPanel'));
     }
-
     this.directionsService.route(request, (result, status) => {
       if (status === 'OK') {
         this.directionsDisplay.setDirections(result);
@@ -88,23 +88,39 @@ export class EventMap extends Component {
     });
   }
 
+
   onModeChange = (event) => {
     this.setState({ currentMode: event.target.value });
+  }
+
+  iconUrl = () => {
+    if (this.props.user) {
+      return `${this.props.user.photo}`;
+    } else {
+      return 'https://www.shareicon.net/data/2015/08/14/85301_public_512x512.png';
+    }
   }
 
   render() {
     const event = this.props.event;
     const userLoc = this.props.currentUserLocation;
-    const style = { width: '70%', height: '80%' };
+    const mapStyle = {
+      width: '90%',
+      height: '350px',
+      paddingRight: '22.15vw',
+      borderTop: '1px dotted gray',
+      borderBottom: '1px dotted gray',
+      zIndex: '2',
+    };
     if (!this.isObjectEmpty(event) && !this.isObjectEmpty(userLoc)) {
       this.calcRoute();
       return (
-        <div id="map-3rd-wrapper">
+        <div id="map-outermost-wrapper">
           <div>
-            <h3>Get Directions!</h3>
+            <h3 id="map-header">Directions to Event</h3>
             <div id="floating-panel">
-              <b>Mode of Travel: </b>
-              <select id="mode" onChange={this.onModeChange}>
+              <p id="map-mode-select-label">Travel By</p>
+              <select id="map-mode-select" onChange={this.onModeChange}>
                 <option value="DRIVING">Driving</option>
                 <option value="WALKING">Walking</option>
                 <option value="BICYCLING">Bicycling</option>
@@ -118,16 +134,14 @@ export class EventMap extends Component {
               ref={(map) => { window.map = map; }}
               google={this.props.google}
               center={this.props.currentUserLocation}
-              style={style}
+              style={mapStyle}
             >
-
               {this.renderEvent()}
-
               <Marker
                 title="Your current location"
                 position={this.props.currentUserLocation}
                 icon={{
-                  url: `${this.props.user.photo}`,
+                  url: String(this.iconUrl()),
                   anchor: new window.google.maps.Point(32, 32),
                   scaledSize: new window.google.maps.Size(60, 60),
                 }}

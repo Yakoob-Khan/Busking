@@ -3,7 +3,11 @@ import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import Ratings from 'react-ratings-declarative';
 import {
+<<<<<<< HEAD
   updateCurrentUser, logoutUser, fetchUser, testAPIComment,
+=======
+  updateCurrentUser, logoutUser, fetchUser, followUser, unFollowUser,
+>>>>>>> master
 } from '../actions';
 
 
@@ -34,29 +38,29 @@ class UserProfile extends Component {
           backgroundImage: `url(${event.imageURL})`,
         };
         return (
-          <div className="event-container" key={event.id}>
+          <div className="hosted-event-container event-container" key={event.id}>
             <Link className="view-details" key={event.id} to={`/events/${event.id}`}>
               <div className="event" key={event.id} style={eventStyle} />
+              <p className="event-title">{event.title}</p>
+              <p className="event-description">{event.description}</p>
+              <p className="event-address">{event.address}</p>
+              {/* Ratings credit to: https://github.com/ekeric13/react-ratings-declarative */}
+              <div className="event-rating">
+                <Ratings
+                  rating={event.averageRating}
+                  widgetRatedColors="#0099CC"
+                  widgetEmptyColors="#6B6B6B"
+                  widgetSpacings="1px"
+                  widgetDimensions="12px"
+                >
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                </Ratings>
+              </div>
             </Link>
-            <p className="event-title">
-              {event.title}
-            </p>
-            {/* Ratings credit to: https://github.com/ekeric13/react-ratings-declarative */}
-            <div className="event-rating">
-              <Ratings
-                rating={event.averageRating}
-                widgetRatedColors="white"
-                widgetEmptyColors="#6B6B6B"
-                widgetSpacings="4px"
-                widgetDimensions="30px"
-              >
-                <Ratings.Widget />
-                <Ratings.Widget />
-                <Ratings.Widget />
-                <Ratings.Widget />
-                <Ratings.Widget />
-              </Ratings>
-            </div>
           </div>
         );
       });
@@ -77,20 +81,20 @@ class UserProfile extends Component {
         };
         return (
           <div className="event-container" key={event.id}>
-            <Link className="view-details" key={event.id} to={`/events/${event.id}`}>
-              <div className="event" key={event.id} style={eventStyle} />
+            <Link key={event.id} to={`/events/${event.id}`}>
+              <div key={event.id} style={eventStyle} />
             </Link>
-            <p className="event-title">
+            <p>
               {event.title}
             </p>
             {/* Ratings credit to: https://github.com/ekeric13/react-ratings-declarative */}
-            <div className="event-rating">
+            <div>
               <Ratings
                 rating={event.averageRating}
-                widgetRatedColors="white"
+                widgetRatedColors="#0099CC"
                 widgetEmptyColors="#6B6B6B"
-                widgetSpacings="4px"
-                widgetDimensions="30px"
+                widgetSpacings="2px"
+                widgetDimensions="18px"
               >
                 <Ratings.Widget />
                 <Ratings.Widget />
@@ -111,6 +115,10 @@ class UserProfile extends Component {
     }
   }
 
+  getNumOfEventsAttended = () => {
+    return this.props.user.eventsAttended.length;
+  }
+
   renderFollowers = () => {
     if (this.props.user.followers.length !== 0) {
       return this.props.user.followers.map((user) => {
@@ -127,6 +135,10 @@ class UserProfile extends Component {
         </div>
       );
     }
+  }
+
+  getNumOfFollowers = () => {
+    return this.props.user.followers.length;
   }
 
   renderFollowing = () => {
@@ -147,66 +159,99 @@ class UserProfile extends Component {
     }
   }
 
+  getNumOfFollowing = () => {
+    return this.props.user.following.length;
+  }
+
+  handleFollow = () => {
+    this.props.followUser(this.props.user.id, this.props.history);
+  }
+
+  handleUnFollow = () => {
+    this.props.unFollowUser(this.props.user.id, this.props.history);
+  }
+
+  renderFollowButton = () => {
+    if (this.props.user.id !== this.props.loggedUser.id) {
+      if (this.props.user.followers.filter(follower => (follower.id === this.props.loggedUser.id)).length > 0) {
+        return (
+          <button type="button" id="unfollow-button" onClick={this.handleUnFollow}>unfollow</button>
+        );
+      } else {
+        return (
+          <button type="button" id="follow-button" onClick={this.handleFollow}>follow</button>
+        );
+      }
+    } else {
+      return null;
+    }
+  }
+
+  renderLogoutButton = () => {
+    if (this.props.user.id === this.props.loggedUser.id) {
+      return (
+        <button onClick={this.props.logoutUser} id="log-out-button" className="button" type="submit">
+        Log out
+        </button>
+      );
+    } else {
+      return null;
+    }
+  }
+
   render() {
+    if (this.props.match.params.userId !== this.props.user.id) {
+      this.props.fetchUser(this.props.match.params.userId);
+    }
     if (!this.isObjectEmpty(this.props.user)) {
       const content = this.props.auth
         ? (
-          <div>
-            <button onClick={this.props.logoutUser} className="button" type="submit">
-                    Log out
-            </button>
-            <button onClick={() => this.props.testAPIComment('5ce77dc9dc9c067f08bbee2e', 'hello')} className="button" type="submit">
-                    test api comment
-            </button>
-            <div className="user-pic">
-              <img src={this.props.user.photo} alt="Profile Pic" />
-            </div>
-            <div className="user-name">
-              <p>{this.props.user.name}</p>
-            </div>
-            <div className="user-email">
-              <p>{this.props.user.email}</p>
-            </div>
-            <div id="event-average-rating">
-              <Ratings
-                rating={this.props.user.averageRating}
-                widgetRatedColors="#0099CC"
-                widgetHoverColors="rgb(0,153,204)"
-                widgetEmptyColors="#6B6B6B"
-                widgetSpacings="3px"
-                widgetDimensions="32px"
-              >
-                <Ratings.Widget />
-                <Ratings.Widget />
-                <Ratings.Widget />
-                <Ratings.Widget />
-                <Ratings.Widget />
-              </Ratings>
-              <p id="event-average-rating-label">
-              Average Rating: {this.props.user.averageRating ? this.props.user.averageRating.toFixed(2) : ''}
-              </p>
-            </div>
-            <div className="events-hosted">
-              <p>Events Hosted:</p>
-              {this.renderEventsHosted()}
-            </div>
-            <div className="events-attended">
-              <p>Events Attended:</p>
-              {this.renderEventsAttended()}
-            </div>
-            <div className="followers">
-              <p>Followers:</p>
-              {this.renderFollowers()}
-            </div>
-            <div className="following">
-              <p>Following:</p>
-              {this.renderFollowing()}
+          <div id="user-profile">
+            <div id="user-profile-background" />
+            <div id="user-profile-details-container">
+              <div id="user-profile-details">
+                <div id="user-profile-basic-details">
+                  <img id="user-profile-picture" src={this.props.user.photo} alt={this.props.user.name} />
+                  <p id="user-profile-name">{this.props.user.name}</p>
+                  <p id="user-profile-email">{this.props.user.email}</p>
+                  {this.renderFollowButton()}
+                  {this.renderLogoutButton()}
+                </div>
+                <div id="user-profile-stats">
+                  <div id="user-profile-stat-1" className="user-profile-stat">
+                    <p id="user-profile-average-rating-label" className="user-profile-stat-label">Average Rating</p>
+                    <p id="user-profile-average-rating" className="user-profile-stat-value">
+                      {this.props.user.averageRating ? this.props.user.averageRating.toFixed(2) : 'No Ratings'}
+                    </p>
+                  </div>
+                  <div id="user-profile-stat-2" className="user-profile-stat">
+                    <p id="user-profile-followers-label" className="user-profile-stat-label">Followers</p>
+                    <p id="user-profile-followers" className="user-profile-stat-value">{this.getNumOfFollowers()}</p>
+                  </div>
+                  <div id="user-profile-stat-3" className="user-profile-stat">
+                    <p id="user-profile-following-label" className="user-profile-stat-label">Following</p>
+                    <p id="user-profile-following" className="user-profile-stat-value">{this.getNumOfFollowing()}</p>
+                  </div>
+                  <div id="user-profile-stat-4" className="user-profile-stat">
+                    <p id="user-profile-events-attended-label" className="user-profile-stat-label">Events Attended</p>
+                    <p id="user-profile-events-attended" className="user-profile-stat-value">{this.getNumOfEventsAttended()}</p>
+                  </div>
+                </div>
+              </div>
+              <div id="user-profile-events-hosted-section">
+                <div id="events-hosted-section-inner-div">
+                  <p id="user-profile-events-hosted-label">Events Hosted</p>
+                  <div id="hosted-events-grid">
+                    {this.renderEventsHosted()}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         )
         : (
           <div>
-          Please authenticate
+            Redirect back to home page here.
           </div>
         );
       return (
@@ -222,9 +267,14 @@ const mapStateToProps = state => (
   {
     user: state.users.user,
     auth: state.auth.isAuthenticated,
+    loggedUser: state.auth.user,
   }
 );
 
 export default withRouter(connect(mapStateToProps, {
+<<<<<<< HEAD
   updateCurrentUser, logoutUser, fetchUser, testAPIComment,
+=======
+  updateCurrentUser, logoutUser, fetchUser, followUser, unFollowUser,
+>>>>>>> master
 })(UserProfile));
