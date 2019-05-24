@@ -18,6 +18,8 @@ class NewEvent extends Component {
       latitude: '',
       description: '',
       address: '',
+      startTime: '',
+      endTime: '',
     };
     this.onFieldChange = this.onFieldChange.bind(this);
   }
@@ -47,6 +49,8 @@ class NewEvent extends Component {
       latitude: this.state.latitude,
       description: this.state.description,
       address: this.state.address,
+      startTime: this.state.startTime,
+      endTime: this.state.endTime,
     };
     this.props.createEvent(newEvent, this.props.history);
   }
@@ -112,6 +116,26 @@ class NewEvent extends Component {
                 id="new-event-image"
                 value={this.state.imageURL}
                 placeholder="image URL"
+                onChange={this.onFieldChange}
+              />
+            </label>
+            <label className="input-label" htmlFor="new-event-startTime">Event Start Time
+              <input
+                type="text"
+                name="startTime"
+                id="new-event-time"
+                value={this.state.startTime}
+                placeholder="Start Time"
+                onChange={this.onFieldChange}
+              />
+            </label>
+            <label className="input-label" htmlFor="new-event-endTime">Event End Time
+              <input
+                type="text"
+                name="endTime"
+                id="new-event-time"
+                value={this.state.endTime}
+                placeholder="End Time"
                 onChange={this.onFieldChange}
               />
             </label>
