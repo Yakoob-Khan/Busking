@@ -18,7 +18,7 @@ import Landing from './Landing';
 import WrappedMapView from './wrappedMapView';
 import { facebookResponseLocal } from '../actions';
 import requireAuth from './requireAuth';
-import UserProfile from './userProfile';
+import UserProfile from './userprofile';
 // import UserProfile from './userprofile';
 
 const FallBack = (props) => {
