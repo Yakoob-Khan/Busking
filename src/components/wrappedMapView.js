@@ -93,7 +93,7 @@ export class MapView extends Component {
             }}
           />
           <InfoWindow className="info-window" marker={this.state.activeMarker} visible={this.state.showingInfoWindow} onClose={this.onClose}>
-            <div>
+            <div className="info-container">
               <div key={this.state.selectedEvent.id}>
                 <p className="event-title-info">
                   {this.state.selectedEvent.title}
@@ -101,8 +101,10 @@ export class MapView extends Component {
                 {/* Ratings credit to: https://github.com/ekeric13/react-ratings-declarative */}
                 <Ratings
                   rating={this.state.selectedEvent.averageRating}
-                  widgetRatedColors="rgb(255, 250, 0)"
-                  widgetDimensions="35px"
+                  widgetRatedColors="#0099CC"
+                  widgetEmptyColors="#6B6B6B"
+                  widgetSpacings="2px"
+                  widgetDimensions="20px"
                 >
                   <Ratings.Widget />
                   <Ratings.Widget />
@@ -112,8 +114,8 @@ export class MapView extends Component {
                 </Ratings>
               </div>
               <Router>
-                <NavLink to={`events/${this.state.selectedEvent.id}`} key={this.state.selectedEvent.id} className="more">
-                MORE
+                <NavLink to={`events/${this.state.selectedEvent.id}`} key={this.state.selectedEvent.id} className="info-window-view-detail">
+                  view event page
                 </NavLink>
               </Router>
             </div>
