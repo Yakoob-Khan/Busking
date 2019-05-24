@@ -171,13 +171,25 @@ class UserProfile extends Component {
     if (this.props.user.id !== this.props.loggedUser.id) {
       if (this.props.user.followers.filter(follower => (follower.id === this.props.loggedUser.id)).length > 0) {
         return (
-          <button type="button" onClick={this.handleUnFollow}>unfollow</button>
+          <button type="button" id="unfollow-button" onClick={this.handleUnFollow}>unfollow</button>
         );
       } else {
         return (
-          <button type="button" onClick={this.handleFollow}>follow</button>
+          <button type="button" id="follow-button" onClick={this.handleFollow}>follow</button>
         );
       }
+    } else {
+      return null;
+    }
+  }
+
+  renderLogoutButton = () => {
+    if (this.props.user.id === this.props.loggedUser.id) {
+      return (
+        <button onClick={this.props.logoutUser} id="log-out-button" className="button" type="submit">
+        Log out
+        </button>
+      );
     } else {
       return null;
     }
@@ -199,9 +211,7 @@ class UserProfile extends Component {
                   <p id="user-profile-name">{this.props.user.name}</p>
                   <p id="user-profile-email">{this.props.user.email}</p>
                   {this.renderFollowButton()}
-                  <button onClick={this.props.logoutUser} id="log-out-button" className="button" type="submit">
-                    Log out
-                  </button>
+                  {this.renderLogoutButton()}
                 </div>
                 <div id="user-profile-stats">
                   <div id="user-profile-stat-1" className="user-profile-stat">
