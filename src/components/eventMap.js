@@ -93,6 +93,14 @@ export class EventMap extends Component {
     this.setState({ currentMode: event.target.value });
   }
 
+  iconUrl = () => {
+    if (this.props.user) {
+      return `${this.props.user.photo}`;
+    } else {
+      return 'https://www.shareicon.net/data/2015/08/14/85301_public_512x512.png';
+    }
+  }
+
   render() {
     const event = this.props.event;
     const userLoc = this.props.currentUserLocation;
@@ -133,7 +141,7 @@ export class EventMap extends Component {
                 title="Your current location"
                 position={this.props.currentUserLocation}
                 icon={{
-                  url: `${this.props.user.photo}`,
+                  url: String(this.iconUrl()),
                   anchor: new window.google.maps.Point(32, 32),
                   scaledSize: new window.google.maps.Size(60, 60),
                 }}
