@@ -26,7 +26,6 @@ class UserProfile extends Component {
   }
 
   renderEventsHosted = () => {
-    console.log(this.props.user);
     if (this.props.user.eventsHosted.length !== 0) {
       return this.props.user.eventsHosted.map((event) => {
         const eventStyle = {
@@ -34,7 +33,7 @@ class UserProfile extends Component {
         };
         return (
           <div className="event-container" key={event.id}>
-            <Link className="view-details" key={event.id} to={`events/${event.id}`}>
+            <Link className="view-details" key={event.id} to={`/events/${event.id}`}>
               <div className="event" key={event.id} style={eventStyle} />
             </Link>
             <p className="event-title">
@@ -76,7 +75,7 @@ class UserProfile extends Component {
         };
         return (
           <div className="event-container" key={event.id}>
-            <Link className="view-details" key={event.id} to={`events/${event.id}`}>
+            <Link className="view-details" key={event.id} to={`/events/${event.id}`}>
               <div className="event" key={event.id} style={eventStyle} />
             </Link>
             <p className="event-title">
