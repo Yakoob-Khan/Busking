@@ -27,6 +27,8 @@ class Event extends Component {
       address: '',
       eventCreator: '',
       tip: '',
+      startTime: '',
+      endTime: '',
     };
 
     this.onEdit = this.onEdit.bind(this);
@@ -57,6 +59,8 @@ class Event extends Component {
         latitude: this.props.event.latitude,
         address: this.props.event.address,
         eventCreator: this.props.event.eventCreator,
+        startTime: this.props.event.startTime,
+        endTime: this.props.event.endTime,
       });
     }
   }
@@ -97,6 +101,8 @@ class Event extends Component {
       latitude: this.state.latitude,
       address: this.state.address,
       eventCreator: this.state.eventCreator,
+      startTime: this.state.startTime,
+      endTime: this.state.endTime,
     };
     this.setState({
       isEditing: false,
@@ -156,7 +162,11 @@ class Event extends Component {
                 <div id="event-details-group-1">
                   <p id="event-title">{this.props.event.title}</p>
                   <p id="event-location">{this.props.event.address}</p>
-                  {/* <p id="event-time"></p> */}
+                  <p id="event-time">
+                    <span>{this.props.event.startTime}</span>
+                    <span> &#45; </span>
+                    <span>{this.props.event.endTime}</span>
+                  </p>
                 </div>
                 <div id="event-details-group-2">
                   <Link id="event-creator-link" to={`/users/${this.props.users.user._id}`}>
@@ -233,7 +243,11 @@ class Event extends Component {
                 <div id="event-details-group-1">
                   <p id="event-title">{this.props.event.title}</p>
                   <p id="event-location">{this.props.event.address}</p>
-                  {/* <p id="event-time"></p> */}
+                  <p id="event-time">
+                    <span>{this.props.event.startTime}</span>
+                    <span> &#45; </span>
+                    <span>{this.props.event.endTime}</span>
+                  </p>
                 </div>
                 <div id="event-details-group-2">
                   <Link id="event-creator-link" to={`/users/${this.props.users.user._id}`}>
@@ -326,6 +340,26 @@ class Event extends Component {
                   value={this.state.imageURL}
                   // defaultValue={this.state.imageURL}
                   placeholder="Image url"
+                  onChange={this.onFieldChange}
+                />
+              </label>
+              <label className="input-label" htmlFor="new-event-startTime">Event Start Time
+                <input
+                  type="text"
+                  name="startTime"
+                  id="new-event-time"
+                  value={this.state.startTime}
+                  placeholder="Start Time"
+                  onChange={this.onFieldChange}
+                />
+              </label>
+              <label className="input-label" htmlFor="new-event-endTime">Event End Time
+                <input
+                  type="text"
+                  name="endTime"
+                  id="new-event-time"
+                  value={this.state.endTime}
+                  placeholder="End Time"
                   onChange={this.onFieldChange}
                 />
               </label>
