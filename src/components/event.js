@@ -316,7 +316,7 @@ class Event extends Component {
                 />
               </label>
               <label className="input-label" htmlFor="update-event-description">Description
-                <input
+                <textarea
                   type="text"
                   name="description"
                   id="update-event-description"
@@ -324,6 +324,8 @@ class Event extends Component {
                   // defaultValue={this.state.description}
                   placeholder="Event Description"
                   onChange={this.onFieldChange}
+                  maxLength="250"
+                  rows="2"
                 />
               </label>
               <label className="input-label" htmlFor="update-event-image">Event Image
