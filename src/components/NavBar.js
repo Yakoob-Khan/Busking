@@ -16,7 +16,7 @@ class NavBar extends React.Component {
   renderLogIn = () => {
     if (this.props.auth.isAuthenticated) {
       return (
-        <NavLink to="/myprofile" className="nav-link">
+        <NavLink to={`/users/${this.props.auth.user._id}`} className="nav-link">
           <li className="nav-item">
             <span role="img" aria-label="see events" className="emoji">&#128075;</span>
             My Profile

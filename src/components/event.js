@@ -9,10 +9,10 @@ import PlacesAutocomplete, {
 } from 'react-places-autocomplete';
 import Checkout from './Checkout';
 import {
-  fetchEvent, updateEvent, deleteEvent, rateEvent,
+  fetchEvent, updateEvent, deleteEvent, rateEvent, fetchUser,
 } from '../actions';
 // import PaymentRequestForm from './PaymentRequestForm';
-// import WrappedEventMap from './eventMap';
+import WrappedEventMap from './eventMap';
 
 class Event extends Component {
   constructor(props) {
@@ -40,8 +40,8 @@ class Event extends Component {
 
   componentDidMount() {
     this.props.fetchEvent(this.props.match.params.eventId);
+    this.props.fetchUser(this.props.event.host);
   }
-
 
   onEdit(event) {
     this.setState(prevState => ({
@@ -60,6 +60,11 @@ class Event extends Component {
         eventCreator: this.props.event.eventCreator,
       });
     }
+  }
+
+  isObjectEmpty = (object) => {
+    // empty object check adapted from https://stackoverflow.com/questions/679915/how-do-i-test-for-an-empty-javascript-object
+    return Object.entries(object).length === 0 && object.constructor === Object;
   }
 
   startEdit = () => {
@@ -173,9 +178,9 @@ class Event extends Component {
                 </div>
                 <div id="event-details-group-2">
                   <div id="event-details-group-2-left">
-                    <img id="event-creator-photo" src={this.props.event.eventCreatorPhoto} alt="Event Creator" />
+                    <img id="event-creator-photo" src={this.props.users.user.photo} alt="Event Creator" />
                     <p id="event-creator">Event Creator</p>
-                    <p id="event-creator-name">{this.props.event.eventCreator}</p>
+                    <p id="event-creator-name">{this.props.users.user.name}</p>
                   </div>
                   <div id="event-details-group-2-right">
                     <p id="event-description">{this.props.event.description}</p>
@@ -220,7 +225,7 @@ class Event extends Component {
                 <button type="button" onClick={this.payment}> Tip </button> */}
                   <Checkout
                   // `#demo${this.state.id}`
-                    name={`Send a tip to ${this.props.event.eventCreator}!`}
+                    name={`Send a tip to ${this.props.users.user.name}!`}
                     description="Your tip goes a long way!"
                     amount={this.state.tip}
                   />
@@ -244,9 +249,9 @@ class Event extends Component {
                 </div>
                 <div id="event-details-group-2">
                   <div id="event-details-group-2-left">
-                    <img id="event-creator-photo" src={this.props.event.eventCreatorPhoto} alt="Event Creator" />
+                    <img id="event-creator-photo" src={this.props.users.user.photo} alt="Event Creator" />
                     <p id="event-creator">Event Creator</p>
-                    <p id="event-creator-name">{this.props.event.eventCreator}</p>
+                    <p id="event-creator-name">{this.props.users.user.name}</p>
                   </div>
                   <div id="event-details-group-2-right">
                     <p id="event-description">{this.props.event.description}</p>
@@ -275,7 +280,7 @@ class Event extends Component {
                 <div id="event-details-group-3">
                   <Checkout
                   // `#demo${this.state.id}`
-                    name={`Send a tip to ${this.props.event.eventCreator}!`}
+                    name={`Send a tip to ${this.props.users.user.name}!`}
                     description="Your tip goes a long way!"
                     amount={this.state.tip}
                   />
@@ -396,14 +401,18 @@ class Event extends Component {
   }
 
   render() {
-    return (
-      <div>
-        {this.renderEvent()}
-        {/* <div id="map-wrapper">
-          <WrappedEventMap />
-        </div> */}
-      </div>
-    );
+    if (!this.isObjectEmpty(this.props.users.user) && !this.isObjectEmpty(this.props.event)) {
+      return (
+        <div>
+          {this.renderEvent()}
+          <div id="map-wrapper">
+            <WrappedEventMap />
+          </div>
+        </div>
+      );
+    } else {
+      return <div>Loading...</div>;
+    }
   }
 }
 
@@ -411,9 +420,10 @@ const mapStateToProps = state => (
   {
     event: state.events.event,
     user: state.auth.user,
+    users: state.users,
   }
 );
 
 export default withRouter(connect(mapStateToProps, {
-  fetchEvent, updateEvent, deleteEvent, rateEvent,
+  fetchEvent, updateEvent, deleteEvent, rateEvent, fetchUser,
 })(Event));
