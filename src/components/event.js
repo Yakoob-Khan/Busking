@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import Ratings from 'react-ratings-declarative';
 // import { Elements, StripeProvider } from 'react-stripe-elements';
 import PlacesAutocomplete, {
@@ -176,11 +176,13 @@ class Event extends Component {
                   {/* <p id="event-time"></p> */}
                 </div>
                 <div id="event-details-group-2">
-                  <div id="event-details-group-2-left">
-                    <img id="event-creator-photo" src={this.props.users.user.photo} alt="Event Creator" />
-                    <p id="event-creator">Event Creator</p>
-                    <p id="event-creator-name">{this.props.users.user.name}</p>
-                  </div>
+                  <Link to={`/users/${this.props.users.user._id}`}>
+                    <div id="event-details-group-2-left">
+                      <img id="event-creator-photo" src={this.props.users.user.photo} alt="Event Creator" />
+                      <p id="event-creator">Event Creator</p>
+                      <p id="event-creator-name">{this.props.users.user.name}</p>
+                    </div>
+                  </Link>
                   <div id="event-details-group-2-right">
                     <p id="event-description">{this.props.event.description}</p>
                     <div id="event-average-rating">
@@ -247,11 +249,13 @@ class Event extends Component {
                   {/* <p id="event-time"></p> */}
                 </div>
                 <div id="event-details-group-2">
-                  <div id="event-details-group-2-left">
-                    <img id="event-creator-photo" src={this.props.users.user.photo} alt="Event Creator" />
-                    <p id="event-creator">Event Creator</p>
-                    <p id="event-creator-name">{this.props.users.user.name}</p>
-                  </div>
+                  <Link to={`/users/${this.props.users.user._id}`}>
+                    <div id="event-details-group-2-left">
+                      <img id="event-creator-photo" src={this.props.users.user.photo} alt="Event Creator" />
+                      <p id="event-creator">Event Creator</p>
+                      <p id="event-creator-name">{this.props.users.user.name}</p>
+                    </div>
+                  </Link>
                   <div id="event-details-group-2-right">
                     <p id="event-description">{this.props.event.description}</p>
                     <div id="event-average-rating">
