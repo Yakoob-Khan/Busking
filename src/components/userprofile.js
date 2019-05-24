@@ -111,6 +111,10 @@ class UserProfile extends Component {
     }
   }
 
+  getNumOfEventsAttended = () => {
+    return this.props.user.eventsAttended.length;
+  }
+
   renderFollowers = () => {
     if (this.props.user.followers.length !== 0) {
       return this.props.user.followers.map((user) => {
@@ -129,6 +133,10 @@ class UserProfile extends Component {
     }
   }
 
+  getNumOfFollowers = () => {
+    return this.props.user.followers.length;
+  }
+
   renderFollowing = () => {
     if (this.props.user.following.length !== 0) {
       return this.props.user.following.map((user) => {
@@ -145,6 +153,10 @@ class UserProfile extends Component {
         </div>
       );
     }
+  }
+
+  getNumOfFollowing = () => {
+    return this.props.user.following.length;
   }
 
   handleFollow = () => {
@@ -167,7 +179,7 @@ class UserProfile extends Component {
         );
       }
     } else {
-      return <div />;
+      return null;
     }
   }
 
@@ -179,53 +191,36 @@ class UserProfile extends Component {
       const content = this.props.auth
         ? (
           <div>
+            <img id="user-profile-picture" src={this.props.user.photo} alt={this.props.user.name} />
+            <p id="user-profile-name">{this.props.user.name}</p>
+            <p id="user-profile-email">{this.props.user.email}</p>
+            {this.renderFollowButton()}
             <button onClick={this.props.logoutUser} className="button" type="submit">
-                    Log out
+              Log out
             </button>
-            <div className="user-pic">
-              <img src={this.props.user.photo} alt="Profile Pic" />
+            <div id="user-profile-stats">
+              <div id="user-profile-stat-1">
+                <p id="user-profile-average-rating-label">Average Rating</p>
+                <p id="user-profile-average-rating">
+                  {this.props.user.averageRating ? this.props.user.averageRating.toFixed(2) : 'No Ratings'}
+                </p>
+              </div>
+              <div id="user-profile-stat-2">
+                <p id="user-profile-followers-label">Followers</p>
+                <p id="user-profile-followers">{this.getNumOfFollowers()}</p>
+              </div>
+              <div id="user-profile-stat-3">
+                <p id="user-profile-following-label">Following</p>
+                <p id="user-profile-following">{this.getNumOfFollowing()}</p>
+              </div>
+              <div id="user-profile-stat-4">
+                <p id="user-profile-events-attended-label">Events Attended</p>
+                <p id="user-profile-events-attended">{this.getNumOfEventsAttended()}</p>
+              </div>
             </div>
-            <div className="user-name">
-              <p>{this.props.user.name}</p>
-            </div>
-            <div className="user-email">
-              <p>{this.props.user.email}</p>
-            </div>
-            <div id="event-average-rating">
-              <Ratings
-                rating={this.props.user.averageRating}
-                widgetRatedColors="#0099CC"
-                widgetHoverColors="rgb(0,153,204)"
-                widgetEmptyColors="#6B6B6B"
-                widgetSpacings="3px"
-                widgetDimensions="32px"
-              >
-                <Ratings.Widget />
-                <Ratings.Widget />
-                <Ratings.Widget />
-                <Ratings.Widget />
-                <Ratings.Widget />
-              </Ratings>
-              <p id="event-average-rating-label">
-              Average Rating: {this.props.user.averageRating ? this.props.user.averageRating.toFixed(2) : ''}
-              </p>
-              {this.renderFollowButton()}
-            </div>
-            <div className="events-hosted">
-              <p>Events Hosted:</p>
+            <div id="user-profile-events-hosted-section">
+              <p id="user-profile-events-hosted-label">Events Hosted</p>
               {this.renderEventsHosted()}
-            </div>
-            <div className="events-attended">
-              <p>Events Attended:</p>
-              {this.renderEventsAttended()}
-            </div>
-            <div className="followers">
-              <p>Followers:</p>
-              {this.renderFollowers()}
-            </div>
-            <div className="following">
-              <p>Following:</p>
-              {this.renderFollowing()}
             </div>
           </div>
         )
