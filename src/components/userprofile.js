@@ -3,11 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import Ratings from 'react-ratings-declarative';
 import {
-<<<<<<< HEAD
-  updateCurrentUser, logoutUser, fetchUser, testAPIComment,
-=======
-  updateCurrentUser, logoutUser, fetchUser, followUser, unFollowUser,
->>>>>>> master
+  updateCurrentUser, logoutUser, fetchUser, followUser, unFollowUser, testAPIComment,
 } from '../actions';
 
 
@@ -272,9 +268,5 @@ const mapStateToProps = state => (
 );
 
 export default withRouter(connect(mapStateToProps, {
-<<<<<<< HEAD
-  updateCurrentUser, logoutUser, fetchUser, testAPIComment,
-=======
-  updateCurrentUser, logoutUser, fetchUser, followUser, unFollowUser,
->>>>>>> master
+  updateCurrentUser, logoutUser, fetchUser, followUser, unFollowUser, testAPIComment,
 })(UserProfile));
