@@ -12,6 +12,8 @@ export const ActionTypes = {
   CLEAR_ERROR: 'CLEAR_ERROR',
   GET_USER_LOCATION: 'GET_USER_LOCATION',
   FETCH_USER: 'FETCH_USER',
+  FOLLOW_USER: 'FOLLOW_USER',
+  UNFOLLOW_USER: 'UNFOLLOW_USER',
 };
 
 const ROOT_URL = 'http://localhost:9090/api';
@@ -238,6 +240,38 @@ export function fetchUser(id) {
       })
       .catch((error) => {
         dispatch(appError(`Error retrieving user :( ${error}`));
+      });
+  };
+}
+
+export function followUser(followId, history) {
+  return (dispatch) => {
+    axios.get(`${ROOT_URL}/users/follow/${followId}`, { headers: { authorization: localStorage.getItem('jwtToken') } })
+      .then((response) => {
+        dispatch({
+          type: ActionTypes.FOLLOW_USER,
+          payload: response.data,
+        });
+        history.push('/users/followId');
+      })
+      .catch((error) => {
+        dispatch(appError(`Error retrieving user :( ${error.response.data}`));
+      });
+  };
+}
+
+export function unFollowUser(unfollowId, history) {
+  return (dispatch) => {
+    axios.get(`${ROOT_URL}/users/unfollow/${unfollowId}`, { headers: { authorization: localStorage.getItem('jwtToken') } })
+      .then((response) => {
+        dispatch({
+          type: ActionTypes.UNFOLLOW_USER,
+          payload: response.data,
+        });
+        history.push('/users/unfollowId');
+      })
+      .catch((error) => {
+        dispatch(appError(`Error retrieving user :( ${error.response.data}`));
       });
   };
 }

@@ -27,7 +27,8 @@ export class EventMap extends Component {
     this.props.getCurrentLocation();
     const map1stWrapper = document.getElementById('map-wrapper').firstChild;
     if (map1stWrapper) {
-      map1stWrapper.style.height = '100%';
+      map1stWrapper.style.width = '80%';
+      map1stWrapper.style.margin = '0 auto';
     }
   }
 
@@ -76,12 +77,10 @@ export class EventMap extends Component {
       destination: end,
       travelMode: this.state.currentMode,
     };
-
     if (window.map) {
       this.directionsDisplay.setMap(window.map.map);
       this.directionsDisplay.setPanel(document.getElementById('directionsPanel'));
     }
-
     this.directionsService.route(request, (result, status) => {
       if (status === 'OK') {
         this.directionsDisplay.setDirections(result);
@@ -97,31 +96,23 @@ export class EventMap extends Component {
   render() {
     const event = this.props.event;
     const userLoc = this.props.currentUserLocation;
-    const style = { width: '70%', height: '80%' };
-
-    // if (this.props.user) {
-    //   const iconImage = {
-    //     url: `${this.props.user.photo}`,
-    //     anchor: new window.google.maps.Point(32, 32),
-    //     scaledSize: new window.google.maps.Size(60, 60),
-    //   };
-    // } else {
-    //   const iconImage = {
-    //     url: 'https://cdn3.iconfinder.com/data/icons/glyph/227/Public-512.png',
-    //     anchor: new window.google.maps.Point(32, 32),
-    //     scaledSize: new window.google.maps.Size(60, 60),
-    //   };
-    // }
-
+    const mapStyle = {
+      width: '90%',
+      height: '350px',
+      paddingRight: '22.15vw',
+      borderTop: '1px dotted gray',
+      borderBottom: '1px dotted gray',
+      zIndex: '2',
+    };
     if (!this.isObjectEmpty(event) && !this.isObjectEmpty(userLoc)) {
       this.calcRoute();
       return (
-        <div id="map-3rd-wrapper">
+        <div id="map-outermost-wrapper">
           <div>
-            <h3>Get Directions!</h3>
+            <h3 id="map-header">Directions to Event</h3>
             <div id="floating-panel">
-              <b>Mode of Travel: </b>
-              <select id="mode" onChange={this.onModeChange}>
+              <p id="map-mode-select-label">Travel By</p>
+              <select id="map-mode-select" onChange={this.onModeChange}>
                 <option value="DRIVING">Driving</option>
                 <option value="WALKING">Walking</option>
                 <option value="BICYCLING">Bicycling</option>
@@ -135,11 +126,9 @@ export class EventMap extends Component {
               ref={(map) => { window.map = map; }}
               google={this.props.google}
               center={this.props.currentUserLocation}
-              style={style}
+              style={mapStyle}
             >
-
               {this.renderEvent()}
-
               <Marker
                 title="Your current location"
                 position={this.props.currentUserLocation}
