@@ -133,10 +133,6 @@ class Event extends Component {
   // }
 
   changeRating = (newRating) => {
-    // this.setState({
-    //   rating: newRating,
-    // });
-
     this.props.rateEvent(this.props.event._id, newRating, this.props.history);
   }
 
@@ -195,7 +191,7 @@ class Event extends Component {
                         widgetEmptyColors="#6B6B6B"
                         widgetSpacings="2px"
                         widgetDimensions="18px"
-                        changeRating={this.changeRating}
+                        // changeRating={this.changeRating}
                       >
                         <Ratings.Widget />
                         <Ratings.Widget />

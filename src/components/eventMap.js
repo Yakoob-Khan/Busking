@@ -31,6 +31,7 @@ export class EventMap extends Component {
     }
   }
 
+
   onMarkerClick = (props, marker, e) => {
     this.setState({
       selectedEvent: props.event,
@@ -88,6 +89,7 @@ export class EventMap extends Component {
     });
   }
 
+
   onModeChange = (event) => {
     this.setState({ currentMode: event.target.value });
   }
@@ -96,6 +98,21 @@ export class EventMap extends Component {
     const event = this.props.event;
     const userLoc = this.props.currentUserLocation;
     const style = { width: '70%', height: '80%' };
+
+    // if (this.props.user) {
+    //   const iconImage = {
+    //     url: `${this.props.user.photo}`,
+    //     anchor: new window.google.maps.Point(32, 32),
+    //     scaledSize: new window.google.maps.Size(60, 60),
+    //   };
+    // } else {
+    //   const iconImage = {
+    //     url: 'https://cdn3.iconfinder.com/data/icons/glyph/227/Public-512.png',
+    //     anchor: new window.google.maps.Point(32, 32),
+    //     scaledSize: new window.google.maps.Size(60, 60),
+    //   };
+    // }
+
     if (!this.isObjectEmpty(event) && !this.isObjectEmpty(userLoc)) {
       this.calcRoute();
       return (
