@@ -319,6 +319,8 @@ nav {
 }
 #update-event-button,
 #delete-event-button,
+#attend-event-button,
+#leave-event-button,
 #stripe-checkout-button {
   background-color: none;
   border: 1px solid lightgray;
@@ -614,25 +616,30 @@ textarea {
   font-weight: 400;
   margin: 8px 0 0 0;
 }
+#user-profile-events-attended-section,
 #user-profile-events-hosted-section {
   background-color: white;
   padding: 120px 30px 50px 30px;
   margin: -134px auto 0 auto;
   z-index: -10;
 }
+#events-attended-section-inner-div,
 #events-hosted-section-inner-div {
   width: 80%;
   margin: 0 auto;
 }
+#user-profile-events-attended-title,
 #user-profile-events-hosted-label {
   font-size: 24px;
   font-weight: 600;
   margin: 20px  0 20px 10px;
 }
+#attended-events-grid,
 #hosted-events-grid {
   display: grid;
   grid-template-columns: 25% 25% 25% 25%;
 }
+.attended-event-container,
 .hosted-event-container {
   margin: 10px;
   padding: 0;
