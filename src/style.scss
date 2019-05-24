@@ -354,7 +354,7 @@ nav {
   font-family: "Raleway", sans-serif;
   height: fit-content;
   margin: 0 auto;
-  padding: 3% 5%;
+  padding: 3% 6%;
   width: 50%;
 }
 #new-event-form-header,
@@ -369,7 +369,7 @@ nav {
 .input-label {
   font-size: 12px;
   letter-spacing: 0.8px;
-  margin-left: 16px;
+  margin-left: 8px;
   text-transform: uppercase;
 }
 #new-event-location-label,
@@ -379,15 +379,15 @@ nav {
 input,
 textarea {
   border: none;
-  border-radius: 100px;
+  border-radius: 3px;
   background-color: rgba(158, 163, 190, 0.6);
   color: white;
   display: block;
   font-size: 16px;
   margin: 12px 0 20px 0;
   outline: none;
-  padding: 12px 16px;
-  width: 46vw;
+  padding: 10px;
+  width: 47vw;
 }
 ::-webkit-input-placeholder { /* Chrome */
   color: white;
@@ -413,13 +413,13 @@ textarea {
   z-index: 0;
 }
 #make-changes-button-container {
-  margin-top: 30px;
+  margin-top: 8%;
 }
 #create-new-event-button,
 #make-changes-button {
   background-color: $accent-color;
+  border-radius: 3px;
   border: none;
-  border-radius: 20px;
   font-size: 14px;
   font-weight: 600;
   color: white;
@@ -427,7 +427,7 @@ textarea {
   opacity: 0.8;
   padding: 10px 12px;
   text-transform: uppercase;
-  width: 24%;
+  width: 120px;
 }
 #create-new-event-button:hover,
 #make-changes-button:hover {
