@@ -16,8 +16,11 @@ class Events extends Component {
     this.renderEvents = this.renderEvents.bind(this);
   }
 
+
   componentDidMount() {
     this.props.fetchEvents();
+    // console.log('wohoo!');
+    // console.log(this.props.events);
   }
 
   onToggleMap(event) {
@@ -26,15 +29,10 @@ class Events extends Component {
     }));
   }
 
-  // stars = (rating) => {
-  //   return (
-  //     <Ratings
-  //       rating={this.state.rating}
-  //       widgetRatedColors="blue"
-  //       changeRating={this.changeRating}
-  //     />
-  //   );
+  // calculateRating = () => {
+  //   console.log(this.props.event);
   // }
+
 
   renderEvents = () => {
     if (this.props.events.length !== 0) {

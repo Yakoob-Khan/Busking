@@ -156,7 +156,7 @@ export function createEvent(newEvent, history) {
         history.push('/events');
       })
       .catch((error) => {
-        dispatch(appError(`Error creating post :( ${error.response.data}`));
+        dispatch(appError(`Error creating post :( ${error}`));
         console.log(error);
       });
   };
@@ -173,7 +173,7 @@ export function fetchEvent(id, callback) {
         callback();
       })
       .catch((error) => {
-        dispatch(appError(`Error retrieving event :( ${error.response.data}`));
+        dispatch(appError(`Error retrieving event :( ${error}`));
       });
   };
 }
@@ -185,7 +185,7 @@ export function updateEvent(update) {
         dispatch(fetchEvent(update.id));
       })
       .catch((error) => {
-        dispatch(appError(`Error updating post :( ${error.response.data}`));
+        dispatch(appError(`Error updating post :( ${error}`));
       });
   };
 }
@@ -197,19 +197,20 @@ export function deleteEvent(id, history) {
         history.push('/');
       })
       .catch((error) => {
-        dispatch(appError(`Error deleting post :( ${error.response.data}`));
+        dispatch(appError(`Error deleting post :( ${error}`));
       });
   };
 }
 
-export function rateEvent(id, rating) {
+export function rateEvent(id, rating, history) {
   return (dispatch) => {
     axios.post(`${ROOT_URL}/events/rate/${id}`, { rating })
       .then((response) => {
         dispatch(fetchEvent(id));
+        history.push(`/events/${id}`);
       })
       .catch((error) => {
-        dispatch(appError(`Error rating post :( ${error.response.data}`));
+        dispatch(appError(`Error rating post :( ${error}`));
       });
   };
 }
@@ -221,7 +222,7 @@ export function updateCurrentUser(updatedUser) {
         dispatch({ type: ActionTypes.UPDATE_CURRENT_USER, payload: response.data });
       })
       .catch((error) => {
-        dispatch(appError(`Update user failed: ${error.response.data}`));
+        dispatch(appError(`Update user failed: ${error}`));
       });
   };
 }
@@ -236,7 +237,7 @@ export function fetchUser(id) {
         });
       })
       .catch((error) => {
-        dispatch(appError(`Error retrieving user :( ${error.response.data}`));
+        dispatch(appError(`Error retrieving user :( ${error}`));
       });
   };
 }
