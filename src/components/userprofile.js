@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import Ratings from 'react-ratings-declarative';
-import { updateCurrentUser, logoutUser, fetchUser } from '../actions';
+import {
+  updateCurrentUser, logoutUser, fetchUser, followUser, unFollowUser,
+} from '../actions';
 
 
 class UserProfile extends Component {
@@ -145,7 +147,34 @@ class UserProfile extends Component {
     }
   }
 
+  handleFollow = () => {
+    this.props.followUser(this.props.user.id, this.props.history);
+  }
+
+  handleUnFollow = () => {
+    this.props.unFollowUser(this.props.user.id, this.props.history);
+  }
+
+  renderFollowButton = () => {
+    if (this.props.user.id !== this.props.loggedUser.id) {
+      if (this.props.user.followers.filter(follower => (follower.id === this.props.loggedUser.id)).length > 0) {
+        return (
+          <button type="button" onClick={this.handleUnFollow}>unfollow</button>
+        );
+      } else {
+        return (
+          <button type="button" onClick={this.handleFollow}>follow</button>
+        );
+      }
+    } else {
+      return <div />;
+    }
+  }
+
   render() {
+    if (this.props.match.params.userId !== this.props.user.id) {
+      this.props.fetchUser(this.props.match.params.userId);
+    }
     if (!this.isObjectEmpty(this.props.user)) {
       const content = this.props.auth
         ? (
@@ -180,6 +209,7 @@ class UserProfile extends Component {
               <p id="event-average-rating-label">
               Average Rating: {this.props.user.averageRating ? this.props.user.averageRating.toFixed(2) : ''}
               </p>
+              {this.renderFollowButton()}
             </div>
             <div className="events-hosted">
               <p>Events Hosted:</p>
@@ -217,7 +247,10 @@ const mapStateToProps = state => (
   {
     user: state.users.user,
     auth: state.auth.isAuthenticated,
+    loggedUser: state.auth.user,
   }
 );
 
-export default withRouter(connect(mapStateToProps, { updateCurrentUser, logoutUser, fetchUser })(UserProfile));
+export default withRouter(connect(mapStateToProps, {
+  updateCurrentUser, logoutUser, fetchUser, followUser, unFollowUser,
+})(UserProfile));
