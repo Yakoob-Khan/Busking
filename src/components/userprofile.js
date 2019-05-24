@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import Ratings from 'react-ratings-declarative';
-import { updateCurrentUser, logoutUser, fetchUser } from '../actions';
+import {
+  updateCurrentUser, logoutUser, fetchUser, testAPIComment,
+} from '../actions';
 
 
 class UserProfile extends Component {
@@ -153,6 +155,9 @@ class UserProfile extends Component {
             <button onClick={this.props.logoutUser} className="button" type="submit">
                     Log out
             </button>
+            <button onClick={() => this.props.testAPIComment('5ce77dc9dc9c067f08bbee2e', 'hello')} className="button" type="submit">
+                    test api comment
+            </button>
             <div className="user-pic">
               <img src={this.props.user.photo} alt="Profile Pic" />
             </div>
@@ -220,4 +225,6 @@ const mapStateToProps = state => (
   }
 );
 
-export default withRouter(connect(mapStateToProps, { updateCurrentUser, logoutUser, fetchUser })(UserProfile));
+export default withRouter(connect(mapStateToProps, {
+  updateCurrentUser, logoutUser, fetchUser, testAPIComment,
+})(UserProfile));

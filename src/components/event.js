@@ -410,6 +410,8 @@ class Event extends Component {
       return (
         <div>
           {this.renderEvent()}
+          {console.log(this.props.event)}
+
           <div id="map-wrapper">
             <WrappedEventMap />
           </div>
