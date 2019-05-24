@@ -117,22 +117,6 @@ class Event extends Component {
     this.setState({ [event.target.name]: event.target.value });
   }
 
-
-  // submitForm = () => {
-  //   const update = {
-  //     id: this.props.event._id,
-  //     title: this.state.title,
-  //     imageURL: this.state.imageURL,
-  //     longitude: this.state.longitude,
-  //     latitude: this.state.latitude,
-  //     eventCreator: this.state.eventCreator,
-  //   };
-  //   this.props.updateEvent(update);
-  //   this.setState({
-  //     isEditing: false,
-  //   });
-  // }
-
   changeRating = (newRating) => {
     this.setState({
       rating: newRating,
@@ -176,7 +160,7 @@ class Event extends Component {
                   {/* <p id="event-time"></p> */}
                 </div>
                 <div id="event-details-group-2">
-                  <Link to={`/users/${this.props.users.user._id}`}>
+                  <Link id="event-creator-link" to={`/users/${this.props.users.user._id}`}>
                     <div id="event-details-group-2-left">
                       <img id="event-creator-photo" src={this.props.users.user.photo} alt="Event Creator" />
                       <p id="event-creator">Event Creator</p>
@@ -217,15 +201,15 @@ class Event extends Component {
                     <p>delete event</p>
                   </button>
                   {/* <input
-                type="text"
-                name="tip"
-                value={this.state.tip}
-                placeholder="Tip Amount"
-                onChange={this.onFieldChange}
-                />
-                <button type="button" onClick={this.payment}> Tip </button> */}
+                    type="text"
+                    name="tip"
+                    value={this.state.tip}
+                    placeholder="Tip Amount"
+                    onChange={this.onFieldChange}
+                    />
+                    <button type="button" onClick={this.payment}> Tip </button> */}
                   <Checkout
-                  // `#demo${this.state.id}`
+                    // `#demo${this.state.id}`
                     name={`Send a tip to ${this.props.users.user.name}!`}
                     description="Your tip goes a long way!"
                     amount={this.state.tip}
@@ -233,6 +217,9 @@ class Event extends Component {
                 </div>
               </div>
             </div>
+          </div>
+          <div id="map-wrapper">
+            <WrappedEventMap />
           </div>
         </div>
       );
@@ -290,6 +277,9 @@ class Event extends Component {
                 </div>
               </div>
             </div>
+          </div>
+          <div id="map-wrapper">
+            <WrappedEventMap />
           </div>
         </div>
       );
@@ -410,9 +400,9 @@ class Event extends Component {
       return (
         <div>
           {this.renderEvent()}
-          <div id="map-wrapper">
+          {/* <div id="map-wrapper">
             <WrappedEventMap />
-          </div>
+          </div> */}
         </div>
       );
     } else {
