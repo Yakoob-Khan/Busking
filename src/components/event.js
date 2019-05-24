@@ -236,7 +236,7 @@ class Event extends Component {
                   {/* <p id="event-time"></p> */}
                 </div>
                 <div id="event-details-group-2">
-                  <Link to={`/users/${this.props.users.user._id}`}>
+                  <Link id="event-creator-link" to={`/users/${this.props.users.user._id}`}>
                     <div id="event-details-group-2-left">
                       <img id="event-creator-photo" src={this.props.users.user.photo} alt="Event Creator" />
                       <p id="event-creator">Event Creator</p>
