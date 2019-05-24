@@ -40,7 +40,6 @@ class Event extends Component {
 
   componentDidMount() {
     this.props.fetchEvent(this.props.match.params.eventId);
-    this.props.fetchUser(this.props.event.host);
   }
 
   onEdit(event) {
@@ -411,6 +410,7 @@ class Event extends Component {
         </div>
       );
     } else {
+      this.props.fetchUser(this.props.event.host);
       return <div>Loading...</div>;
     }
   }
