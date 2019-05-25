@@ -76,29 +76,29 @@ class UserProfile extends Component {
           backgroundImage: `url(${event.imageURL})`,
         };
         return (
-          <div className="event-container" key={event.id}>
-            <Link key={event.id} to={`/events/${event.id}`}>
-              <div key={event.id} style={eventStyle} />
+          <div className="attended-event-container event-container" key={event.id}>
+            <Link className="view-details" key={event.id} to={`/events/${event.id}`}>
+              <div className="event" key={event.id} style={eventStyle} />
+              <p className="event-title">{event.title}</p>
+              <p className="event-description">{event.description}</p>
+              <p className="event-address">{event.address}</p>
+              {/* Ratings credit to: https://github.com/ekeric13/react-ratings-declarative */}
+              <div className="event-rating">
+                <Ratings
+                  rating={event.averageRating}
+                  widgetRatedColors="#0099CC"
+                  widgetEmptyColors="#6B6B6B"
+                  widgetSpacings="1px"
+                  widgetDimensions="12px"
+                >
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                </Ratings>
+              </div>
             </Link>
-            <p>
-              {event.title}
-            </p>
-            {/* Ratings credit to: https://github.com/ekeric13/react-ratings-declarative */}
-            <div>
-              <Ratings
-                rating={event.averageRating}
-                widgetRatedColors="#0099CC"
-                widgetEmptyColors="#6B6B6B"
-                widgetSpacings="2px"
-                widgetDimensions="18px"
-              >
-                <Ratings.Widget />
-                <Ratings.Widget />
-                <Ratings.Widget />
-                <Ratings.Widget />
-                <Ratings.Widget />
-              </Ratings>
-            </div>
           </div>
         );
       });
@@ -160,23 +160,26 @@ class UserProfile extends Component {
   }
 
   handleFollow = () => {
-    this.props.followUser(this.props.user.id, this.props.history);
+    this.props.followUser(this.props.user.id);
   }
 
   handleUnFollow = () => {
-    this.props.unFollowUser(this.props.user.id, this.props.history);
+    this.props.unFollowUser(this.props.user.id);
   }
 
   renderFollowButton = () => {
     if (this.props.user.id !== this.props.loggedUser.id) {
+      console.log(this.props.user.followers);
       if (this.props.user.followers.filter(follower => (follower.id === this.props.loggedUser.id)).length > 0) {
         return (
           <button type="button" id="unfollow-button" onClick={this.handleUnFollow}>unfollow</button>
         );
-      } else {
+      } else if (this.props.user.followers.filter(follower => (follower.id === this.props.loggedUser.id)).length === 0) {
         return (
           <button type="button" id="follow-button" onClick={this.handleFollow}>follow</button>
         );
+      } else {
+        return null;
       }
     } else {
       return null;
@@ -239,6 +242,14 @@ class UserProfile extends Component {
                   <p id="user-profile-events-hosted-label">Events Hosted</p>
                   <div id="hosted-events-grid">
                     {this.renderEventsHosted()}
+                  </div>
+                </div>
+              </div>
+              <div id="user-profile-events-attended-section">
+                <div id="events-attended-section-inner-div">
+                  <p id="user-profile-events-attended-title">Events Attended</p>
+                  <div id="attended-events-grid">
+                    {this.renderEventsAttended()}
                   </div>
                 </div>
               </div>

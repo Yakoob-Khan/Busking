@@ -14,6 +14,8 @@ export const ActionTypes = {
   FETCH_USER: 'FETCH_USER',
   FOLLOW_USER: 'FOLLOW_USER',
   UNFOLLOW_USER: 'UNFOLLOW_USER',
+  ATTEND_EVENT: 'ATTEND_EVENT',
+  LEAVE_EVENT: 'LEAVE_EVENT',
 };
 
 const ROOT_URL = 'http://localhost:9090/api';
@@ -220,6 +222,36 @@ export function deleteEvent(id, history) {
   };
 }
 
+export function attendEvent(id) {
+  return (dispatch) => {
+    axios.get(`${ROOT_URL}/events/attend/${id}`, { headers: { authorization: localStorage.getItem('jwtToken') } })
+      .then((response) => {
+        dispatch({
+          type: ActionTypes.ATTEND_EVENT,
+          payload: response.data,
+        });
+      })
+      .catch((error) => {
+        dispatch(appError(`Error attending event :( ${error}`));
+      });
+  };
+}
+
+export function leaveEvent(id) {
+  return (dispatch) => {
+    axios.get(`${ROOT_URL}/events/leave/${id}`, { headers: { authorization: localStorage.getItem('jwtToken') } })
+      .then((response) => {
+        dispatch({
+          type: ActionTypes.LEAVE_EVENT,
+          payload: response.data,
+        });
+      })
+      .catch((error) => {
+        dispatch(appError(`Error attending event :( ${error}`));
+      });
+  };
+}
+
 export function rateEvent(id, rating, history) {
   return (dispatch) => {
     axios.post(`${ROOT_URL}/events/rate/${id}`, { rating })
@@ -260,7 +292,7 @@ export function fetchUser(id) {
   };
 }
 
-export function followUser(followId, history) {
+export function followUser(followId) {
   return (dispatch) => {
     axios.get(`${ROOT_URL}/users/follow/${followId}`, { headers: { authorization: localStorage.getItem('jwtToken') } })
       .then((response) => {
@@ -268,15 +300,14 @@ export function followUser(followId, history) {
           type: ActionTypes.FOLLOW_USER,
           payload: response.data,
         });
-        history.push('/users/followId');
       })
       .catch((error) => {
-        dispatch(appError(`Error retrieving user :( ${error.response.data}`));
+        dispatch(appError(`Error following user :( ${error}`));
       });
   };
 }
 
-export function unFollowUser(unfollowId, history) {
+export function unFollowUser(unfollowId) {
   return (dispatch) => {
     axios.get(`${ROOT_URL}/users/unfollow/${unfollowId}`, { headers: { authorization: localStorage.getItem('jwtToken') } })
       .then((response) => {
@@ -284,10 +315,9 @@ export function unFollowUser(unfollowId, history) {
           type: ActionTypes.UNFOLLOW_USER,
           payload: response.data,
         });
-        history.push('/users/unfollowId');
       })
       .catch((error) => {
-        dispatch(appError(`Error retrieving user :( ${error.response.data}`));
+        dispatch(appError(`Error unfollowing user :( ${error}`));
       });
   };
 }

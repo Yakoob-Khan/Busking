@@ -9,7 +9,7 @@ import PlacesAutocomplete, {
 } from 'react-places-autocomplete';
 import Checkout from './Checkout';
 import {
-  fetchEvent, updateEvent, deleteEvent, rateEvent, fetchUser, testAPIComment,
+  fetchEvent, updateEvent, deleteEvent, rateEvent, fetchUser, attendEvent, leaveEvent, testAPIComment,
 } from '../actions';
 // import PaymentRequestForm from './PaymentRequestForm';
 import WrappedEventMap from './eventMap';
@@ -121,6 +121,14 @@ class Event extends Component {
     this.props.deleteEvent(this.props.event._id, this.props.history);
   }
 
+  attendEvent = () => {
+    this.props.attendEvent(this.props.event.id);
+  }
+
+  leaveEvent = () => {
+    this.props.leaveEvent(this.props.event.id);
+  }
+
   onFieldChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
   }
@@ -145,6 +153,28 @@ class Event extends Component {
       })
       .catch(error => console.error('Error', error));
   };
+
+  renderAttendButton = () => {
+    if (this.props.event && this.props.user) {
+      if (this.props.event.attendees.filter(attendee => (attendee.id === this.props.user.id)).length > 0) {
+        return (
+          <button id="leave-event-button" className="event-button" type="button" onClick={this.leaveEvent}>
+            <p>leave event</p>
+          </button>
+        );
+      } else if (this.props.event.attendees.filter(attendee => (attendee.id === this.props.user.id)).length === 0) {
+        return (
+          <button id="attend-event-button" className="event-button" type="button" onClick={this.attendEvent}>
+            <p>attend event</p>
+          </button>
+        );
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
 
   renderEvent = () => {
     const eventImage = {
@@ -289,6 +319,7 @@ class Event extends Component {
                     description="Your tip goes a long way!"
                     amount={this.state.tip}
                   />
+                  {this.renderAttendButton()}
                 </div>
               </div>
             </div>
@@ -457,5 +488,5 @@ const mapStateToProps = state => (
 );
 
 export default withRouter(connect(mapStateToProps, {
-  fetchEvent, updateEvent, deleteEvent, rateEvent, fetchUser, testAPIComment,
+  fetchEvent, updateEvent, deleteEvent, rateEvent, fetchUser, attendEvent, leaveEvent, testAPIComment,
 })(Event));
