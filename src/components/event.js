@@ -307,7 +307,9 @@ class Event extends Component {
                       </Ratings>
                       <p id="event-average-rating-label">
                       Average Rating: {this.props.event.averageRating ? this.props.event.averageRating.toFixed(2) : ''}
-                        {this.props.event.comments.map(comment => console.log(comment.text))}
+                        {/* example of comment usage */}
+                        {/* to get text do comment.text */}
+                        {this.props.event.comments.map(comment => console.log(comment.author.name))}
                         {console.log(this.props.event.latitude)}
                       </p>
                     </div>
