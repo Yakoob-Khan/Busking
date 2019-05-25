@@ -9,7 +9,7 @@ import PlacesAutocomplete, {
 } from 'react-places-autocomplete';
 import Checkout from './Checkout';
 import {
-  fetchEvent, updateEvent, deleteEvent, rateEvent, fetchUser, attendEvent, leaveEvent, testAPIComment,
+  fetchEvent, updateEvent, deleteEvent, rateEvent, fetchUser, attendEvent, leaveEvent, writeComment,
 } from '../actions';
 // import PaymentRequestForm from './PaymentRequestForm';
 import WrappedEventMap from './eventMap';
@@ -308,6 +308,7 @@ class Event extends Component {
                       <p id="event-average-rating-label">
                       Average Rating: {this.props.event.averageRating ? this.props.event.averageRating.toFixed(2) : ''}
                         {this.props.event.comments.map(comment => console.log(comment.text))}
+                        {console.log(this.props.event.latitude)}
                       </p>
                     </div>
                   </div>
@@ -467,7 +468,7 @@ class Event extends Component {
         <div>
           {this.renderEvent()}
           <textarea ref={(commentInput) => { this.commentInput = commentInput; }} />
-          <button type="button" onClick={() => this.props.testAPIComment(this.props.event.id, this.commentInput.value, this.props.history)} />
+          <button type="button" onClick={() => this.props.writeComment(this.props.event.id, this.commentInput.value, this.props.history)} />
           {/* <div id="map-wrapper">
             <WrappedEventMap />
           </div> */}
@@ -488,5 +489,5 @@ const mapStateToProps = state => (
 );
 
 export default withRouter(connect(mapStateToProps, {
-  fetchEvent, updateEvent, deleteEvent, rateEvent, fetchUser, attendEvent, leaveEvent, testAPIComment,
+  fetchEvent, updateEvent, deleteEvent, rateEvent, fetchUser, attendEvent, leaveEvent, writeComment,
 })(Event));
