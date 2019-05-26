@@ -20,7 +20,7 @@ const onToken = (amount, description) => token => axios.post(PAYMENT_SERVER_URL,
 const Checkout = ({ name, description, amount }) => (
   <StripeCheckout
     name={name}
-    email="false"
+    email="true"
     description={description}
     amount={fromDollarToCent(amount)}
     token={onToken(amount, description)}
