@@ -35,17 +35,6 @@ class App extends Component {
     }
   }
 
-  // componentWillUpdate() {
-  //   const token = localStorage.getItem('jwtToken');
-  //   if (token) {
-  //     console.log('local token');
-  //     console.log(token);
-  //     this.props.facebookResponseLocal(token);
-  //   } else {
-  //     console.log('no local token');
-  //   }
-  // }
-
   render() {
     return (
       <Router>
