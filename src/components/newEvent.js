@@ -61,6 +61,7 @@ class NewEvent extends Component {
         startTime: this.state.startTime,
         endTime: this.state.endTime,
       };
+      console.log(this.props.user);
       this.props.createEvent(newEvent, this.props.history);
     }
   }
@@ -104,11 +105,6 @@ class NewEvent extends Component {
       position: 'absolute',
       zIndex: '100',
     };
-    if (this.props.loggedUser) {
-      console.log('user logged in');
-    } else {
-      console.log('user not logged in');
-    }
     return (
       <div id="new-event-background">
         <div id="new-event-form">

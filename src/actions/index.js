@@ -33,12 +33,9 @@ export const testAPI = () => {
 
 export const facebookResponseLocal = (localToken) => {
   return (dispatch) => {
-    console.log('hit facebook facebook');
     axios.get('http://localhost:9090/auth/facebook/refresh', { headers: { authorization: localToken } }).then((r) => {
       const user = r.data;
-      console.log(user);
       if (r.status === 200) {
-        console.log('hit facebook dispatch');
         dispatch({
           type: ActionTypes.AUTH_USER_SUCCESS,
           payload: { user },

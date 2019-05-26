@@ -14,6 +14,7 @@ const onToken = (amount, description) => token => axios.post(PAYMENT_SERVER_URL,
     source: token.id,
     currency: 'USD',
     amount: fromDollarToCent(amount),
+    stripeAccount: 'stripe_account_ID',
   })
   .catch(console.log('payment error'));
 
