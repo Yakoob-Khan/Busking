@@ -18,7 +18,7 @@ import WrappedMapView from './wrappedMapView';
 import { facebookResponseLocal } from '../actions';
 import requireAuth from './requireAuth';
 import UserProfile from './userprofile';
-import Followers from './followers';
+import Users from './users';
 // import UserProfile from './userprofile';
 
 const FallBack = (props) => {
@@ -47,7 +47,8 @@ class App extends Component {
             <Route path="/mapView" component={WrappedMapView} />
             <Route exact path="/events/:eventId" component={Event} />
             <Route exact path="/users/:userId" component={UserProfile} />
-            <Route exact path="/users/:userId/followers" component={Followers} />
+            <Route exact path="/users/:userId/followers" component={Users} />
+            <Route exact path="/users/:userId/following" component={Users} />
             {/* <Route path="/payment" component={CheckoutForm} /> */}
             <Route component={FallBack} />
           </Switch>

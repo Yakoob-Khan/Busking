@@ -241,10 +241,12 @@ class UserProfile extends Component {
                       <p id="user-profile-followers" className="user-profile-stat-value">{this.getNumOfFollowers()}</p>
                     </div>
                   </Link>
-                  <div id="user-profile-stat-3" className="user-profile-stat">
-                    <p id="user-profile-following-label" className="user-profile-stat-label">Following</p>
-                    <p id="user-profile-following" className="user-profile-stat-value">{this.getNumOfFollowing()}</p>
-                  </div>
+                  <Link id="event-creator-link" to={`/users/${this.props.user._id}/following`}>
+                    <div id="user-profile-stat-3" className="user-profile-stat">
+                      <p id="user-profile-following-label" className="user-profile-stat-label">Following</p>
+                      <p id="user-profile-following" className="user-profile-stat-value">{this.getNumOfFollowing()}</p>
+                    </div>
+                  </Link>
                   <div id="user-profile-stat-4" className="user-profile-stat">
                     <p id="user-profile-events-attended-label" className="user-profile-stat-label">Events Attended</p>
                     <p id="user-profile-events-attended" className="user-profile-stat-value">{this.getNumOfEventsAttended()}</p>

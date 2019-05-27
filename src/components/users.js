@@ -58,6 +58,16 @@ class Followers extends Component {
     }
   }
 
+  renderUsers = () => {
+    if (this.props.match.path === '/users/:userId/followers') {
+      return this.renderFollowers();
+    } else if (this.props.match.path === '/users/:userId/following') {
+      return this.renderFollowing();
+    } else {
+      return null;
+    }
+  }
+
   render() {
     if (this.props.match.params.userId !== this.props.user.id) {
       this.props.fetchUser(this.props.match.params.userId);
@@ -66,7 +76,7 @@ class Followers extends Component {
       const content = this.props.auth
         ? (
           <div id="user-profile">
-            {this.renderFollowers()}
+            {this.renderUsers()}
           </div>
         )
         : (
@@ -74,7 +84,6 @@ class Followers extends Component {
             Redirect back to home page here.
           </div>
         );
-      //   console.log(this.props.match.params);
       return (
         <div>{content}</div>
         // <div>test</div>
