@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
+import Ratings from 'react-ratings-declarative';
 import {
   updateCurrentUser, logoutUser, fetchUser, followUser, unFollowUser,
 } from '../actions';
@@ -26,9 +27,27 @@ class Followers extends Component {
     if (this.props.user.followers.length !== 0) {
       return this.props.user.followers.map((user) => {
         return (
-          <div className="user" key={user.id}>
-            {user.name}
-          </div>
+          <Link key={user.id} to={`/users/${user.id}`}>
+            <div className="user" key={user.id}>
+              <img src={user.photo} alt="profile" className="user-profile-pic" />
+              {user.name}
+              <div className="event-rating">
+                <Ratings
+                  rating={user.averageRating}
+                  widgetRatedColors="#0099CC"
+                  widgetEmptyColors="#6B6B6B"
+                  widgetSpacings="1px"
+                  widgetDimensions="12px"
+                >
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                </Ratings>
+              </div>
+            </div>
+          </Link>
         );
       });
     } else {
@@ -44,9 +63,27 @@ class Followers extends Component {
     if (this.props.user.following.length !== 0) {
       return this.props.user.following.map((user) => {
         return (
-          <div className="user" key={user.id}>
-            {user.name}
-          </div>
+          <Link key={user.id} to={`/users/${user.id}`}>
+            <div className="user" key={user.id}>
+              <img src={user.photo} alt="profile" className="user-profile-pic" />
+              {user.name}
+              <div className="event-rating">
+                <Ratings
+                  rating={user.averageRating}
+                  widgetRatedColors="#0099CC"
+                  widgetEmptyColors="#6B6B6B"
+                  widgetSpacings="1px"
+                  widgetDimensions="12px"
+                >
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                </Ratings>
+              </div>
+            </div>
+          </Link>
         );
       });
     } else {
@@ -60,9 +97,19 @@ class Followers extends Component {
 
   renderUsers = () => {
     if (this.props.match.path === '/users/:userId/followers') {
-      return this.renderFollowers();
+      return (
+        <div classnmae="users-container">
+          Followers:
+          {this.renderFollowers()}
+        </div>
+      );
     } else if (this.props.match.path === '/users/:userId/following') {
-      return this.renderFollowing();
+      return (
+        <div classnmae="users-container">
+          Following:
+          {this.renderFollowing()}
+        </div>
+      );
     } else {
       return null;
     }
@@ -75,9 +122,7 @@ class Followers extends Component {
     if (!this.isObjectEmpty(this.props.user)) {
       const content = this.props.auth
         ? (
-          <div id="user-profile">
-            {this.renderUsers()}
-          </div>
+          this.renderUsers()
         )
         : (
           <div>
@@ -85,7 +130,7 @@ class Followers extends Component {
           </div>
         );
       return (
-        <div>{content}</div>
+        <div className="content-container">{content}</div>
         // <div>test</div>
       );
     } else {
