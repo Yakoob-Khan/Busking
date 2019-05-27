@@ -19,8 +19,6 @@ class Events extends Component {
 
   componentDidMount() {
     this.props.fetchEvents();
-    // console.log('wohoo!');
-    // console.log(this.props.events);
   }
 
   onToggleMap(event) {
@@ -98,6 +96,7 @@ class Events extends Component {
 const mapStateToProps = state => (
   {
     events: state.events.allEvents,
+    state,
   }
 );
 

@@ -1,17 +1,36 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
+import axios from 'axios';
 import { withRouter } from 'react-router-dom';
 import '../style.scss';
 import Events from './events';
+import { updateStripeId } from '../actions';
 
 class Landing extends React.Component {
-  constructor() {
-    super();
-    this.state = {};
+  constructor(props) {
+    super(props);
+    this.state = {
+      stripe_user_id: '',
+    };
   }
 
+
   render() {
+    if (this.props.state && !this.state.stripe_user_id) {
+      const code = window.location.search.split('=')[2];
+
+      axios.post('http://localhost:9090/api/stripeAccount',
+        { code })
+        .then((response) => {
+          this.setState({ stripe_user_id: response.data.stripe_user_id });
+          const updatedUser = {
+            id: this.props.state.auth.user.id,
+            stripeId: this.state.stripe_user_id,
+          };
+          this.props.updateStripeId(updatedUser);
+        })
+        .catch(err => console.log(err));
+    }
     return (
       <div>
         <div id="landing">
@@ -32,4 +51,11 @@ class Landing extends React.Component {
   }
 }
 
-export default withRouter(connect(null, null)(Landing));
+const mapStateToProps = state => (
+  {
+    state,
+  }
+);
+
+
+export default withRouter(connect(mapStateToProps, { updateStripeId })(Landing));
