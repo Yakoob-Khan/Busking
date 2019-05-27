@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -7,7 +8,7 @@ import PlacesAutocomplete, {
 } from 'react-places-autocomplete';
 import { GoogleApiWrapper } from 'google-maps-react';
 import Modal from 'simple-react-modal';
-import { createEvent } from '../actions';
+import { createEvent, updateCurrentUser } from '../actions';
 
 class NewEvent extends Component {
   constructor(props) {
@@ -26,6 +27,7 @@ class NewEvent extends Component {
     };
     this.onFieldChange = this.onFieldChange.bind(this);
   }
+
 
   onFieldChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
@@ -60,6 +62,7 @@ class NewEvent extends Component {
         address: this.state.address,
         startTime: this.state.startTime,
         endTime: this.state.endTime,
+        stripeId: this.props.user.stripeId,
       };
       this.props.createEvent(newEvent, this.props.history);
     }
@@ -104,11 +107,6 @@ class NewEvent extends Component {
       position: 'absolute',
       zIndex: '100',
     };
-    if (this.props.loggedUser) {
-      console.log('user logged in');
-    } else {
-      console.log('user not logged in');
-    }
     return (
       <div id="new-event-background">
         <div id="new-event-form">
@@ -256,4 +254,4 @@ const WrappedNewEvent = GoogleApiWrapper({
   apiKey: 'AIzaSyAE7HAvGXDK-LG6BfkEM0mgafvwo_Nda1Y',
 })(NewEvent);
 
-export default withRouter(connect(mapStateToProps, { createEvent })(WrappedNewEvent));
+export default withRouter(connect(mapStateToProps, { createEvent, updateCurrentUser })(WrappedNewEvent));
