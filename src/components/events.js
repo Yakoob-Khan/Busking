@@ -26,7 +26,6 @@ class UnWrappedEvents extends Component {
     this.sortEvents();
     // console.log('wohoo!');
     // console.log(this.props.events);
-
   }
 
   onToggleMap(event) {
@@ -70,7 +69,6 @@ class UnWrappedEvents extends Component {
   renderEvents = () => {
     if (this.props.events.length !== 0) {
       return this.props.events.map((event) => {
-        this.sortEvents();
         const eventStyle = {
           backgroundImage: `url(${event.imageURL})`,
         };
@@ -126,6 +124,7 @@ class UnWrappedEvents extends Component {
           <button onClick={this.onToggleMap} className="events-toggle" type="button">{this.state.mapBool ? 'Toggle Grid' : 'Toggle Map' }</button>
         </div>
         <div className="events-container">
+          {this.sortEvents()}
           {this.state.mapBool ? <WrappedMapView /> : this.renderEvents()}
         </div>
       </div>

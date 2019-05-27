@@ -20,6 +20,7 @@ export class EventMap extends Component {
       selectedEvent: {}, // Shows the infoWindow to the selected Event upon a marker
       currentMode: 'DRIVING',
       map: {},
+      feedback: 'Loading Directions...',
     };
     this.map = React.createRef();
   }
@@ -86,6 +87,11 @@ export class EventMap extends Component {
       this.directionsService.route(request, (result, status) => {
         if (status === 'OK') {
           this.directionsDisplay.setDirections(result);
+          this.setState({ feedback: '' });
+        } else if (status === 'ZERO_RESULTS') {
+          this.setState({ feedback: 'No route to event found' });
+        } else if (status === 'UNKNOWN_ERROR') {
+          this.setState({ feedback: 'Error. Please Try again' });
         }
       });
     }
@@ -115,17 +121,12 @@ export class EventMap extends Component {
       borderBottom: '1px dotted gray',
       zIndex: '2',
     };
-    let loading = null;
-    if (this.isObjectEmpty(event) || this.isObjectEmpty(userLoc)) {
-      loading = <p className="directions">Loading directions... </p>;
-    }
-
     return (
       <div id="map-outermost-wrapper">
         <div>
           <h3 id="map-header">Directions to Event</h3>
           <div id="floating-panel">
-            {loading}
+            <p>{this.state.feedback}</p>
             <p id="map-mode-select-label">Travel By</p>
             <select id="map-mode-select" onChange={this.onModeChange}>
               <option value="DRIVING">Driving</option>
