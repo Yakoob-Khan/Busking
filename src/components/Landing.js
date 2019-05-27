@@ -14,39 +14,15 @@ class Landing extends React.Component {
     };
   }
 
-  // componentDidMount() {
-  //   // const { code } = window.location.href;
-  //   // console.log(this.props.state);
-  //   const code = window.location.search.split('=')[2];
-  //   console.log('this is the code!');
-  //   console.log(code);
-
-  //   axios.post('http://localhost:9090/api/stripeAccount',
-  //     { code })
-  //     .then(response => console.log(response))
-  //     .catch(err => console.log(err));
-  // }
-  componentDidUpdate() {
-    // const { code } = window.location.href;
-    // console.log(this.props.state);
-
-  }
 
   render() {
-    if (this.props.state) {
+    if (this.props.state && !this.state.stripe_user_id) {
       const code = window.location.search.split('=')[2];
-      console.log(JSON.stringify(code));
-
 
       axios.post('http://localhost:9090/api/stripeAccount',
         { code })
         .then((response) => {
-        // const { stripe_user_id } = response.data.stripe_user_id;
-        // console.log(response.data.stripe_user_id);
-        // console.log(this.props.user);
           this.setState({ stripe_user_id: response.data.stripe_user_id });
-          console.log(this.state.stripe_user_id);
-          console.log(this.props.state.auth.user.id);
           const updatedUser = {
             id: this.props.state.auth.user.id,
             stripeId: this.state.stripe_user_id,

@@ -18,6 +18,8 @@ const UsersReducer = (state = initialState, action) => {
       return Object.assign({}, state, { user: action.payload });
     case ActionTypes.UNFOLLOW_USER:
       return Object.assign({}, state, { user: action.payload });
+    case ActionTypes.UPDATE_STRIPE_ID:
+      return Object.assign({}, state, { user: action.payload });
     default:
       return state;
   }

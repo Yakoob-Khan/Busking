@@ -258,7 +258,6 @@ export function updateCurrentUser(updatedUser) {
 }
 
 export function updateStripeId(updatedUser) {
-  console.log(updatedUser);
   return (dispatch) => {
     axios.put(`${ROOT_URL}/userStripeId`, updatedUser)
       .then((response) => {
@@ -335,16 +334,3 @@ export function getCurrentLocation() {
     }
   };
 }
-
-// export function stripeRedirect() {
-//   return (dispatch) => {
-//     axios.get('https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_F6rBJOefS9FTqzvaRY8cuXnnoDU9SHpV&scope=read_write')
-//       .then((response) => {
-//         console.log(response);
-//         // dispatch({ type: ActionTypes.UPDATE_CURRENT_USER, payload: response.data });
-//       })
-//       .catch((error) => {
-//         dispatch(appError(`Update user failed: ${error}`));
-//       });
-//   };
-// }

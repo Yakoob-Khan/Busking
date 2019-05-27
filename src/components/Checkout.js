@@ -7,23 +7,24 @@ const PAYMENT_SERVER_URL = 'http://localhost:9090/api/payment';
 const CURRENCY = 'USD';
 const STRIPE_KEY = 'pk_test_cmSKgd5oAKJCXkLZWdG9iPkY00gDJLz3VP';
 
-const onToken = (amount, description) => token => axios.post(PAYMENT_SERVER_URL,
+const onToken = (amount, description, stripeId) => token => axios.post(PAYMENT_SERVER_URL,
   {
     description,
     source: token.id,
     currency: 'USD',
     amount: fromDollarToCent(amount),
-    stripeAccount: 'stripe_account_ID',
-  })
-  .catch(console.log('payment error'));
+    stripeId,
+  });
 
-const Checkout = ({ name, description, amount }) => (
+const Checkout = ({
+  name, description, amount, stripeId,
+}) => (
   <StripeCheckout
     name={name}
     email="true"
     description={description}
     amount={fromDollarToCent(amount)}
-    token={onToken(amount, description)}
+    token={onToken(amount, description, stripeId)}
     currency={CURRENCY}
     stripeKey={STRIPE_KEY}
     image="https://blog.iconfactory.com/wp-content/uploads/2016/05/OlliesTipJar.png"

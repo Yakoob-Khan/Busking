@@ -200,14 +200,6 @@ class UserProfile extends Component {
   }
 
   stripeConnect = () => {
-    // axios.get('https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_F6rBJOefS9FTqzvaRY8cuXnnoDU9SHpV&scope=read_write',
-    //   { headers: { 'Access-Control-Allow-Origin': false } })
-    //   .then((response) => {
-    //     console.log(response);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
     this.props.stripeRedirect();
   }
 
@@ -232,13 +224,9 @@ class UserProfile extends Component {
                     href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_F6rBJOefS9FTqzvaRY8cuXnnoDU9SHpV&scope=read_write"
                     rel="noopener noreferrer"
                   >
-              Stripe Connect
+                  Stripe Connect
                   </a>
-                  {/* <button
-                    type="button"
-                    onClick={this.stripeConnect}
-                  >Stripe Connect!
-                  </button> */}
+
                 </div>
                 <div id="user-profile-stats">
                   <div id="user-profile-stat-1" className="user-profile-stat">
