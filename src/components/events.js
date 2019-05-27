@@ -26,6 +26,7 @@ class UnWrappedEvents extends Component {
     this.sortEvents();
     // console.log('wohoo!');
     // console.log(this.props.events);
+
   }
 
   onToggleMap(event) {
@@ -136,6 +137,7 @@ const mapStateToProps = state => (
   {
     events: state.events.allEvents,
     currentUserLocation: state.users.currentUserLocation,
+    state,
   }
 );
 
