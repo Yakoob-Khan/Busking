@@ -333,6 +333,7 @@ class Event extends Component {
                     name={`Send a tip to ${this.props.users.user.name}!`}
                     description="Your tip goes a long way!"
                     amount={this.state.tip}
+                    stripeId={this.props.event.stripeId}
                   />
                   {this.renderAttendButton()}
                 </div>

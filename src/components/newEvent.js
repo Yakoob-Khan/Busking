@@ -62,6 +62,7 @@ class NewEvent extends Component {
         address: this.state.address,
         startTime: this.state.startTime,
         endTime: this.state.endTime,
+        stripeId: this.props.user.stripeId,
       };
       this.props.createEvent(newEvent, this.props.history);
     }
