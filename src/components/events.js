@@ -2,10 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import Ratings from 'react-ratings-declarative';
-import { fetchEvents } from '../actions';
+import { GoogleApiWrapper } from 'google-maps-react';
+import { fetchEvents, getCurrentLocation, updateStateEvents } from '../actions';
 import WrappedMapView from './wrappedMapView';
 
-class Events extends Component {
+class UnWrappedEvents extends Component {
+  geocoder = new this.props.google.maps.Geocoder();
+
   constructor(props) {
     super(props);
     this.state = {
@@ -19,6 +22,8 @@ class Events extends Component {
 
   componentDidMount() {
     this.props.fetchEvents();
+    this.props.getCurrentLocation();
+    this.sortEvents();
     // console.log('wohoo!');
     // console.log(this.props.events);
   }
@@ -29,6 +34,37 @@ class Events extends Component {
     }));
   }
 
+  isObjectEmpty = (object) => {
+    // empty object check adapted from https://stackoverflow.com/questions/679915/how-do-i-test-for-an-empty-javascript-object
+    return Object.entries(object).length === 0 && object.constructor === Object;
+  }
+
+  sortEvents() {
+    if (!this.isObjectEmpty(this.props.currentUserLocation)) {
+      this.geocoder.geocode({ location: this.props.currentUserLocation }, (results, status) => {
+        if (status === 'OK') {
+          const userAddr = results[0].address_components;
+          const needed = userAddr.filter((comp) => {
+            return !comp.types.includes('street_number') && !comp.types.includes('postal_code');
+          });
+          const neededArr = needed.map(comp => comp.short_name);
+          const uniqNeeded = [...new Set(neededArr)];
+          const events = this.props.events;
+          let sorted = [];
+          uniqNeeded.forEach((uniq) => {
+            events.forEach((event, index) => {
+              if (event.address.includes(uniq)) {
+                sorted.push(event);
+                events.splice(index, 1);
+              }
+            });
+          });
+          sorted = [...sorted, ...events];
+          this.props.updateStateEvents(sorted);
+        }
+      });
+    }
+  }
 
   renderEvents = () => {
     if (this.props.events.length !== 0) {
@@ -88,6 +124,7 @@ class Events extends Component {
           <button onClick={this.onToggleMap} className="events-toggle" type="button">{this.state.mapBool ? 'Toggle Grid' : 'Toggle Map' }</button>
         </div>
         <div className="events-container">
+          {this.sortEvents()}
           {this.state.mapBool ? <WrappedMapView /> : this.renderEvents()}
         </div>
       </div>
@@ -98,7 +135,14 @@ class Events extends Component {
 const mapStateToProps = state => (
   {
     events: state.events.allEvents,
+    currentUserLocation: state.users.currentUserLocation,
+    state,
   }
 );
 
-export default withRouter(connect(mapStateToProps, { fetchEvents })(Events));
+// eslint-disable-next-line new-cap
+const Events = GoogleApiWrapper({
+  apiKey: 'AIzaSyAE7HAvGXDK-LG6BfkEM0mgafvwo_Nda1Y',
+})(UnWrappedEvents);
+
+export default withRouter(connect(mapStateToProps, { fetchEvents, getCurrentLocation, updateStateEvents })(Events));

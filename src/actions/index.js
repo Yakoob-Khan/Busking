@@ -16,6 +16,7 @@ export const ActionTypes = {
   UNFOLLOW_USER: 'UNFOLLOW_USER',
   ATTEND_EVENT: 'ATTEND_EVENT',
   LEAVE_EVENT: 'LEAVE_EVENT',
+  UPDATE_STRIPE_ID: 'UPDATE_STRIPE_ID',
 };
 
 const ROOT_URL = 'http://localhost:9090/api';
@@ -34,12 +35,9 @@ export const testAPI = () => {
 
 export const facebookResponseLocal = (localToken) => {
   return (dispatch) => {
-    console.log('hit facebook facebook');
     axios.get('http://localhost:9090/auth/facebook/refresh', { headers: { authorization: localToken } }).then((r) => {
       const user = r.data;
-      console.log(user);
       if (r.status === 200) {
-        console.log('hit facebook dispatch');
         dispatch({
           type: ActionTypes.AUTH_USER_SUCCESS,
           payload: { user },
@@ -95,9 +93,7 @@ export function logoutUser(history) {
 // };
 
 export const facebookResponse = (response) => {
-  console.log(response);
   return (dispatch) => {
-    console.log(response.accessToken);
     const tokenBlob = new Blob([JSON.stringify({ access_token: response.accessToken }, null, 2)], { type: 'application/json' });
     const options = {
       method: 'POST',
@@ -109,7 +105,6 @@ export const facebookResponse = (response) => {
       const token = r.headers.get('x-auth-token');
       localStorage.setItem('jwtToken', token);
       r.json().then((user) => {
-        console.log(user);
         if (token) {
           dispatch({
             type: ActionTypes.AUTH_USER_SUCCESS,
@@ -155,11 +150,21 @@ export function fetchEvents() {
   };
 }
 
+// update store events after sorting based on user location
+export function updateStateEvents(events) {
+  return (dispatch) => {
+    dispatch({
+      type: ActionTypes.FETCH_EVENTS,
+      payload: events,
+    });
+  };
+}
+
 export function createEvent(newEvent, history) {
   return (dispatch) => {
     axios.post(`${ROOT_URL}/events`, newEvent, { headers: { authorization: localStorage.getItem('jwtToken') } })
       .then((response) => {
-        history.push('/events');
+        history.push('/');
       })
       .catch((error) => {
         dispatch(appError(`Error creating post :( ${error}`));
@@ -270,6 +275,18 @@ export function updateCurrentUser(updatedUser) {
     axios.put(`${ROOT_URL}/user`, updatedUser)
       .then((response) => {
         dispatch({ type: ActionTypes.UPDATE_CURRENT_USER, payload: response.data });
+      })
+      .catch((error) => {
+        dispatch(appError(`Update user failed: ${error}`));
+      });
+  };
+}
+
+export function updateStripeId(updatedUser) {
+  return (dispatch) => {
+    axios.put(`${ROOT_URL}/userStripeId`, updatedUser)
+      .then((response) => {
+        dispatch({ type: ActionTypes.UPDATE_STRIPE_ID, payload: response.data });
       })
       .catch((error) => {
         dispatch(appError(`Update user failed: ${error}`));
