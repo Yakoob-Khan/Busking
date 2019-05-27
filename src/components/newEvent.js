@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -7,7 +8,7 @@ import PlacesAutocomplete, {
 } from 'react-places-autocomplete';
 import { GoogleApiWrapper } from 'google-maps-react';
 import Modal from 'simple-react-modal';
-import { createEvent } from '../actions';
+import { createEvent, updateCurrentUser } from '../actions';
 
 class NewEvent extends Component {
   constructor(props) {
@@ -26,6 +27,7 @@ class NewEvent extends Component {
     };
     this.onFieldChange = this.onFieldChange.bind(this);
   }
+
 
   onFieldChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
@@ -251,4 +253,4 @@ const WrappedNewEvent = GoogleApiWrapper({
   apiKey: 'AIzaSyAE7HAvGXDK-LG6BfkEM0mgafvwo_Nda1Y',
 })(NewEvent);
 
-export default withRouter(connect(mapStateToProps, { createEvent })(WrappedNewEvent));
+export default withRouter(connect(mapStateToProps, { createEvent, updateCurrentUser })(WrappedNewEvent));

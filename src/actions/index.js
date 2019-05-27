@@ -16,6 +16,7 @@ export const ActionTypes = {
   UNFOLLOW_USER: 'UNFOLLOW_USER',
   ATTEND_EVENT: 'ATTEND_EVENT',
   LEAVE_EVENT: 'LEAVE_EVENT',
+  UPDATE_STRIPE_ID: 'UPDATE_STRIPE_ID',
 };
 
 const ROOT_URL = 'http://localhost:9090/api';
@@ -249,6 +250,20 @@ export function updateCurrentUser(updatedUser) {
     axios.put(`${ROOT_URL}/user`, updatedUser)
       .then((response) => {
         dispatch({ type: ActionTypes.UPDATE_CURRENT_USER, payload: response.data });
+      })
+      .catch((error) => {
+        dispatch(appError(`Update user failed: ${error}`));
+      });
+  };
+}
+
+export function updateStripeId(updatedUser) {
+  console.log(updatedUser);
+  return (dispatch) => {
+    axios.put(`${ROOT_URL}/userStripeId`, updatedUser)
+      .then((response) => {
+        console.log(response);
+        dispatch({ type: ActionTypes.UPDATE_STRIPE_ID, payload: response.data });
       })
       .catch((error) => {
         dispatch(appError(`Update user failed: ${error}`));
