@@ -149,6 +149,16 @@ export function fetchEvents() {
   };
 }
 
+// update store events after sorting based on user location
+export function updateStateEvents(events) {
+  return (dispatch) => {
+    dispatch({
+      type: ActionTypes.FETCH_EVENTS,
+      payload: events,
+    });
+  };
+}
+
 export function createEvent(newEvent, history) {
   return (dispatch) => {
     axios.post(`${ROOT_URL}/events`, newEvent, { headers: { authorization: localStorage.getItem('jwtToken') } })

@@ -79,8 +79,9 @@ export class MapView extends Component {
       <div>
         <Map className="map-container"
           google={this.props.google}
-          bounds={this.getBounds()}
-          zoom={8}
+          center={this.props.currentUserLocation}
+          // bounds={this.getBounds()}
+          zoom={6}
         >
           {this.renderEvents()}
           <Marker
