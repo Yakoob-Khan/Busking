@@ -19,9 +19,6 @@ class Events extends Component {
 
   componentDidMount() {
     this.props.fetchEvents();
-    // console.log(this.props.state);
-    // console.log('wohoo!');
-    // console.log(this.props.events);
   }
 
   onToggleMap(event) {
