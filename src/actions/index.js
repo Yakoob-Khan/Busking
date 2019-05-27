@@ -32,6 +32,7 @@ export const testAPI = () => {
   };
 };
 
+
 export const facebookResponseLocal = (localToken) => {
   return (dispatch) => {
     axios.get('http://localhost:9090/auth/facebook/refresh', { headers: { authorization: localToken } }).then((r) => {
@@ -187,6 +188,20 @@ export function fetchEvent(id, callback) {
       });
   };
 }
+
+export const writeComment = (id, text, history) => {
+  return (dispatch) => {
+    console.log('helo api comment!');
+    axios.post(`http://localhost:9090/api/comment/${id}`, { text }, { headers: { authorization: localStorage.getItem('jwtToken') } }).then((r) => {
+      // console.log(r);
+      dispatch(fetchEvent(id));
+      history.push(`/events/${id}`);
+    // dispatch({ type: ActionTypes.DELETE_POST, payload: response.data });
+    }).catch((e) => {
+      console.log(e);
+    });
+  };
+};
 
 export function updateEvent(update) {
   return (dispatch) => {

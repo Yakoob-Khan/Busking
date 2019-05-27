@@ -9,7 +9,7 @@ import PlacesAutocomplete, {
 } from 'react-places-autocomplete';
 import Checkout from './Checkout';
 import {
-  fetchEvent, updateEvent, deleteEvent, rateEvent, fetchUser, attendEvent, leaveEvent,
+  fetchEvent, updateEvent, deleteEvent, rateEvent, fetchUser, attendEvent, leaveEvent, writeComment,
 } from '../actions';
 // import PaymentRequestForm from './PaymentRequestForm';
 import WrappedEventMap from './eventMap';
@@ -267,6 +267,16 @@ class Event extends Component {
           <div id="map-wrapper">
             <WrappedEventMap />
           </div>
+          <div>
+            <textarea ref={(commentInput) => { this.commentInput = commentInput; }} />
+            <button type="button" onClick={() => this.props.writeComment(this.props.event.id, this.commentInput.value, this.props.history)} />
+          </div>
+          <div>
+            <h3>Comments</h3>
+            {this.props.event.comments.map((comment) => { return <div>{comment.author.name} | {comment.text}</div>; })}
+            {/* {this.props.event.comments.map(comment => comment.text)} */}
+            {console.log(this.props.event.latitude)}
+          </div>
         </div>
       );
     } else if (!this.state.isEditing) {
@@ -313,6 +323,10 @@ class Event extends Component {
                       </Ratings>
                       <p id="event-average-rating-label">
                       Average Rating: {this.props.event.averageRating ? this.props.event.averageRating.toFixed(2) : ''}
+                        {/* example of comment usage */}
+                        {/* to get text do comment.text */}
+                        {/* {this.props.event.comments.map(comment => console.log(comment.author.name))}
+                        {console.log(this.props.event.latitude)} */}
                       </p>
                     </div>
                   </div>
@@ -482,6 +496,14 @@ class Event extends Component {
       return (
         <div>
           {this.renderEvent()}
+          {/* HI MAX HERE IS A COMMENT EXAMPLE BELOW
+          IT IS VERY UGLY AND RUINS THE DISPLAY
+          BUT CAN BE REMOVED WITH A comment
+          I DONT KNOW HOW TO STYLE THIS STUFF SO I ASSUME
+          YOU WANT TO MAKE IT PRETTY
+           */}
+          {/* <textarea ref={(commentInput) => { this.commentInput = commentInput; }} />
+          <button type="button" onClick={() => this.props.writeComment(this.props.event.id, this.commentInput.value, this.props.history)} /> */}
           {/* <div id="map-wrapper">
             <WrappedEventMap />
           </div> */}
@@ -502,5 +524,5 @@ const mapStateToProps = state => (
 );
 
 export default withRouter(connect(mapStateToProps, {
-  fetchEvent, updateEvent, deleteEvent, rateEvent, fetchUser, attendEvent, leaveEvent,
+  fetchEvent, updateEvent, deleteEvent, rateEvent, fetchUser, attendEvent, leaveEvent, writeComment,
 })(Event));
