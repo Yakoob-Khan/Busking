@@ -91,9 +91,7 @@ export function logoutUser(history) {
 // };
 
 export const facebookResponse = (response) => {
-  console.log(response);
   return (dispatch) => {
-    console.log(response.accessToken);
     const tokenBlob = new Blob([JSON.stringify({ access_token: response.accessToken }, null, 2)], { type: 'application/json' });
     const options = {
       method: 'POST',
@@ -105,7 +103,6 @@ export const facebookResponse = (response) => {
       const token = r.headers.get('x-auth-token');
       localStorage.setItem('jwtToken', token);
       r.json().then((user) => {
-        console.log(user);
         if (token) {
           dispatch({
             type: ActionTypes.AUTH_USER_SUCCESS,
@@ -323,3 +320,16 @@ export function getCurrentLocation() {
     }
   };
 }
+
+// export function stripeRedirect() {
+//   return (dispatch) => {
+//     axios.get('https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_F6rBJOefS9FTqzvaRY8cuXnnoDU9SHpV&scope=read_write')
+//       .then((response) => {
+//         console.log(response);
+//         // dispatch({ type: ActionTypes.UPDATE_CURRENT_USER, payload: response.data });
+//       })
+//       .catch((error) => {
+//         dispatch(appError(`Update user failed: ${error}`));
+//       });
+//   };
+// }

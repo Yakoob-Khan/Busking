@@ -61,7 +61,6 @@ class NewEvent extends Component {
         startTime: this.state.startTime,
         endTime: this.state.endTime,
       };
-      console.log(this.props.user);
       this.props.createEvent(newEvent, this.props.history);
     }
   }

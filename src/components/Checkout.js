@@ -7,7 +7,6 @@ const PAYMENT_SERVER_URL = 'http://localhost:9090/api/payment';
 const CURRENCY = 'USD';
 const STRIPE_KEY = 'pk_test_cmSKgd5oAKJCXkLZWdG9iPkY00gDJLz3VP';
 
-
 const onToken = (amount, description) => token => axios.post(PAYMENT_SERVER_URL,
   {
     description,

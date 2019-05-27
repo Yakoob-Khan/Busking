@@ -198,6 +198,18 @@ class UserProfile extends Component {
     }
   }
 
+  // stripeConnect = () => {
+  //   // axios.get('https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_F6rBJOefS9FTqzvaRY8cuXnnoDU9SHpV&scope=read_write',
+  //   //   { headers: { 'Access-Control-Allow-Origin': false } })
+  //   //   .then((response) => {
+  //   //     console.log(response);
+  //   //   })
+  //   //   .catch((err) => {
+  //   //     console.log(err);
+  //   //   });
+  //   this.stripeRedirect();
+  // }
+
   render() {
     if (this.props.match.params.userId !== this.props.user.id) {
       this.props.fetchUser(this.props.match.params.userId);
@@ -215,6 +227,17 @@ class UserProfile extends Component {
                   <p id="user-profile-email">{this.props.user.email}</p>
                   {this.renderFollowButton()}
                   {this.renderLogoutButton()}
+                  {/* <a
+                    href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_F6rBJOefS9FTqzvaRY8cuXnnoDU9SHpV&scope=read_write"
+                    rel="noopener noreferrer"
+                  >
+              Stripe Connect
+                  </a> */}
+                  {/* <button
+                    type="button"
+                    onClick={this.stripeConnect}
+                  >Stripe Connect!
+                  </button> */}
                 </div>
                 <div id="user-profile-stats">
                   <div id="user-profile-stat-1" className="user-profile-stat">

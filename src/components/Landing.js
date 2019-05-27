@@ -6,10 +6,25 @@ import '../style.scss';
 import Events from './events';
 
 class Landing extends React.Component {
-  constructor() {
-    super();
-    this.state = {};
+  constructor(props) {
+    super(props);
+    this.state = {
+
+    };
   }
+
+  // componentDidMount() {
+  //   // const { code } = window.location.href;
+  //   // console.log(this.props.state);
+  //   const code = window.location.search.split('=')[2];
+  //   console.log('this is the code!');
+  //   console.log(code);
+
+  //   axios.post('http://localhost:9090/api/stripeAccount',
+  //     { code })
+  //     .then(response => console.log(response))
+  //     .catch(err => console.log(err));
+  // }
 
   render() {
     return (
@@ -32,4 +47,11 @@ class Landing extends React.Component {
   }
 }
 
-export default withRouter(connect(null, null)(Landing));
+const mapStateToProps = state => (
+  {
+    state,
+  }
+);
+
+
+export default withRouter(connect(mapStateToProps, null)(Landing));
