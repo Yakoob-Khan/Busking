@@ -267,6 +267,16 @@ class Event extends Component {
           <div id="map-wrapper">
             <WrappedEventMap />
           </div>
+          <div>
+            <textarea ref={(commentInput) => { this.commentInput = commentInput; }} />
+            <button type="button" onClick={() => this.props.writeComment(this.props.event.id, this.commentInput.value, this.props.history)} />
+          </div>
+          <div>
+            <h3>Comments</h3>
+            {this.props.event.comments.map((comment) => { return <div>{comment.author.name} | {comment.text}</div>; })}
+            {/* {this.props.event.comments.map(comment => comment.text)} */}
+            {console.log(this.props.event.latitude)}
+          </div>
         </div>
       );
     } else if (!this.state.isEditing) {
@@ -315,8 +325,8 @@ class Event extends Component {
                       Average Rating: {this.props.event.averageRating ? this.props.event.averageRating.toFixed(2) : ''}
                         {/* example of comment usage */}
                         {/* to get text do comment.text */}
-                        {this.props.event.comments.map(comment => console.log(comment.author.name))}
-                        {console.log(this.props.event.latitude)}
+                        {/* {this.props.event.comments.map(comment => console.log(comment.author.name))}
+                        {console.log(this.props.event.latitude)} */}
                       </p>
                     </div>
                   </div>
@@ -492,8 +502,8 @@ class Event extends Component {
           I DONT KNOW HOW TO STYLE THIS STUFF SO I ASSUME
           YOU WANT TO MAKE IT PRETTY
            */}
-          <textarea ref={(commentInput) => { this.commentInput = commentInput; }} />
-          <button type="button" onClick={() => this.props.writeComment(this.props.event.id, this.commentInput.value, this.props.history)} />
+          {/* <textarea ref={(commentInput) => { this.commentInput = commentInput; }} />
+          <button type="button" onClick={() => this.props.writeComment(this.props.event.id, this.commentInput.value, this.props.history)} /> */}
           {/* <div id="map-wrapper">
             <WrappedEventMap />
           </div> */}
