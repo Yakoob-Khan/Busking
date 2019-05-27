@@ -31,6 +31,17 @@ export const testAPI = () => {
   };
 };
 
+export const searchEvents = (searchTerm) => {
+  return (dispatch) => {
+    axios.get('http://localhost:9090/api/search/event').then((r) => {
+      console.log(r);
+    // dispatch({ type: ActionTypes.DELETE_POST, payload: response.data });
+    }).catch((e) => {
+      console.log(e);
+    });
+  };
+};
+
 
 export const facebookResponseLocal = (localToken) => {
   return (dispatch) => {
