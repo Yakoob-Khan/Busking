@@ -102,7 +102,7 @@ class UnWrappedEvents extends Component {
         };
         return (
           <div className="event-container" key={event.id}>
-            <Link className="view-details" key={event.id} to={`events/${event.id}`}>
+            <Link className="view-details" key={event.id} to={`/events/${event.id}`}>
               <div className="event" key={event.id} style={eventStyle} />
               <p className="event-title">
                 {event.title}
