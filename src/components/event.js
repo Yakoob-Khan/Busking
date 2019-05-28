@@ -195,94 +195,93 @@ class Event extends Component {
       backgroundRepeat: 'no-repeat',
       backgroundSize: 'cover',
     };
+    const numOfComments = this.props.event.comments.length;
     if ((!this.state.isEditing) && (this.props.user) && (this.props.user.id === this.props.event.host)) {
-      const numOfComments = this.props.event.comments.length;
       return (
         <div id="event-page-background">
           <div id="event-page">
-            <div id="event-details-left" style={eventImage} />
-            <div id="event-details-right">
-              <div id="event-details">
-                <div id="event-details-group-1">
-                  <p id="event-title">{this.props.event.title}</p>
-                  <p id="event-location">{this.props.event.address}</p>
-                  <p id="event-time">
-                    <span>{moment(this.props.event.startTime).format('MMM DD LT')}</span>
-                    <span> &#45; </span>
-                    <span>{moment(this.props.event.endTime).format('MMM DD LT')}</span>
-                  </p>
-                </div>
-                <div id="event-details-group-2">
-                  <Link id="event-creator-link" to={`/users/${this.props.users.user._id}`}>
-                    <div id="event-details-group-2-left">
-                      <img id="event-creator-photo" src={this.props.users.user.photo} alt="Event Creator" />
-                      <p id="event-creator">Event Creator</p>
-                      <p id="event-creator-name">{this.props.users.user.name}</p>
-                    </div>
-                  </Link>
-                  <div id="event-details-group-2-right">
-                    <p id="event-description">{this.props.event.description}</p>
-                    <div id="event-average-rating">
-                      <Ratings
-                        // rating={this.props.event.sumOfRating / this.props.event.numberOfRatings}
-                        rating={this.props.event.averageRating}
-                        widgetRatedColors="#0099CC"
-                        widgetHoverColors="rgb(0,153,204)"
-                        widgetEmptyColors="#6B6B6B"
-                        widgetSpacings="2px"
-                        widgetDimensions="18px"
-                        // changeRating={this.changeRating}
-                      >
-                        <Ratings.Widget />
-                        <Ratings.Widget />
-                        <Ratings.Widget />
-                        <Ratings.Widget />
-                        <Ratings.Widget />
-                      </Ratings>
-                      <p id="event-average-rating-label">
-                        Average Rating: {this.props.event.averageRating ? this.props.event.averageRating.toFixed(2) : 'N/A'}
-                      </p>
+            <div id="event-details-container">
+              <div id="event-details-left" style={eventImage} />
+              <div id="event-details-right">
+                <div id="event-details">
+                  <div id="event-details-group-1">
+                    <p id="event-title">{this.props.event.title}</p>
+                    <p id="event-location">{this.props.event.address}</p>
+                    <p id="event-time">
+                      <span>{moment(this.props.event.startTime).format('MMM DD LT')}</span>
+                      <span> &#45; </span>
+                      <span>{moment(this.props.event.endTime).format('MMM DD LT')}</span>
+                    </p>
+                  </div>
+                  <div id="event-details-group-2">
+                    <Link id="event-creator-link" to={`/users/${this.props.users.user._id}`}>
+                      <div id="event-details-group-2-left">
+                        <img id="event-creator-photo" src={this.props.users.user.photo} alt="Event Creator" />
+                        <p id="event-creator">Event Creator</p>
+                        <p id="event-creator-name">{this.props.users.user.name}</p>
+                      </div>
+                    </Link>
+                    <div id="event-details-group-2-right">
+                      <p id="event-description">{this.props.event.description}</p>
+                      <div id="event-average-rating">
+                        <Ratings
+                          // rating={this.props.event.sumOfRating / this.props.event.numberOfRatings}
+                          rating={this.props.event.averageRating}
+                          widgetRatedColors="#0099CC"
+                          widgetHoverColors="rgb(0,153,204)"
+                          widgetEmptyColors="#6B6B6B"
+                          widgetSpacings="2px"
+                          widgetDimensions="18px"
+                          // changeRating={this.changeRating}
+                        >
+                          <Ratings.Widget />
+                          <Ratings.Widget />
+                          <Ratings.Widget />
+                          <Ratings.Widget />
+                          <Ratings.Widget />
+                        </Ratings>
+                        <p id="event-average-rating-label">
+                          Average Rating: {this.props.event.averageRating ? this.props.event.averageRating.toFixed(2) : 'N/A'}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div id="event-details-group-3">
-                  <button id="update-event-button" className="event-button" type="button" onClick={this.onEdit}>
-                    <p>update event</p>
-                  </button>
-                  <button id="delete-event-button" className="event-button" type="button" onClick={this.deleteEvent}>
-                    <p>delete event</p>
-                  </button>
+                  <div id="event-details-group-3">
+                    <button id="update-event-button" className="event-button" type="button" onClick={this.onEdit}>
+                      <p>update event</p>
+                    </button>
+                    <button id="delete-event-button" className="event-button" type="button" onClick={this.deleteEvent}>
+                      <p>delete event</p>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div id="map-wrapper">
-            <WrappedEventMap />
-          </div>
-          <div id="comments-section">
-            <h3 id="comments-section-header">{numOfComments} {numOfComments === 1 ? 'Comment' : 'Comments'}</h3>
-            <div id="new-comment">
-              <img id="new-comment-current-user" src={this.props.user.photo} alt={this.props.user.name} />
-              <textarea id="new-comment-input" placeholder="Write a comment" ref={(commentInput) => { this.commentInput = commentInput; }} />
-              <button id="new-comment-button" type="button" onClick={() => this.props.writeComment(this.props.event.id, this.commentInput.value, this.props.history)}>Comment</button>
+            <div id="map-wrapper">
+              <WrappedEventMap />
             </div>
-            <div id="all-previous-comments">
-              {this.props.event.comments.map((comment) => {
-                return (
-                  <div id="comment">
-                    <div id="comment-author">
-                      <img id="comment-author-image" src={comment.author.photo} alt={comment.author.name} />
-                      <div id="comment-author-name-and-text">
-                        <span id="comment-author-name">{comment.author.name}</span>
-                        <span id="comment-text">{comment.text}</span>
+            <div id="comments-section">
+              <h3 id="comments-section-header">{numOfComments} {numOfComments === 1 ? 'Comment' : 'Comments'}</h3>
+              <div id="new-comment">
+                <img id="new-comment-current-user" src={this.props.user.photo} alt={this.props.user.name} />
+                <textarea id="new-comment-input" placeholder="Write a comment" ref={(commentInput) => { this.commentInput = commentInput; }} />
+                <button id="new-comment-button" type="button" onClick={() => this.props.writeComment(this.props.event.id, this.commentInput.value, this.props.history)}>Comment</button>
+              </div>
+              <div id="all-previous-comments">
+                {this.props.event.comments.map((comment) => {
+                  return (
+                    <div id="comment">
+                      <div id="comment-author">
+                        <img id="comment-author-image" src={comment.author.photo} alt={comment.author.name} />
+                        <div id="comment-author-name-and-text">
+                          <span id="comment-author-name">{comment.author.name}</span>
+                          <span id="comment-text">{comment.text}</span>
+                        </div>
                       </div>
                     </div>
-                    {/* <span id="comment-text">{comment.text}</span> */}
-                  </div>
-                );
-              })}
-              {/* {this.props.event.comments.map(comment => comment.text)} */}
-              {console.log(this.props.event.latitude)}
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
@@ -291,82 +290,107 @@ class Event extends Component {
       return (
         <div id="event-page-background">
           <div id="event-page">
-            <div id="event-details-left" style={eventImage} />
-            <div id="event-details-right">
-              <div id="event-details">
-                <div id="event-details-group-1">
-                  <p id="event-title">{this.props.event.title}</p>
-                  <p id="event-location">{this.props.event.address}</p>
-                  <p id="event-time">
-                    <span>{moment(this.props.event.startTime).format('MMM DD LT')}</span>
-                    <span> &#45; </span>
-                    <span>{moment(this.props.event.endTime).format('MMM DD LT')}</span>
-                  </p>
-                </div>
-                <div id="event-details-group-2">
-                  <Link id="event-creator-link" to={`/users/${this.props.users.user._id}`}>
-                    <div id="event-details-group-2-left">
-                      <img id="event-creator-photo" src={this.props.users.user.photo} alt="Event Creator" />
-                      <p id="event-creator">Event Creator</p>
-                      <p id="event-creator-name">{this.props.users.user.name}</p>
-                    </div>
-                  </Link>
-                  <div id="event-details-group-2-right">
-                    <p id="event-description">{this.props.event.description}</p>
-                    <div id="event-average-rating">
-                      <Ratings
-                        rating={this.props.event.averageRating}
-                        widgetRatedColors="#0099CC"
-                        widgetHoverColors="rgb(0,153,204)"
-                        widgetEmptyColors="#6B6B6B"
-                        widgetSpacings="3px"
-                        widgetDimensions="32px"
-                        changeRating={this.changeRating}
-                      >
-                        <Ratings.Widget />
-                        <Ratings.Widget />
-                        <Ratings.Widget />
-                        <Ratings.Widget />
-                        <Ratings.Widget />
-                      </Ratings>
-                      <p id="event-average-rating-label">
-                        Average Rating: {this.props.event.averageRating ? this.props.event.averageRating.toFixed(2) : 'N/A'}
-                        {/* example of comment usage */}
-                        {/* to get text do comment.text */}
-                        {/* {this.props.event.comments.map(comment => console.log(comment.author.name))}
-                        {console.log(this.props.event.latitude)} */}
-                      </p>
+            <div id="event-details-container">
+              <div id="event-details-left" style={eventImage} />
+              <div id="event-details-right">
+                <div id="event-details">
+                  <div id="event-details-group-1">
+                    <p id="event-title">{this.props.event.title}</p>
+                    <p id="event-location">{this.props.event.address}</p>
+                    <p id="event-time">
+                      <span>{moment(this.props.event.startTime).format('MMM DD LT')}</span>
+                      <span> &#45; </span>
+                      <span>{moment(this.props.event.endTime).format('MMM DD LT')}</span>
+                    </p>
+                  </div>
+                  <div id="event-details-group-2">
+                    <Link id="event-creator-link" to={`/users/${this.props.users.user._id}`}>
+                      <div id="event-details-group-2-left">
+                        <img id="event-creator-photo" src={this.props.users.user.photo} alt="Event Creator" />
+                        <p id="event-creator">Event Creator</p>
+                        <p id="event-creator-name">{this.props.users.user.name}</p>
+                      </div>
+                    </Link>
+                    <div id="event-details-group-2-right">
+                      <p id="event-description">{this.props.event.description}</p>
+                      <div id="event-average-rating">
+                        <Ratings
+                          rating={this.props.event.averageRating}
+                          widgetRatedColors="#0099CC"
+                          widgetHoverColors="rgb(0,153,204)"
+                          widgetEmptyColors="#6B6B6B"
+                          widgetSpacings="3px"
+                          widgetDimensions="32px"
+                          changeRating={this.changeRating}
+                        >
+                          <Ratings.Widget />
+                          <Ratings.Widget />
+                          <Ratings.Widget />
+                          <Ratings.Widget />
+                          <Ratings.Widget />
+                        </Ratings>
+                        <p id="event-average-rating-label">
+                          Average Rating: {this.props.event.averageRating ? this.props.event.averageRating.toFixed(2) : 'N/A'}
+                          {/* example of comment usage */}
+                          {/* to get text do comment.text */}
+                          {/* {this.props.event.comments.map(comment => console.log(comment.author.name))}
+                          {console.log(this.props.event.latitude)} */}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div id="event-details-group-3">
-                  <div id="tip-input-group">
-                    <p id="tip-input-label" htmlFor="tip-input">Tip Amount</p>
-                    <input
-                      id="tip-input"
-                      type="number"
-                      min="0.01"
-                      step="0.01"
-                      name="tip"
-                      value={this.state.tip}
-                      onChange={this.onFieldChange}
-                    />
-                    <Checkout
-                      // `#demo${this.state.id}`
-                      name={`Send a tip to ${this.props.users.user.name}!`}
-                      description="Your tip goes a long way!"
-                      amount={this.state.tip}
-                      stripeId={this.props.event.stripeId}
-                      eventCreatorImage={this.props.users.user.photo}
-                    />
+                  <div id="event-details-group-3">
+                    <div id="tip-input-group">
+                      <p id="tip-input-label" htmlFor="tip-input">Tip Amount</p>
+                      <input
+                        id="tip-input"
+                        type="number"
+                        min="0.01"
+                        step="0.01"
+                        name="tip"
+                        value={this.state.tip}
+                        onChange={this.onFieldChange}
+                      />
+                      <Checkout
+                        // `#demo${this.state.id}`
+                        name={`Send a tip to ${this.props.users.user.name}!`}
+                        description="Your tip goes a long way!"
+                        amount={this.state.tip}
+                        stripeId={this.props.event.stripeId}
+                        eventCreatorImage={this.props.users.user.photo}
+                      />
+                    </div>
+                    {this.renderAttendButton()}
                   </div>
-                  {this.renderAttendButton()}
                 </div>
               </div>
             </div>
-          </div>
-          <div id="map-wrapper">
-            <WrappedEventMap />
+            <div id="map-wrapper">
+              <WrappedEventMap />
+            </div>
+            <div id="comments-section">
+              <h3 id="comments-section-header">{numOfComments} {numOfComments === 1 ? 'Comment' : 'Comments'}</h3>
+              <div id="new-comment">
+                <img id="new-comment-current-user" src={this.props.user.photo} alt={this.props.user.name} />
+                <textarea id="new-comment-input" placeholder="Write a comment" ref={(commentInput) => { this.commentInput = commentInput; }} />
+                <button id="new-comment-button" type="button" onClick={() => this.props.writeComment(this.props.event.id, this.commentInput.value, this.props.history)}>Comment</button>
+              </div>
+              <div id="all-previous-comments">
+                {this.props.event.comments.map((comment) => {
+                  return (
+                    <div id="comment">
+                      <div id="comment-author">
+                        <img id="comment-author-image" src={comment.author.photo} alt={comment.author.name} />
+                        <div id="comment-author-name-and-text">
+                          <span id="comment-author-name">{comment.author.name}</span>
+                          <span id="comment-text">{comment.text}</span>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </div>
       );

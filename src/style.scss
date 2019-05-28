@@ -263,16 +263,20 @@ nav {
 /* EVENT PAGE */
 #event-page-background {
   background-color: rgb(235, 235, 235);
-  height: 200vh;
-  padding-top: 70px;
+  padding: 70px 0;
 }
 #event-page {
+  background-color: rgb(235, 235, 235);
+  margin: 0 auto;
+  width: 80%;
+  height: fit-content;
+}
+#event-details-container {
   background-color: white;
   box-shadow: 1px 1px 2px gray;
   display: flex;
   height: auto;
-  margin: 0 auto;
-  width: 80%;
+  width: 100%;
 }
 #event-details-left {
   width: 40vw;
@@ -600,7 +604,7 @@ nav {
   background-color: white;
   box-shadow: 1px 1px 2px gray;
   font-family: 'Raleway', sans-serif;
-  width: 80%;
+  width: 100%;
   height: 460px;
   margin: 0 auto;
 }

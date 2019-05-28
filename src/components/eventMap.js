@@ -30,7 +30,7 @@ export class EventMap extends Component {
     this.props.getCurrentLocation();
     const map1stWrapper = document.getElementById('map-wrapper').firstChild;
     if (map1stWrapper) {
-      map1stWrapper.style.width = '80%';
+      map1stWrapper.style.width = '100%';
       map1stWrapper.style.margin = '0 auto';
     }
     this.setState({ map: window.map });
