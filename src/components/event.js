@@ -270,8 +270,8 @@ class Event extends Component {
               <div id="all-previous-comments">
                 {this.props.event.comments.map((comment) => {
                   return (
-                    <div id="comment">
-                      <div id="comment-author">
+                    <div id="comment" key={comment.id}>
+                      <div id="comment-author" key={comment.id}>
                         <img id="comment-author-image" src={comment.author.photo} alt={comment.author.name} />
                         <div id="comment-author-name-and-text">
                           <span id="comment-author-name">{comment.author.name}</span>
@@ -378,8 +378,8 @@ class Event extends Component {
               <div id="all-previous-comments">
                 {this.props.event.comments.map((comment) => {
                   return (
-                    <div id="comment">
-                      <div id="comment-author">
+                    <div id="comment" key={comment.id}>
+                      <div id="comment-author" key={comment.id}>
                         <img id="comment-author-image" src={comment.author.photo} alt={comment.author.name} />
                         <div id="comment-author-name-and-text">
                           <span id="comment-author-name">{comment.author.name}</span>
