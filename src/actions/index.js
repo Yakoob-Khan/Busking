@@ -223,7 +223,7 @@ export function deleteEvent(id, history) {
 
 export function attendEvent(id) {
   return (dispatch) => {
-    axios.get(`${ROOT_URL}/events/attend/${id}`, { headers: { authorization: localStorage.getItem('jwtToken') } })
+    axios.get(`${ROOT_URL}/api/events/attend/${id}`, { headers: { authorization: localStorage.getItem('jwtToken') } })
       .then((response) => {
         dispatch({
           type: ActionTypes.ATTEND_EVENT,
@@ -238,7 +238,7 @@ export function attendEvent(id) {
 
 export function leaveEvent(id) {
   return (dispatch) => {
-    axios.get(`${ROOT_URL}/events/leave/${id}`, { headers: { authorization: localStorage.getItem('jwtToken') } })
+    axios.get(`${ROOT_URL}/api/events/leave/${id}`, { headers: { authorization: localStorage.getItem('jwtToken') } })
       .then((response) => {
         dispatch({
           type: ActionTypes.LEAVE_EVENT,
@@ -266,7 +266,7 @@ export function rateEvent(id, rating, history) {
 
 export function updateCurrentUser(updatedUser) {
   return (dispatch) => {
-    axios.put(`${ROOT_URL}/user`, updatedUser)
+    axios.put(`${ROOT_URL}/api/user`, updatedUser)
       .then((response) => {
         dispatch({ type: ActionTypes.UPDATE_CURRENT_USER, payload: response.data });
       })
@@ -278,7 +278,7 @@ export function updateCurrentUser(updatedUser) {
 
 export function updateStripeId(updatedUser) {
   return (dispatch) => {
-    axios.put(`${ROOT_URL}/userStripeId`, updatedUser)
+    axios.put(`${ROOT_URL}/api/userStripeId`, updatedUser)
       .then((response) => {
         dispatch({ type: ActionTypes.UPDATE_STRIPE_ID, payload: response.data });
       })
@@ -290,7 +290,7 @@ export function updateStripeId(updatedUser) {
 
 export function fetchUser(id) {
   return (dispatch) => {
-    axios.get(`${ROOT_URL}/users/${id}`)
+    axios.get(`${ROOT_URL}/api/users/${id}`)
       .then((response) => {
         dispatch({
           type: ActionTypes.FETCH_USER,
@@ -305,7 +305,7 @@ export function fetchUser(id) {
 
 export function followUser(followId) {
   return (dispatch) => {
-    axios.get(`${ROOT_URL}/users/follow/${followId}`, { headers: { authorization: localStorage.getItem('jwtToken') } })
+    axios.get(`${ROOT_URL}/api/users/follow/${followId}`, { headers: { authorization: localStorage.getItem('jwtToken') } })
       .then((response) => {
         dispatch({
           type: ActionTypes.FOLLOW_USER,
@@ -320,7 +320,7 @@ export function followUser(followId) {
 
 export function unFollowUser(unfollowId) {
   return (dispatch) => {
-    axios.get(`${ROOT_URL}/users/unfollow/${unfollowId}`, { headers: { authorization: localStorage.getItem('jwtToken') } })
+    axios.get(`${ROOT_URL}/api/users/unfollow/${unfollowId}`, { headers: { authorization: localStorage.getItem('jwtToken') } })
       .then((response) => {
         dispatch({
           type: ActionTypes.UNFOLLOW_USER,
