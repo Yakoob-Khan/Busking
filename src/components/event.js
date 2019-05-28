@@ -65,8 +65,8 @@ class Event extends Component {
         latitude: this.props.event.latitude,
         address: this.props.event.address,
         eventCreator: this.props.event.eventCreator,
-        startTime: this.props.event.startTime,
-        endTime: this.props.event.endTime,
+        // startTime: this.props.event.startTime,
+        // endTime: this.props.event.endTime,
       });
     }
   }
@@ -84,17 +84,9 @@ class Event extends Component {
     this.setState({ [event.target.name]: event.target.value });
   }
 
-  onStartTimeChange = (startTime) => {
-    if (startTime instanceof Date) {
-      this.setState({ startTime });
-    }
-  }
+  onStartTimeChange = startTime => this.setState({ startTime });
 
-  onEndTimeChange = (endTime) => {
-    if (endTime instanceof Date) {
-      this.setState({ endTime });
-    }
-  }
+  onEndTimeChange = endTime => this.setState({ endTime });
 
   startEdit = () => {
     if (this.state.imageURL.length === 0) {
@@ -451,7 +443,7 @@ class Event extends Component {
                 onChange={this.onStartTimeChange}
                 required
                 disableClock
-                value={today}
+                value={this.state.startTime}
                 minDate={today}
                 maxDate={oneweek}
               />
@@ -459,7 +451,7 @@ class Event extends Component {
                 onChange={this.onEndTimeChange}
                 required
                 disableClock
-                value={oneweek}
+                value={this.state.endTime}
                 minDate={today}
                 maxDate={oneweek}
               />
