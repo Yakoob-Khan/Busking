@@ -43,6 +43,11 @@ class NewEvent extends Component {
         show: true,
         error: 'You must select a valid address from the drop down menu!!!',
       });
+    } else if (this.state.startTime.getTime() >= this.state.endTime.getTime()) {
+      this.setState({
+        show: true,
+        error: 'You must select an end time after the start time!!!',
+      });
     } else if (!this.state.show) {
       if (this.state.imageURL.length === 0) {
         const defaultImages = [
@@ -165,28 +170,6 @@ class NewEvent extends Component {
                 onChange={this.onFieldChange}
               />
             </label>
-            {/* <label className="input-label" htmlFor="new-event-startTime">Event Start Time
-              <input
-                type="text"
-                name="startTime"
-                id="new-event-time"
-                className="new-event-input"
-                value={this.state.startTime}
-                placeholder="Start Time"
-                onChange={this.onFieldChange}
-              />
-            </label> */}
-            {/* <label className="input-label" htmlFor="new-event-endTime">Event End Time
-              <input
-                type="text"
-                name="endTime"
-                id="new-event-time"
-                className="new-event-input"
-                value={this.state.endTime}
-                placeholder="End Time"
-                onChange={this.onFieldChange}
-              />
-            </label> */}
             <DateTimePicker
               onChange={this.onStartTimeChange}
               required

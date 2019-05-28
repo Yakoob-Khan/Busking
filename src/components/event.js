@@ -417,28 +417,6 @@ class Event extends Component {
                   onChange={this.onFieldChange}
                 />
               </label>
-              {/* <label className="input-label" htmlFor="new-event-startTime">Event Start Time
-                <input
-                  type="text"
-                  name="startTime"
-                  id="new-event-time"
-                  className="update-event-input"
-                  value={this.state.startTime}
-                  placeholder="Start Time"
-                  onChange={this.onFieldChange}
-                />
-              </label>
-              <label className="input-label" htmlFor="new-event-endTime">Event End Time
-                <input
-                  type="text"
-                  name="endTime"
-                  id="new-event-time"
-                  className="update-event-input"
-                  value={this.state.endTime}
-                  placeholder="End Time"
-                  onChange={this.onFieldChange}
-                />
-              </label> */}
               <DateTimePicker
                 onChange={this.onStartTimeChange}
                 required
