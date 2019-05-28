@@ -15,9 +15,11 @@ class UnWrappedEvents extends Component {
     super(props);
     this.state = {
       mapBool: false,
+      sortByTime: true,
     };
 
     this.onToggleMap = this.onToggleMap.bind(this);
+    this.onToggleSort = this.onToggleSort.bind(this);
     this.renderEvents = this.renderEvents.bind(this);
   }
 
@@ -26,7 +28,6 @@ class UnWrappedEvents extends Component {
     this.props.fetchEvents();
     this.props.getCurrentLocation();
     this.sortEventsTime();
-    this.sortEventsLocation();
     // console.log('wohoo!');
     // console.log(this.props.events);
   }
@@ -35,6 +36,17 @@ class UnWrappedEvents extends Component {
     this.setState(prevState => ({
       mapBool: !prevState.mapBool,
     }));
+  }
+
+  onToggleSort(event) {
+    this.setState((prevState) => {
+      if (prevState.sortByTime) {
+        this.sortEventsLocation();
+      } else {
+        this.sortEventsTime();
+      }
+      return { sortByTime: !prevState.sortByTime };
+    });
   }
 
   isObjectEmpty = (object) => {
@@ -62,6 +74,13 @@ class UnWrappedEvents extends Component {
               }
             });
           });
+          sorted.sort((a, b) => {
+            return new Date(a.startTime) - new Date(b.startTime);
+          });
+          events.sort((a, b) => {
+            return new Date(a.startTime) - new Date(b.startTime);
+          });
+          console.log(sorted);
           sorted = [...sorted, ...events];
           this.props.updateStateEvents(sorted);
         }
@@ -74,6 +93,7 @@ class UnWrappedEvents extends Component {
     events.sort((a, b) => {
       return new Date(a.startTime) - new Date(b.startTime);
     });
+    this.props.updateStateEvents(events);
   }
 
   renderEvents = () => {
@@ -137,10 +157,10 @@ class UnWrappedEvents extends Component {
         <p className="events-subheader">See what&apos;s happening now</p>
         <EventSearch />
         <div className="events-button-container">
-          <button onClick={this.onToggleMap} className="events-toggle" type="button">{this.state.mapBool ? 'Toggle Grid' : 'Toggle Map' }</button>
+          <button onClick={this.onToggleSort} className="events-toggle" type="button">{this.state.sortByTime ? 'Sort by Location' : 'Sort by Time'}</button>
+          <button onClick={this.onToggleMap} className="events-toggle" type="button">{this.state.mapBool ? 'Toggle Grid' : 'Toggle Map'}</button>
         </div>
         <div className="events-container">
-          {this.sortEventsTime()}
           {this.state.mapBool ? <WrappedMapView /> : this.renderEvents()}
         </div>
       </div>
