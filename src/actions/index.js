@@ -32,17 +32,6 @@ export const testAPI = () => {
   };
 };
 
-export const searchEvents = (searchTerm) => {
-  return (dispatch) => {
-    axios.get('http://localhost:9090/api/search/event').then((r) => {
-      console.log(r);
-    // dispatch({ type: ActionTypes.DELETE_POST, payload: response.data });
-    }).catch((e) => {
-      console.log(e);
-    });
-  };
-};
-
 
 export const facebookResponseLocal = (localToken) => {
   return (dispatch) => {
@@ -160,6 +149,26 @@ export function fetchEvents() {
       });
   };
 }
+
+export const searchEvents = (searchTerm) => {
+  return (dispatch) => {
+    if (searchTerm === '') {
+      dispatch(fetchEvents());
+    } else {
+      axios.put('http://localhost:9090/api/search/event', { searchTerm }).then((r) => {
+        dispatch(
+          {
+            type: ActionTypes.FETCH_EVENTS,
+            payload: r.data,
+          },
+        );
+      // dispatch({ type: ActionTypes.DELETE_POST, payload: response.data });
+      }).catch((e) => {
+        dispatch(appError(`Error retrieving events :( ${e}`));
+      });
+    }
+  };
+};
 
 // update store events after sorting based on user location
 export function updateStateEvents(events) {
