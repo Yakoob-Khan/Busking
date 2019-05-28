@@ -218,7 +218,26 @@ class UnwrappedEvent extends Component {
         </div>
       );
     } else {
-      return <div />;
+      return (
+        <div id="comments-section">
+          <h3 id="comments-section-header">{numOfComments} {numOfComments === 1 ? 'Comment' : 'Comments'}</h3>
+          <div id="all-previous-comments">
+            {this.props.event.comments.map((comment) => {
+              return (
+                <div id="comment" key={comment.id}>
+                  <div id="comment-author" key={comment.id}>
+                    <img id="comment-author-image" src={comment.author.photo} alt={comment.author.name} />
+                    <div id="comment-author-name-and-text">
+                      <span id="comment-author-name">{comment.author.name}</span>
+                      <span id="comment-text">{comment.text}</span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
     }
   }
 
