@@ -12,21 +12,6 @@ class Landing extends React.Component {
   }
 
   render() {
-    // if (this.props.state && !this.state.stripe_user_id) {
-    //   const code = window.location.search.split('=')[2];
-
-    //   axios.post('http://localhost:9090/api/stripeAccount',
-    //     { code })
-    //     .then((response) => {
-    //       this.setState({ stripe_user_id: response.data.stripe_user_id });
-    //       const updatedUser = {
-    //         id: this.props.state.auth.user.id,
-    //         stripeId: this.state.stripe_user_id,
-    //       };
-    //       this.props.updateStripeId(updatedUser);
-    //     })
-    //     .catch(err => console.log(err));
-    // }
     return (
       <div>
         <div id="landing">
@@ -47,11 +32,4 @@ class Landing extends React.Component {
   }
 }
 
-const mapStateToProps = state => (
-  {
-    reduxState: state,
-  }
-);
-
-
-export default withRouter(connect(mapStateToProps, { updateStripeId })(Landing));
+export default withRouter(connect(null, { updateStripeId })(Landing));
