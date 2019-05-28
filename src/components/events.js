@@ -15,9 +15,11 @@ class UnWrappedEvents extends Component {
     super(props);
     this.state = {
       mapBool: false,
+      sortBool: false,
     };
 
     this.onToggleMap = this.onToggleMap.bind(this);
+    this.onToggleSort = this.onToggleSort.bind(this);
     this.renderEvents = this.renderEvents.bind(this);
   }
 
@@ -34,6 +36,12 @@ class UnWrappedEvents extends Component {
   onToggleMap(event) {
     this.setState(prevState => ({
       mapBool: !prevState.mapBool,
+    }));
+  }
+
+  onToggleSort(event) {
+    this.setState(prevState => ({
+      sortBool: !prevState.sortBool,
     }));
   }
 
@@ -137,10 +145,11 @@ class UnWrappedEvents extends Component {
         <p className="events-subheader">See what&apos;s happening now</p>
         <EventSearch />
         <div className="events-button-container">
+          <button onClick={this.onToggleSort} className="events-toggle" type="button">{this.state.sortBool ? 'Sort by Time' : 'Sort by Location' }</button>
           <button onClick={this.onToggleMap} className="events-toggle" type="button">{this.state.mapBool ? 'Toggle Grid' : 'Toggle Map' }</button>
         </div>
         <div className="events-container">
-          {this.sortEventsTime()}
+          {this.state.sortBool ? this.sortEventsTime() : this.sortEventsLocation()}
           {this.state.mapBool ? <WrappedMapView /> : this.renderEvents()}
         </div>
       </div>
