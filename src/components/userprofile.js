@@ -199,6 +199,21 @@ class UserProfile extends Component {
     }
   }
 
+  renderStripeConnectButton = () => {
+    if (this.props.user.id === this.props.loggedUser.id) {
+      return (
+        <a id="stripe-connect-button"
+          href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_F6rBJOefS9FTqzvaRY8cuXnnoDU9SHpV&scope=read_write"
+          rel="noopener noreferrer"
+        >
+          Stripe Connect
+        </a>
+      );
+    } else {
+      return null;
+    }
+  }
+
   stripeConnect = () => {
     this.props.stripeRedirect();
   }
@@ -211,22 +226,17 @@ class UserProfile extends Component {
       const content = this.props.auth
         ? (
           <div id="user-profile">
-            <div id="user-profile-background" />
             <div id="user-profile-details-container">
               <div id="user-profile-details">
                 <div id="user-profile-basic-details">
                   <img id="user-profile-picture" src={this.props.user.photo} alt={this.props.user.name} />
                   <p id="user-profile-name">{this.props.user.name}</p>
                   <p id="user-profile-email">{this.props.user.email}</p>
-                  {this.renderFollowButton()}
-                  {this.renderLogoutButton()}
-                  <a
-                    href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_F6rBJOefS9FTqzvaRY8cuXnnoDU9SHpV&scope=read_write"
-                    rel="noopener noreferrer"
-                  >
-                  Stripe Connect
-                  </a>
-
+                  <div id="user-profile-buttons-container">
+                    {this.renderFollowButton()}
+                    {this.renderLogoutButton()}
+                    {this.renderStripeConnectButton()}
+                  </div>
                 </div>
                 <div id="user-profile-stats">
                   <div id="user-profile-stat-1" className="user-profile-stat">
