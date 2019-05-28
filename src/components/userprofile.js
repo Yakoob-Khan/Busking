@@ -190,7 +190,7 @@ class UserProfile extends Component {
   renderLogoutButton = () => {
     if (this.props.user.id === this.props.loggedUser.id) {
       return (
-        <button onClick={this.props.logoutUser} id="log-out-button" className="button" type="submit">
+        <button onClick={() => this.props.logoutUser(this.props.history)} id="log-out-button" className="button" type="submit">
         Log out
         </button>
       );

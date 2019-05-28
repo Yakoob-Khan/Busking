@@ -8,6 +8,7 @@ import PlacesAutocomplete, {
 } from 'react-places-autocomplete';
 import moment from 'moment';
 import DateTimePicker from 'react-datetime-picker/dist/entry.nostyle';
+import { GoogleApiWrapper } from 'google-maps-react';
 // import { Elements, StripeProvider } from 'react-stripe-elements';
 import Checkout from './Checkout';
 import {
@@ -18,7 +19,7 @@ import WrappedEventMap from './eventMap';
 import '../style.scss';
 
 
-class Event extends Component {
+class UnwrappedEvent extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -270,8 +271,8 @@ class Event extends Component {
               <div id="all-previous-comments">
                 {this.props.event.comments.map((comment) => {
                   return (
-                    <div id="comment">
-                      <div id="comment-author">
+                    <div id="comment" key={comment.id}>
+                      <div id="comment-author" key={comment.id}>
                         <img id="comment-author-image" src={comment.author.photo} alt={comment.author.name} />
                         <div id="comment-author-name-and-text">
                           <span id="comment-author-name">{comment.author.name}</span>
@@ -286,7 +287,7 @@ class Event extends Component {
           </div>
         </div>
       );
-    } else if (!this.state.isEditing) {
+    } else if (!this.state.isEditing && (this.props.user)) {
       return (
         <div id="event-page-background">
           <div id="event-page">
@@ -378,8 +379,8 @@ class Event extends Component {
               <div id="all-previous-comments">
                 {this.props.event.comments.map((comment) => {
                   return (
-                    <div id="comment">
-                      <div id="comment-author">
+                    <div id="comment" key={comment.id}>
+                      <div id="comment-author" key={comment.id}>
                         <img id="comment-author-image" src={comment.author.photo} alt={comment.author.name} />
                         <div id="comment-author-name-and-text">
                           <span id="comment-author-name">{comment.author.name}</span>
@@ -564,6 +565,11 @@ const mapStateToProps = state => (
     users: state.users,
   }
 );
+
+// eslint-disable-next-line new-cap
+const Event = GoogleApiWrapper({
+  apiKey: 'AIzaSyAE7HAvGXDK-LG6BfkEM0mgafvwo_Nda1Y',
+})(UnwrappedEvent);
 
 export default withRouter(connect(mapStateToProps, {
   fetchEvent, updateEvent, deleteEvent, rateEvent, fetchUser, attendEvent, leaveEvent, writeComment,
