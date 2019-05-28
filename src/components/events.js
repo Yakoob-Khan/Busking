@@ -157,7 +157,7 @@ class UnWrappedEvents extends Component {
         <p className="events-subheader">See what&apos;s happening now</p>
         <EventSearch />
         <div className="events-button-container">
-          <button onClick={this.onToggleSort} className="events-toggle-sort" type="button">{this.state.sortByTime ? 'Sort by Location' : 'Sort by Time'}</button>
+          <button onClick={this.onToggleSort} className="events-toggle-sort" type="button">{this.state.sortByTime ? 'Sort by Time' : 'Sort by Location' }</button>
           <button onClick={this.onToggleMap} className="events-toggle" type="button">{this.state.mapBool ? 'Toggle Grid' : 'Toggle Map'}</button>
         </div>
         <div className="events-container">
