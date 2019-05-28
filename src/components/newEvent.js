@@ -27,12 +27,13 @@ class NewEvent extends Component {
       error: '',
     };
     this.onFieldChange = this.onFieldChange.bind(this);
+    this.close = this.close.bind(this);
   }
 
   onStartTimeChange = (startTime) => {
     this.setState({ startTime });
     if (startTime.getTime() < this.state.endTime.getTime()) {
-      if (this.state.error === 'You must select an end time after the start time!!!') {
+      if (this.state.error === 'Please provide valid start and end times for your event!') {
         this.setState({
           show: false,
           error: '',
@@ -41,7 +42,7 @@ class NewEvent extends Component {
     } else {
       this.setState({
         show: true,
-        error: 'You must select an end time after the start time!!!',
+        error: 'Please provide valid start and end times for your event!',
       });
     }
   };
@@ -49,7 +50,7 @@ class NewEvent extends Component {
   onEndTimeChange = (endTime) => {
     this.setState({ endTime });
     if (this.state.startTime.getTime() < endTime.getTime()) {
-      if (this.state.error === 'You must select an end time after the start time!!!') {
+      if (this.state.error === 'Please provide valid start and end times for your event!') {
         this.setState({
           show: false,
           error: '',
@@ -58,7 +59,7 @@ class NewEvent extends Component {
     } else {
       this.setState({
         show: true,
-        error: 'You must select an end time after the start time!!!',
+        error: 'Please provide valid start and end times for your event!',
       });
     }
   };
@@ -71,12 +72,12 @@ class NewEvent extends Component {
     if (this.state.latitude === '' || this.state.longitude === '') {
       this.setState({
         show: true,
-        error: 'You must select a valid address from the drop down menu!!!',
+        error: 'Please select a valid address from the drop-down menu!',
       });
     } else if (this.state.startTime.getTime() >= this.state.endTime.getTime()) {
       this.setState({
         show: true,
-        error: 'You must select an end time after the start time!!!',
+        error: 'Please provide valid start and end times for your event!',
       });
     } else if (!this.state.show) {
       if (this.state.imageURL.length === 0) {
@@ -136,9 +137,9 @@ class NewEvent extends Component {
       .catch(error => console.error('Error', error));
   };
 
-  // close= () => {
-  //   this.setState({ show: false });
-  // }
+  close = () => {
+    this.setState({ show: false });
+  }
 
   render() {
     const today = new Date();
@@ -155,15 +156,19 @@ class NewEvent extends Component {
         <div id="new-event-form">
           <h2 id="new-event-form-header">New Event</h2>
           <Modal
-            className="error-modal" // this will completely overwrite the default css completely
-            // containerStyle={{ background: 'white' }} // changes styling on the inner content area
+            className="error-modal"
             containerClassName="test"
             closeOnOuterClick
             show={this.state.show}
-            // onClose={() => this.close()}
+            onClose={() => this.close()}
           >
             <div className="error-prompt">
-              {this.state.error}
+              &#x26A0; {this.state.error}
+              <button className="error-close"
+                onClick={this.close.bind(this)}
+                type="submit"
+              >X
+              </button>
             </div>
           </Modal>
           <form>
