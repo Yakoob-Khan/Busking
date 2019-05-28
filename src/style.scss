@@ -172,7 +172,8 @@ nav {
   outline: none;
 }
 #search-events-bar-button:hover,
-.events-toggle:hover {
+.events-toggle:hover,
+.events-toggle-sort:hover {
   cursor: pointer;
   color: $accent-color;
   border: 1px solid $accent-color;
@@ -183,11 +184,15 @@ nav {
   position: relative;
   z-index: 100;
 }
-.events-toggle {
+.events-toggle,
+.events-toggle-sort {
   border: 1px solid $primary-font-color;
   opacity: 0.8;
   outline: none;
   padding: 4px 8px;
+}
+.events-toggle-sort {
+  margin-right: 8px;
 }
 /* LANDING PAGE - 
   EVENTS SECTION -
