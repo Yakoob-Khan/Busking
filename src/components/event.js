@@ -228,38 +228,18 @@ class Event extends Component {
                         <Ratings.Widget />
                       </Ratings>
                       <p id="event-average-rating-label">
-                      Average Rating: {this.props.event.averageRating ? this.props.event.averageRating.toFixed(2) : ''}
+                        Average Rating: {this.props.event.averageRating ? this.props.event.averageRating.toFixed(2) : 'N/A'}
                       </p>
                     </div>
                   </div>
                 </div>
                 <div id="event-details-group-3">
                   <button id="update-event-button" className="event-button" type="button" onClick={this.onEdit}>
-                    {/* <img src="./../src/assets/pencil.svg" alt="update event" /> */}
                     <p>update event</p>
                   </button>
                   <button id="delete-event-button" className="event-button" type="button" onClick={this.deleteEvent}>
-                    {/* <img src="./../src/assets/basket.svg" alt="delete event" /> */}
                     <p>delete event</p>
                   </button>
-                  <p>Enter Tip: </p>
-                  <input
-                    id="tip-input"
-                    type="number"
-                    min="0"
-                    name="tip"
-                    value={this.state.tip}
-                    placeholder="Tip Amount"
-                    onChange={this.onFieldChange}
-                  />
-                  {/* <button type="button" onClick={this.payment}> Tip </button> */}
-                  <Checkout
-                    // `#demo${this.state.id}`
-                    name={`Send a tip to ${this.props.users.user.name}!`}
-                    description="Your tip goes a long way!"
-                    amount={this.state.tip}
-                    stripeId={this.props.user.stripeId}
-                  />
                 </div>
               </div>
             </div>
@@ -322,7 +302,7 @@ class Event extends Component {
                         <Ratings.Widget />
                       </Ratings>
                       <p id="event-average-rating-label">
-                      Average Rating: {this.props.event.averageRating ? this.props.event.averageRating.toFixed(2) : ''}
+                      Average Rating: {this.props.event.averageRating ? this.props.event.averageRating.toFixed(2) : 'N/A'}
                         {/* example of comment usage */}
                         {/* to get text do comment.text */}
                         {/* {this.props.event.comments.map(comment => console.log(comment.author.name))}
@@ -332,23 +312,26 @@ class Event extends Component {
                   </div>
                 </div>
                 <div id="event-details-group-3">
-                  <p>Enter Tip: </p>
-                  <input
-                    id="tip-input"
-                    type="number"
-                    min="0"
-                    name="tip"
-                    value={this.state.tip}
-                    placeholder="Tip Amount"
-                    onChange={this.onFieldChange}
-                  />
-                  <Checkout
-                  // `#demo${this.state.id}`
-                    name={`Send a tip to ${this.props.users.user.name}!`}
-                    description="Your tip goes a long way!"
-                    amount={this.state.tip}
-                    stripeId={this.props.event.stripeId}
-                  />
+                  <div id="tip-input-group">
+                    <p id="tip-input-label" htmlFor="tip-input">Tip Amount</p>
+                    <input
+                      id="tip-input"
+                      type="number"
+                      min="0.01"
+                      step="0.01"
+                      name="tip"
+                      value={this.state.tip}
+                      onChange={this.onFieldChange}
+                    />
+                    <Checkout
+                      // `#demo${this.state.id}`
+                      name={`Send a tip to ${this.props.users.user.name}!`}
+                      description="Your tip goes a long way!"
+                      amount={this.state.tip}
+                      stripeId={this.props.event.stripeId}
+                      eventCreatorImage={this.props.users.user.photo}
+                    />
+                  </div>
                   {this.renderAttendButton()}
                 </div>
               </div>
