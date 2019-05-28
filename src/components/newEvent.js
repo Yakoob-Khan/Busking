@@ -29,9 +29,39 @@ class NewEvent extends Component {
     this.onFieldChange = this.onFieldChange.bind(this);
   }
 
-  onStartTimeChange = startTime => this.setState({ startTime });
+  onStartTimeChange = (startTime) => {
+    this.setState({ startTime });
+    if (startTime.getTime() < this.state.endTime.getTime()) {
+      if (this.state.error === 'You must select an end time after the start time!!!') {
+        this.setState({
+          show: false,
+          error: '',
+        });
+      }
+    } else {
+      this.setState({
+        show: true,
+        error: 'You must select an end time after the start time!!!',
+      });
+    }
+  };
 
-  onEndTimeChange = endTime => this.setState({ endTime });
+  onEndTimeChange = (endTime) => {
+    this.setState({ endTime });
+    if (this.state.startTime.getTime() < endTime.getTime()) {
+      if (this.state.error === 'You must select an end time after the start time!!!') {
+        this.setState({
+          show: false,
+          error: '',
+        });
+      }
+    } else {
+      this.setState({
+        show: true,
+        error: 'You must select an end time after the start time!!!',
+      });
+    }
+  };
 
   onFieldChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
@@ -43,11 +73,18 @@ class NewEvent extends Component {
         show: true,
         error: 'You must select a valid address from the drop down menu!!!',
       });
-    } else if (this.state.startTime.getTime() > this.state.endTime.getTime()) {
-      this.setState({
-        show: true,
-        error: 'You must select an end time after the start time!!!',
-      });
+    // } else if (this.state.startTime.getTime() >= this.state.endTime.getTime()) {
+    //   this.setState({
+    //     show: true,
+    //     error: 'You must select an end time after the start time!!!',
+    //   });
+    // } else if (this.state.startTime.getTime() < this.state.endTime.getTime()) {
+    //   if (this.state.error === 'You must select an end time after the start time!!!') {
+    //     this.setState({
+    //       show: false,
+    //       error: '',
+    //     });
+    //   }
     } else if (!this.state.show) {
       if (this.state.imageURL.length === 0) {
         const defaultImages = [
