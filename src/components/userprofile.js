@@ -1,3 +1,5 @@
+/* eslint-disable brace-style */
+/* eslint-disable no-trailing-spaces */
 /* eslint-disable max-len */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -214,16 +216,17 @@ class UserProfile extends Component {
     // eslint-disable-next-line brace-style
     }
     // Second if statement deploying on surge. Comment out the first if statement!
-    else if (this.props.user.id === this.props.loggedUser.id) {
-      return (
-        <a id="stripe-connect-button"
-          href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_F6rBJOefS9FTqzvaRY8cuXnnoDU9SHpV&scope=read_write&redirect_uri=https://busking-api.herokuapp.com/api/stripeAccount"
-          rel="noopener noreferrer"
-        >
-          Stripe Connect
-        </a>
-      );
-    } else {
+    // if (this.props.user.id === this.props.loggedUser.id) {
+    //   return (
+    //     <a id="stripe-connect-button"
+    //       href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_F6rBJOefS9FTqzvaRY8cuXnnoDU9SHpV&scope=read_write&redirect_uri=https://busking-api.herokuapp.com/api/stripeAccount"
+    //       rel="noopener noreferrer"
+    //     >
+    //       Stripe Connect
+    //     </a>
+    //   );
+    // } 
+    else {
       return null;
     }
   }
