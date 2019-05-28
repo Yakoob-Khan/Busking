@@ -19,12 +19,12 @@ export const ActionTypes = {
   UPDATE_STRIPE_ID: 'UPDATE_STRIPE_ID',
 };
 
-const ROOT_URL = 'https://busking-api.herokuapp.com/';
+const ROOT_URL = 'https://busking-api.herokuapp.com';
 // const ROOT_URL = 'http://localhost:9090/api';
 
 export const testAPI = () => {
   return () => {
-    axios.get(`${ROOT_URL}`, { headers: { authorization: localStorage.getItem('jwtToken') } }).then((r) => {
+    axios.get(`${ROOT_URL}/`, { headers: { authorization: localStorage.getItem('jwtToken') } }).then((r) => {
       console.log(r);
     // dispatch({ type: ActionTypes.DELETE_POST, payload: response.data });
     }).catch((e) => {
@@ -110,7 +110,7 @@ export function clearError() {
 
 export function fetchEvents() {
   return (dispatch) => {
-    axios.get(`${ROOT_URL}api/events`)
+    axios.get(`${ROOT_URL}/api/events`)
       .then((response) => {
         dispatch({
           type: ActionTypes.FETCH_EVENTS,
@@ -129,7 +129,7 @@ export const searchEvents = (searchTerm) => {
     if (searchTerm === '') {
       dispatch(fetchEvents());
     } else {
-      axios.put(`${ROOT_URL}api/search/event`, { searchTerm }).then((r) => {
+      axios.put(`${ROOT_URL}/api/search/event`, { searchTerm }).then((r) => {
         dispatch(
           {
             type: ActionTypes.FETCH_EVENTS,
@@ -156,7 +156,7 @@ export function updateStateEvents(events) {
 
 export function createEvent(newEvent, history) {
   return (dispatch) => {
-    axios.post(`${ROOT_URL}api/events`, newEvent, { headers: { authorization: localStorage.getItem('jwtToken') } })
+    axios.post(`${ROOT_URL}/api/events`, newEvent, { headers: { authorization: localStorage.getItem('jwtToken') } })
       .then((response) => {
         history.push('/');
       })
@@ -169,7 +169,7 @@ export function createEvent(newEvent, history) {
 
 export function fetchEvent(id, callback) {
   return (dispatch) => {
-    axios.get(`${ROOT_URL}api/events/${id}`)
+    axios.get(`${ROOT_URL}/api/events/${id}`)
       .then((response) => {
         dispatch({
           type: ActionTypes.FETCH_EVENT,
@@ -186,7 +186,7 @@ export function fetchEvent(id, callback) {
 export const writeComment = (id, text, history) => {
   return (dispatch) => {
     console.log('helo api comment!');
-    axios.post(`${ROOT_URL}api/comment/${id}`, { text }, { headers: { authorization: localStorage.getItem('jwtToken') } }).then((r) => {
+    axios.post(`${ROOT_URL}/api/comment/${id}`, { text }, { headers: { authorization: localStorage.getItem('jwtToken') } }).then((r) => {
       // console.log(r);
       dispatch(fetchEvent(id));
       history.push(`/events/${id}`);
@@ -199,7 +199,7 @@ export const writeComment = (id, text, history) => {
 
 export function updateEvent(update) {
   return (dispatch) => {
-    axios.put(`${ROOT_URL}api/events/${update.id}`, update)
+    axios.put(`${ROOT_URL}/api/events/${update.id}`, update)
       .then((response) => {
         dispatch(fetchEvent(update.id));
       })
@@ -211,7 +211,7 @@ export function updateEvent(update) {
 
 export function deleteEvent(id, history) {
   return (dispatch) => {
-    axios.delete(`${ROOT_URL}api/events/${id}`)
+    axios.delete(`${ROOT_URL}/api/events/${id}`)
       .then((response) => {
         history.push('/');
       })
@@ -253,7 +253,7 @@ export function leaveEvent(id) {
 
 export function rateEvent(id, rating, history) {
   return (dispatch) => {
-    axios.post(`${ROOT_URL}api/events/rate/${id}`, { rating })
+    axios.post(`${ROOT_URL}/api/events/rate/${id}`, { rating })
       .then((response) => {
         dispatch(fetchEvent(id));
         history.push(`/events/${id}`);
@@ -347,8 +347,8 @@ export function getCurrentLocation() {
       });
     } else {
       // Browser doesn't support Geolocation
-      console.log('your browswer does not support this 2019 shit');
-      dispatch(appError('your browswer does not support this 2019 shit'));
+      console.log('your browser does not support this 2019 shit');
+      dispatch(appError('your browser does not support this 2019 shit'));
     }
   };
 }
