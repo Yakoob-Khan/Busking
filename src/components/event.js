@@ -325,7 +325,7 @@ class Event extends Component {
                         <Ratings.Widget />
                       </Ratings>
                       <p id="event-average-rating-label">
-                      Average Rating: {this.props.event.averageRating ? this.props.event.averageRating.toFixed(2) : 'N/A'}
+                        Average Rating: {this.props.event.averageRating ? this.props.event.averageRating.toFixed(2) : 'N/A'}
                         {/* example of comment usage */}
                         {/* to get text do comment.text */}
                         {/* {this.props.event.comments.map(comment => console.log(comment.author.name))}
@@ -386,7 +386,6 @@ class Event extends Component {
                   id="update-event-title"
                   className="update-event-input"
                   value={this.state.title}
-                  // defaultValue={this.state.title}
                   placeholder="Event Title"
                   onChange={this.onFieldChange}
                 />
@@ -398,7 +397,6 @@ class Event extends Component {
                   id="update-event-description"
                   className="update-event-input"
                   value={this.state.description}
-                  // defaultValue={this.state.description}
                   placeholder="Event Description"
                   onChange={this.onFieldChange}
                   maxLength="250"
@@ -412,7 +410,6 @@ class Event extends Component {
                   id="update-event-image"
                   className="update-event-input"
                   value={this.state.imageURL}
-                  // defaultValue={this.state.imageURL}
                   placeholder="Image url"
                   onChange={this.onFieldChange}
                 />

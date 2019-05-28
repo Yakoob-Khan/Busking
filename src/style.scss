@@ -294,8 +294,12 @@ nav {
 #event-location {
   color: $primary-font-color;
   font-size: 16px;
-  margin-top: 2px;
+  margin-top: 4px;
   margin-bottom: 0;
+}
+#event-time {
+  font-family: sans-serif;
+  margin-top: 4px;
 }
 #event-details-group-2 {
   display: flex;
