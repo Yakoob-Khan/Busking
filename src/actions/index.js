@@ -37,7 +37,7 @@ export const testAPI = () => {
 export const facebookResponseLocal = (localToken) => {
   return (dispatch) => {
     console.log('hit facebook facebook');
-    axios.get(`${ROOT_URL}auth/facebook/refresh`, { headers: { authorization: localToken } }).then((r) => {
+    axios.get(`${ROOT_URL}/auth/facebook/refresh`, { headers: { authorization: localToken } }).then((r) => {
       const user = r.data;
       if (r.status === 200) {
         dispatch({
@@ -75,7 +75,7 @@ export const facebookResponse = (response) => {
       mode: 'cors',
       cache: 'default',
     };
-    fetch(`${ROOT_URL}auth/facebook`, options).then((r) => {
+    fetch(`${ROOT_URL}/auth/facebook`, options).then((r) => {
       const token = r.headers.get('x-auth-token');
       localStorage.setItem('jwtToken', token);
       r.json().then((user) => {
