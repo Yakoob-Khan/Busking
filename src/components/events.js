@@ -122,7 +122,6 @@ class UnWrappedEvents extends Component {
         <p className="events-header" id="events-nearby">Events nearby</p>
         <p className="events-subheader">See what&apos;s happening now</p>
         <EventSearch />
-        <div>Hello</div>
         <div className="events-button-container">
           <button onClick={this.onToggleMap} className="events-toggle" type="button">{this.state.mapBool ? 'Toggle Grid' : 'Toggle Map' }</button>
         </div>

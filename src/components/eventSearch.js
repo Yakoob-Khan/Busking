@@ -11,7 +11,6 @@ class eventSearch extends Component {
   render() {
     return (
       <div>
-          hello
         <textarea ref={(searchbar) => { this.searchbar = searchbar; }} />
         <button type="button" onClick={() => this.props.searchEvents(this.searchbar.value)}>search!</button>
       </div>
