@@ -31,8 +31,7 @@ class NavBar extends React.Component {
         <li className="nav-item">
           <NavLink to="/" className="nav-link">
             <span role="img" aria-label="see events" className="emoji">&#128075;</span>
-            {/* Login with Facebook
-           */}
+            {/* Login with Facebook */}
             <FacebookLogin
               appId={config.FACEBOOK_APP_ID}
               callback={this.props.facebookResponse}
@@ -52,7 +51,7 @@ class NavBar extends React.Component {
     this.setState({ show: true });
   }
 
-  close= () => {
+  close = () => {
     this.setState({ show: false });
   }
 
@@ -87,27 +86,22 @@ class NavBar extends React.Component {
                 Home
               </li>
             </NavLink>
-
             <li className="nav-item" onClick={this.show.bind(this)}>
               <span role="img" aria-label="see events" className="emoji">&#127927;</span>
-
               <p className="nav-link">Create Event</p>
             </li>
-
             {this.renderLogIn()}
-
           </ul>
           <Modal
-            className="login-modal" // this will completely overwrite the default css completely
-            // containerStyle={{ background: 'white' }} // changes styling on the inner content area
+            className="error-modal" // this will completely overwrite the default css completely
             containerClassName="test"
             closeOnOuterClick
             show={this.state.show}
             onClose={() => this.close()}
           >
-            <div className="login-prompt">
-              You must be logged in to create a new event!
-              <button id="login-close"
+            <div className="error-prompt">
+              &#x26A0; You must be logged in to create a new event!
+              <button className="error-close"
                 onClick={this.close.bind(this)}
                 type="submit"
               >X
