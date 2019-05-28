@@ -37,7 +37,7 @@ class UserProfile extends Component {
         return (
           <div className="hosted-event-container event-container" key={event.id}>
             <Link className="view-details" key={event.id} to={`/events/${event.id}`}>
-              <div className="event" key={event.id} style={eventStyle} />
+              <div className="event" style={eventStyle} />
               <p className="event-title">{event.title}</p>
               <p className="event-description">{event.description}</p>
               <p className="event-address">{event.address}</p>
@@ -79,7 +79,7 @@ class UserProfile extends Component {
         return (
           <div className="attended-event-container event-container" key={event.id}>
             <Link className="view-details" key={event.id} to={`/events/${event.id}`}>
-              <div className="event" key={event.id} style={eventStyle} />
+              <div className="event" style={eventStyle} />
               <p className="event-title">{event.title}</p>
               <p className="event-description">{event.description}</p>
               <p className="event-address">{event.address}</p>
