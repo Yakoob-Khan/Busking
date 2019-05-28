@@ -8,6 +8,7 @@ import PlacesAutocomplete, {
 } from 'react-places-autocomplete';
 import moment from 'moment';
 import DateTimePicker from 'react-datetime-picker/dist/entry.nostyle';
+import { GoogleApiWrapper } from 'google-maps-react';
 // import { Elements, StripeProvider } from 'react-stripe-elements';
 import Checkout from './Checkout';
 import {
@@ -18,7 +19,7 @@ import WrappedEventMap from './eventMap';
 import '../style.scss';
 
 
-class Event extends Component {
+class UnwrappedEvent extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -188,6 +189,58 @@ class Event extends Component {
     }
   }
 
+  renderComments = () => {
+    const numOfComments = this.props.event.comments.length;
+    if (this.props.user) {
+      return (
+        <div id="comments-section">
+          <h3 id="comments-section-header">{numOfComments} {numOfComments === 1 ? 'Comment' : 'Comments'}</h3>
+          <div id="new-comment">
+            <img id="new-comment-current-user" src={this.props.user.photo} alt={this.props.user.name} />
+            <textarea id="new-comment-input" placeholder="Write a comment" ref={(commentInput) => { this.commentInput = commentInput; }} />
+            <button id="new-comment-button" type="button" onClick={() => this.props.writeComment(this.props.event.id, this.commentInput.value, this.props.history)}>Comment</button>
+          </div>
+          <div id="all-previous-comments">
+            {this.props.event.comments.map((comment) => {
+              return (
+                <div id="comment" key={comment.id}>
+                  <div id="comment-author" key={comment.id}>
+                    <img id="comment-author-image" src={comment.author.photo} alt={comment.author.name} />
+                    <div id="comment-author-name-and-text">
+                      <span id="comment-author-name">{comment.author.name}</span>
+                      <span id="comment-text">{comment.text}</span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div id="comments-section">
+          <h3 id="comments-section-header">{numOfComments} {numOfComments === 1 ? 'Comment' : 'Comments'}</h3>
+          <div id="all-previous-comments">
+            {this.props.event.comments.map((comment) => {
+              return (
+                <div id="comment" key={comment.id}>
+                  <div id="comment-author" key={comment.id}>
+                    <img id="comment-author-image" src={comment.author.photo} alt={comment.author.name} />
+                    <div id="comment-author-name-and-text">
+                      <span id="comment-author-name">{comment.author.name}</span>
+                      <span id="comment-text">{comment.text}</span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+  }
+
   renderEvent = () => {
     moment.locale('en');
     const eventImage = {
@@ -195,7 +248,6 @@ class Event extends Component {
       backgroundRepeat: 'no-repeat',
       backgroundSize: 'cover',
     };
-    const numOfComments = this.props.event.comments.length;
     if ((!this.state.isEditing) && (this.props.user) && (this.props.user.id === this.props.event.host)) {
       return (
         <div id="event-page-background">
@@ -260,29 +312,7 @@ class Event extends Component {
             <div id="map-wrapper">
               <WrappedEventMap />
             </div>
-            <div id="comments-section">
-              <h3 id="comments-section-header">{numOfComments} {numOfComments === 1 ? 'Comment' : 'Comments'}</h3>
-              <div id="new-comment">
-                <img id="new-comment-current-user" src={this.props.user.photo} alt={this.props.user.name} />
-                <textarea id="new-comment-input" placeholder="Write a comment" ref={(commentInput) => { this.commentInput = commentInput; }} />
-                <button id="new-comment-button" type="button" onClick={() => this.props.writeComment(this.props.event.id, this.commentInput.value, this.props.history)}>Comment</button>
-              </div>
-              <div id="all-previous-comments">
-                {this.props.event.comments.map((comment) => {
-                  return (
-                    <div id="comment">
-                      <div id="comment-author">
-                        <img id="comment-author-image" src={comment.author.photo} alt={comment.author.name} />
-                        <div id="comment-author-name-and-text">
-                          <span id="comment-author-name">{comment.author.name}</span>
-                          <span id="comment-text">{comment.text}</span>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
+            {this.renderComments()}
           </div>
         </div>
       );
@@ -369,29 +399,7 @@ class Event extends Component {
             <div id="map-wrapper">
               <WrappedEventMap />
             </div>
-            <div id="comments-section">
-              <h3 id="comments-section-header">{numOfComments} {numOfComments === 1 ? 'Comment' : 'Comments'}</h3>
-              <div id="new-comment">
-                <img id="new-comment-current-user" src={this.props.user.photo} alt={this.props.user.name} />
-                <textarea id="new-comment-input" placeholder="Write a comment" ref={(commentInput) => { this.commentInput = commentInput; }} />
-                <button id="new-comment-button" type="button" onClick={() => this.props.writeComment(this.props.event.id, this.commentInput.value, this.props.history)}>Comment</button>
-              </div>
-              <div id="all-previous-comments">
-                {this.props.event.comments.map((comment) => {
-                  return (
-                    <div id="comment">
-                      <div id="comment-author">
-                        <img id="comment-author-image" src={comment.author.photo} alt={comment.author.name} />
-                        <div id="comment-author-name-and-text">
-                          <span id="comment-author-name">{comment.author.name}</span>
-                          <span id="comment-text">{comment.text}</span>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
+            {this.renderComments()}
           </div>
         </div>
       );
@@ -565,6 +573,11 @@ const mapStateToProps = state => (
     users: state.users,
   }
 );
+
+// eslint-disable-next-line new-cap
+const Event = GoogleApiWrapper({
+  apiKey: 'AIzaSyAE7HAvGXDK-LG6BfkEM0mgafvwo_Nda1Y',
+})(UnwrappedEvent);
 
 export default withRouter(connect(mapStateToProps, {
   fetchEvent, updateEvent, deleteEvent, rateEvent, fetchUser, attendEvent, leaveEvent, writeComment,
