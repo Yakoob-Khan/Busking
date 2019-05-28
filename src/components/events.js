@@ -15,9 +15,11 @@ class UnWrappedEvents extends Component {
     super(props);
     this.state = {
       mapBool: false,
+      sortByTime: true,
     };
 
     this.onToggleMap = this.onToggleMap.bind(this);
+    this.onToggleSort = this.onToggleSort.bind(this);
     this.renderEvents = this.renderEvents.bind(this);
   }
 
@@ -25,7 +27,7 @@ class UnWrappedEvents extends Component {
   componentDidMount() {
     this.props.fetchEvents();
     this.props.getCurrentLocation();
-    this.sortEvents();
+    this.sortEventsTime();
     // console.log('wohoo!');
     // console.log(this.props.events);
   }
@@ -36,12 +38,23 @@ class UnWrappedEvents extends Component {
     }));
   }
 
+  onToggleSort(event) {
+    this.setState((prevState) => {
+      if (prevState.sortByTime) {
+        this.sortEventsLocation();
+      } else {
+        this.sortEventsTime();
+      }
+      return { sortByTime: !prevState.sortByTime };
+    });
+  }
+
   isObjectEmpty = (object) => {
     // empty object check adapted from https://stackoverflow.com/questions/679915/how-do-i-test-for-an-empty-javascript-object
     return Object.entries(object).length === 0 && object.constructor === Object;
   }
 
-  sortEvents() {
+  sortEventsLocation() {
     if (!this.isObjectEmpty(this.props.currentUserLocation)) {
       this.geocoder.geocode({ location: this.props.currentUserLocation }, (results, status) => {
         if (status === 'OK') {
@@ -61,11 +74,26 @@ class UnWrappedEvents extends Component {
               }
             });
           });
+          sorted.sort((a, b) => {
+            return new Date(a.startTime) - new Date(b.startTime);
+          });
+          events.sort((a, b) => {
+            return new Date(a.startTime) - new Date(b.startTime);
+          });
+          console.log(sorted);
           sorted = [...sorted, ...events];
           this.props.updateStateEvents(sorted);
         }
       });
     }
+  }
+
+  sortEventsTime() {
+    const events = this.props.events;
+    events.sort((a, b) => {
+      return new Date(a.startTime) - new Date(b.startTime);
+    });
+    this.props.updateStateEvents(events);
   }
 
   renderEvents = () => {
@@ -129,10 +157,10 @@ class UnWrappedEvents extends Component {
         <p className="events-subheader">See what&apos;s happening now</p>
         <EventSearch />
         <div className="events-button-container">
-          <button onClick={this.onToggleMap} className="events-toggle" type="button">{this.state.mapBool ? 'Toggle Grid' : 'Toggle Map' }</button>
+          <button onClick={this.onToggleSort} className="events-toggle-sort" type="button">{this.state.sortByTime ? 'Sort by Time' : 'Sort by Location' }</button>
+          <button onClick={this.onToggleMap} className="events-toggle" type="button">{this.state.mapBool ? 'Toggle Grid' : 'Toggle Map'}</button>
         </div>
         <div className="events-container">
-          {this.sortEvents()}
           {this.state.mapBool ? <WrappedMapView /> : this.renderEvents()}
         </div>
       </div>

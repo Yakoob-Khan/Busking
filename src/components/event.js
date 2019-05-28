@@ -7,7 +7,7 @@ import PlacesAutocomplete, {
   getLatLng,
 } from 'react-places-autocomplete';
 import moment from 'moment';
-import DateTimePicker from 'react-datetime-picker';
+import DateTimePicker from 'react-datetime-picker/dist/entry.nostyle';
 // import { Elements, StripeProvider } from 'react-stripe-elements';
 import Checkout from './Checkout';
 import {
@@ -407,7 +407,7 @@ class Event extends Component {
         <div id="update-event-background">
           <div id="update-event-form">
             <h2 id="update-event-form-header">Update Event</h2>
-            <form>
+            <form id="event-form">
               <label className="input-label" htmlFor="update-event-title">Event Title
                 <input
                   type="text"
@@ -443,23 +443,31 @@ class Event extends Component {
                   onChange={this.onFieldChange}
                 />
               </label>
-              <DateTimePicker
-                onChange={this.onStartTimeChange}
-                required
-                disableClock
-                value={this.state.startTime}
-                minDate={today}
-                maxDate={oneweek}
-              />
-              <DateTimePicker
-                onChange={this.onEndTimeChange}
-                required
-                disableClock
-                value={this.state.endTime}
-                minDate={today}
-                maxDate={oneweek}
-              />
-              <p className="input-label" id="update-event-location-label">Event Location</p>
+              <div id="update-event-start-time">
+                <p className="input-label input-label-p" htmlFor="update-event-start-time">Event Start Time</p>
+                <DateTimePicker
+                  onChange={this.onStartTimeChange}
+                  required
+                  disableClock
+                  clearIcon={null}
+                  value={this.state.startTime}
+                  minDate={today}
+                  maxDate={oneweek}
+                />
+              </div>
+              <div id="update-event-end-time">
+                <p className="input-label input-label-p" htmlFor="update-event-end-time">Event End Time</p>
+                <DateTimePicker
+                  onChange={this.onEndTimeChange}
+                  required
+                  disableClock
+                  clearIcon={null}
+                  value={this.state.endTime}
+                  minDate={today}
+                  maxDate={oneweek}
+                />
+              </div>
+              <p className="input-label input-label-p" id="update-event-location-label">Event Location</p>
               <PlacesAutocomplete
                 value={this.state.address}
                 onChange={this.handleChange}

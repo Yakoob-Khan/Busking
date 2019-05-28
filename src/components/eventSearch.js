@@ -11,7 +11,7 @@ class eventSearch extends Component {
   render() {
     return (
       <div id="search-events-bar">
-        <input id="search-events-bar-input" placeholder="Filter by event location or description" ref={(searchbar) => { this.searchbar = searchbar; }} />
+        <input id="search-events-bar-input" placeholder="Filter by event name, description, or location" ref={(searchbar) => { this.searchbar = searchbar; }} />
         <button id="search-events-bar-button" type="button" onClick={() => this.props.searchEvents(this.searchbar.value)}>Search</button>
       </div>
     );

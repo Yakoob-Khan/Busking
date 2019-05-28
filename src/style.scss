@@ -172,7 +172,8 @@ nav {
   outline: none;
 }
 #search-events-bar-button:hover,
-.events-toggle:hover {
+.events-toggle:hover,
+.events-toggle-sort:hover {
   cursor: pointer;
   color: $accent-color;
   border: 1px solid $accent-color;
@@ -183,11 +184,15 @@ nav {
   position: relative;
   z-index: 100;
 }
-.events-toggle {
+.events-toggle,
+.events-toggle-sort {
   border: 1px solid $primary-font-color;
   opacity: 0.8;
   outline: none;
   padding: 4px 8px;
+}
+.events-toggle-sort {
+  margin-right: 8px;
 }
 /* LANDING PAGE - 
   EVENTS SECTION -
@@ -427,8 +432,8 @@ nav {
 #update-event-background {
   background-image: url("./../src/assets/mountain-background.jpg");
   background-size: cover;
-  height: 100vh;
-  padding-top: 50px;
+  height: fit-content;
+  padding: 50px 0;
 }
 #new-event-form,
 #update-event-form {
@@ -450,15 +455,17 @@ nav {
   padding-bottom: 6px;
   text-transform: uppercase;
 }
+#event-form {
+  width: 47vw;
+}
 .input-label {
   font-size: 12px;
   letter-spacing: 0.8px;
   margin-left: 8px;
   text-transform: uppercase;
 }
-#new-event-location-label,
-#update-event-location-label {
-  margin-top: -10px;
+.input-label-p {
+  margin: 20px 0 14px 8px;
 }
 .update-event-input,
 .new-event-input {
@@ -468,10 +475,53 @@ nav {
   color: white;
   display: block;
   font-size: 16px;
-  margin: 12px 0 20px 0;
+  margin: 12px 0 16px 0;
   outline: none;
   padding: 10px;
-  width: 47vw;
+  width: 100%;
+}
+#update-event-start-time,
+#create-event-start-time {
+  margin-top: -34px;
+}
+.react-datetime-picker {
+  border-radius: 3px;
+  background-color: rgba(158, 163, 190, 0.6);
+  font-family: sans-serif;
+  padding: 6px 8px;
+  div {
+    border: none;
+    color: rgba(255, 255, 255, 0.8);
+  }
+  /* CALENDAR STYLE */
+  .react-calendar {
+    background-color: rgba(26, 34, 76, 0.8);
+    button:disabled {
+      background-color: rgba(59, 59, 82, 0.8);
+      color: rgba(114, 114, 116, 0.8);
+    }
+    button:hover {
+      background-color: white;
+      cursor: pointer;
+      color: $accent-color;
+    }
+  }
+  select, input, button {
+    background-color: none;
+    color: rgba(255, 255, 255, 0.8);
+    outline: none;
+  }
+  select {
+    -webkit-appearance: none;
+    font-weight: 500;
+  }
+  select:hover { 
+    cursor: pointer;
+    color: rgb(34, 124, 207);
+  }
+  g {
+    stroke: rgba(255, 255, 255, 0.8);
+  }
 }
 ::-webkit-input-placeholder { /* Chrome */
   color: white;
