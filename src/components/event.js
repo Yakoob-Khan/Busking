@@ -6,6 +6,8 @@ import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
 } from 'react-places-autocomplete';
+import moment from 'moment';
+import DateTimePicker from 'react-datetime-picker';
 // import { Elements, StripeProvider } from 'react-stripe-elements';
 import Checkout from './Checkout';
 import {
@@ -29,8 +31,8 @@ class Event extends Component {
       address: '',
       eventCreator: '',
       tip: '',
-      startTime: '',
-      endTime: '',
+      startTime: new Date(),
+      endTime: new Date(),
     };
 
     this.onEdit = this.onEdit.bind(this);
@@ -45,6 +47,10 @@ class Event extends Component {
     this.props.fetchEvent(this.props.match.params.eventId, () => this.props.fetchUser(this.props.event.host));
     window.scrollTo(0, 0);
   }
+
+  onStartTimeChange = startTime => this.setState({ startTime });
+
+  onEndTimeChange = endTime => this.setState({ endTime });
 
   onEdit(event) {
     this.setState(prevState => ({
@@ -115,6 +121,8 @@ class Event extends Component {
       latitude: '',
       eventCreator: '',
       address: '',
+      startTime: new Date(),
+      endTime: new Date(),
     });
     this.props.updateEvent(update);
   }
@@ -179,6 +187,10 @@ class Event extends Component {
   }
 
   renderEvent = () => {
+    const today = new Date();
+    const oneweek = new Date();
+    oneweek.setDate(oneweek.getDate() + 7);
+    moment.locale('en');
     const eventImage = {
       backgroundImage: `url(${this.props.event.imageURL})`,
       backgroundRepeat: 'no-repeat',
@@ -196,9 +208,9 @@ class Event extends Component {
                   <p id="event-title">{this.props.event.title}</p>
                   <p id="event-location">{this.props.event.address}</p>
                   <p id="event-time">
-                    <span>{this.props.event.startTime}</span>
+                    <span>{moment(this.props.event.startTime).format('MMM d LT')}</span>
                     <span> &#45; </span>
-                    <span>{this.props.event.endTime}</span>
+                    <span>{moment(this.props.event.endTime).format('MMM d LT')}</span>
                   </p>
                 </div>
                 <div id="event-details-group-2">
@@ -282,9 +294,9 @@ class Event extends Component {
                   <p id="event-title">{this.props.event.title}</p>
                   <p id="event-location">{this.props.event.address}</p>
                   <p id="event-time">
-                    <span>{this.props.event.startTime}</span>
+                    <span>{moment(this.props.event.startTime).format('MMM d LT')}</span>
                     <span> &#45; </span>
-                    <span>{this.props.event.endTime}</span>
+                    <span>{moment(this.props.event.endTime).format('MMM d LT')}</span>
                   </p>
                 </div>
                 <div id="event-details-group-2">
@@ -403,7 +415,7 @@ class Event extends Component {
                   onChange={this.onFieldChange}
                 />
               </label>
-              <label className="input-label" htmlFor="new-event-startTime">Event Start Time
+              {/* <label className="input-label" htmlFor="new-event-startTime">Event Start Time
                 <input
                   type="text"
                   name="startTime"
@@ -424,7 +436,23 @@ class Event extends Component {
                   placeholder="End Time"
                   onChange={this.onFieldChange}
                 />
-              </label>
+              </label> */}
+              <DateTimePicker
+                onChange={this.onStartTimeChange}
+                required
+                disableClock
+                value={this.state.startTime}
+                minDate={today}
+                maxDate={oneweek}
+              />
+              <DateTimePicker
+                onChange={this.onEndTimeChange}
+                required
+                disableClock
+                value={this.state.endTime}
+                minDate={today}
+                maxDate={oneweek}
+              />
               <p className="input-label" id="update-event-location-label">Event Location</p>
               <PlacesAutocomplete
                 value={this.state.address}
