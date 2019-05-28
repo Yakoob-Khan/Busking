@@ -204,28 +204,28 @@ class UserProfile extends Component {
 
   renderStripeConnectButton = () => {
     // First if statement deploying on local host. Comment out the second if statement!
-    if (this.props.user.id === this.props.loggedUser.id) {
-      return (
-        <a id="stripe-connect-button"
-          href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_F6rBJOefS9FTqzvaRY8cuXnnoDU9SHpV&scope=read_write&redirect_uri=http://localhost:8080/stripeAccount"
-          rel="noopener noreferrer"
-        >
-          Stripe Connect
-        </a>
-      );
-    // eslint-disable-next-line brace-style
-    }
-    // Second if statement deploying on surge. Comment out the first if statement!
     // if (this.props.user.id === this.props.loggedUser.id) {
     //   return (
     //     <a id="stripe-connect-button"
-    //       href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_F6rBJOefS9FTqzvaRY8cuXnnoDU9SHpV&scope=read_write&redirect_uri=https://busking-api.herokuapp.com/api/stripeAccount"
+    //       href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_F6rBJOefS9FTqzvaRY8cuXnnoDU9SHpV&scope=read_write&redirect_uri=http://localhost:8080/stripeAccount"
     //       rel="noopener noreferrer"
     //     >
     //       Stripe Connect
     //     </a>
     //   );
-    // } 
+    // // eslint-disable-next-line brace-style
+    // }
+    // Second if statement deploying on surge. Comment out the first if statement!
+    if (this.props.user.id === this.props.loggedUser.id) {
+      return (
+        <a id="stripe-connect-button"
+          href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_F6rBJOefS9FTqzvaRY8cuXnnoDU9SHpV&scope=read_write&redirect_uri=https://busking-api.herokuapp.com/api/stripeAccount"
+          rel="noopener noreferrer"
+        >
+          Stripe Connect
+        </a>
+      );
+    }
     else {
       return null;
     }
