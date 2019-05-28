@@ -74,13 +74,6 @@ class UnWrappedEvents extends Component {
               }
             });
           });
-          sorted.sort((a, b) => {
-            return new Date(a.startTime) - new Date(b.startTime);
-          });
-          events.sort((a, b) => {
-            return new Date(a.startTime) - new Date(b.startTime);
-          });
-          console.log(sorted);
           sorted = [...sorted, ...events];
           this.props.updateStateEvents(sorted);
         }
