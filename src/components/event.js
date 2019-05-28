@@ -207,9 +207,9 @@ class Event extends Component {
                   <p id="event-title">{this.props.event.title}</p>
                   <p id="event-location">{this.props.event.address}</p>
                   <p id="event-time">
-                    <span>{moment(this.props.event.startTime).format('MMM d LT')}</span>
+                    <span>{moment(this.props.event.startTime).format('MMM DD LT')}</span>
                     <span> &#45; </span>
-                    <span>{moment(this.props.event.endTime).format('MMM d LT')}</span>
+                    <span>{moment(this.props.event.endTime).format('MMM DD LT')}</span>
                   </p>
                 </div>
                 <div id="event-details-group-2">
@@ -293,9 +293,9 @@ class Event extends Component {
                   <p id="event-title">{this.props.event.title}</p>
                   <p id="event-location">{this.props.event.address}</p>
                   <p id="event-time">
-                    <span>{moment(this.props.event.startTime).format('MMM d LT')}</span>
+                    <span>{moment(this.props.event.startTime).format('MMM DD LT')}</span>
                     <span> &#45; </span>
-                    <span>{moment(this.props.event.endTime).format('MMM d LT')}</span>
+                    <span>{moment(this.props.event.endTime).format('MMM DD LT')}</span>
                   </p>
                 </div>
                 <div id="event-details-group-2">
