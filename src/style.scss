@@ -65,7 +65,7 @@ nav {
   font-size: 4.8em;
   font-weight: 500;
   letter-spacing: 1px;
-  margin: 20% 0 0 0;
+  margin: 10% 0 0 0;
   text-shadow: 2px 2px 2px black;
 }
 #landing-title-app-name {
@@ -84,6 +84,16 @@ nav {
   margin-top: 0;
   text-shadow: 2px 2px 2px black;
   margin-bottom: 2%;
+}
+#down-arrow {
+  width: 80px;
+  margin-top: 0;
+  text-shadow: 2px 2px 2px black;
+  transition: transform 300ms ease-out;
+}
+#down-arrow:hover {
+  transform: translateY(3px);
+  transition: transform 300ms ease-in-out;
 }
 @media screen and (max-width: 700px) {
   .navbar {
@@ -579,10 +589,6 @@ nav {
   border-radius: 10px;
   -webkit-box-shadow: inset 0 0 2px rgba(0,0,0,.3);
   background-color: rgb(214, 214, 214);
-}
-#down-arrow {
-  width: 80px;
-  margin-top: 0%;
 }
 .login-prompt {
   text-align: center;
