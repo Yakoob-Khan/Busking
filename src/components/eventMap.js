@@ -114,9 +114,9 @@ export class EventMap extends Component {
     const event = this.props.event;
     const userLoc = this.props.currentUserLocation;
     const mapStyle = {
-      width: '90%',
+      width: '57vw',
       height: '350px',
-      paddingRight: '22.15vw',
+      paddingRight: '0.5vw',
       borderTop: '1px dotted gray',
       borderBottom: '1px dotted gray',
       zIndex: '2',

@@ -28,10 +28,10 @@ class Followers extends Component {
       return this.props.user.followers.map((user) => {
         return (
           <Link key={user.id} to={`/users/${user.id}`}>
-            <div className="user" key={user.id}>
-              <img src={user.photo} alt="profile" className="user-profile-pic" />
+            <div className="follower" key={user.id}>
+              <img src={user.photo} alt="follower-profile" className="follower-profile-pic" />
               {user.name}
-              <div className="event-rating">
+              <div className="follower-average-event-rating">
                 <Ratings
                   rating={user.averageRating}
                   widgetRatedColors="#0099CC"
@@ -53,7 +53,7 @@ class Followers extends Component {
     } else {
       return (
         <div>
-          No followers yet
+          No followers yet <span role="img" aria-label="unamused face">&#128530;</span>
         </div>
       );
     }
@@ -64,10 +64,10 @@ class Followers extends Component {
       return this.props.user.following.map((user) => {
         return (
           <Link key={user.id} to={`/users/${user.id}`}>
-            <div className="user" key={user.id}>
-              <img src={user.photo} alt="profile" className="user-profile-pic" />
+            <div className="following" key={user.id}>
+              <img src={user.photo} alt="following-profile" className="following-profile-pic" />
               {user.name}
-              <div className="event-rating">
+              <div className="following-average-event-rating">
                 <Ratings
                   rating={user.averageRating}
                   widgetRatedColors="#0099CC"
@@ -89,7 +89,7 @@ class Followers extends Component {
     } else {
       return (
         <div>
-          No following yet
+          No following yet <span role="img" aria-label="unamused face">&#128530;</span>
         </div>
       );
     }
@@ -98,14 +98,14 @@ class Followers extends Component {
   renderUsers = () => {
     if (this.props.match.path === '/users/:userId/followers') {
       return (
-        <div classnmae="users-container">
+        <div className="users-container">
           Followers:
           {this.renderFollowers()}
         </div>
       );
     } else if (this.props.match.path === '/users/:userId/following') {
       return (
-        <div classnmae="users-container">
+        <div className="users-container">
           Following:
           {this.renderFollowing()}
         </div>

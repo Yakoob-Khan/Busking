@@ -88,7 +88,7 @@ class NewEvent extends Component {
         if (results[0].address_components.length < 6) {
           this.setState({
             show: true,
-            error: 'Please be more specific about your location!!!',
+            error: 'Please provide a more specific location!',
           });
         } else {
           this.setState({
@@ -115,8 +115,9 @@ class NewEvent extends Component {
     const oneweek = new Date();
     oneweek.setDate(oneweek.getDate() + 7);
     const divStyle = {
-      margin: '-18px auto 0 auto',
+      margin: '-14px auto 0 auto',
       position: 'absolute',
+      width: '100%',
       zIndex: '100',
     };
     return (
@@ -124,14 +125,14 @@ class NewEvent extends Component {
         <div id="new-event-form">
           <h2 id="new-event-form-header">New Event</h2>
           <Modal
-            className="login-modal" // this will completely overwrite the default css completely
+            className="error-modal" // this will completely overwrite the default css completely
             // containerStyle={{ background: 'white' }} // changes styling on the inner content area
             containerClassName="test"
             closeOnOuterClick
             show={this.state.show}
             // onClose={() => this.close()}
           >
-            <div className="login-prompt">
+            <div className="error-prompt">
               {this.state.error}
             </div>
           </Modal>

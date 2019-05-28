@@ -63,8 +63,8 @@ class UserProfile extends Component {
       });
     } else {
       return (
-        <div>
-          No events yet
+        <div className="hosted-event-container event-container">
+          No events yet <span role="img" aria-label="unamused face">&#128530;</span>
         </div>
       );
     }
@@ -105,8 +105,8 @@ class UserProfile extends Component {
       });
     } else {
       return (
-        <div>
-          No events yet
+        <div className="attended-event-container event-container">
+          No events yet <span role="img" aria-label="unamused face">&#128530;</span>
         </div>
       );
     }
@@ -116,45 +116,45 @@ class UserProfile extends Component {
     return this.props.user.eventsAttended.length;
   }
 
-  renderFollowers = () => {
-    if (this.props.user.followers.length !== 0) {
-      return this.props.user.followers.map((user) => {
-        return (
-          <div className="user" key={user.id}>
-            {user.name}
-          </div>
-        );
-      });
-    } else {
-      return (
-        <div>
-          No followers yet
-        </div>
-      );
-    }
-  }
+  // renderFollowers = () => {
+  //   if (this.props.user.followers.length !== 0) {
+  //     return this.props.user.followers.map((user) => {
+  //       return (
+  //         <div className="user" key={user.id}>
+  //           {user.name}
+  //         </div>
+  //       );
+  //     });
+  //   } else {
+  //     return (
+  //       <div>
+  //         No followers yet
+  //       </div>
+  //     );
+  //   }
+  // }
 
   getNumOfFollowers = () => {
     return this.props.user.followers.length;
   }
 
-  renderFollowing = () => {
-    if (this.props.user.following.length !== 0) {
-      return this.props.user.following.map((user) => {
-        return (
-          <div className="user" key={user.id}>
-            {user.name}
-          </div>
-        );
-      });
-    } else {
-      return (
-        <div>
-          No following yet
-        </div>
-      );
-    }
-  }
+  // renderFollowing = () => {
+  //   if (this.props.user.following.length !== 0) {
+  //     return this.props.user.following.map((user) => {
+  //       return (
+  //         <div className="user" key={user.id}>
+  //           {user.name}
+  //         </div>
+  //       );
+  //     });
+  //   } else {
+  //     return (
+  //       <div>
+  //         No following yet
+  //       </div>
+  //     );
+  //   }
+  // }
 
   getNumOfFollowing = () => {
     return this.props.user.following.length;
@@ -191,7 +191,7 @@ class UserProfile extends Component {
     if (this.props.user.id === this.props.loggedUser.id) {
       return (
         <button onClick={this.props.logoutUser} id="log-out-button" className="button" type="submit">
-        Log out
+          Log out
         </button>
       );
     } else {

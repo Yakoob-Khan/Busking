@@ -342,18 +342,19 @@ class Event extends Component {
                   <div id="event-details-group-3">
                     <div id="tip-input-group">
                       <p id="tip-input-label" htmlFor="tip-input">Tip Amount</p>
-                      <input
-                        id="tip-input"
-                        type="number"
-                        min="0.01"
-                        step="0.01"
-                        name="tip"
-                        value={this.state.tip}
-                        onChange={this.onFieldChange}
-                      />
+                      <span id="tip-input">$
+                        <input
+                          type="number"
+                          min="0.01"
+                          step="0.01"
+                          name="tip"
+                          value={this.state.tip}
+                          onChange={this.onFieldChange}
+                        />
+                      </span>
                       <Checkout
                         // `#demo${this.state.id}`
-                        name={`Send a tip to ${this.props.users.user.name}!`}
+                        name={`Send a tip to ${this.props.users.user.name}`}
                         description="Your tip goes a long way!"
                         amount={this.state.tip}
                         stripeId={this.props.event.stripeId}
