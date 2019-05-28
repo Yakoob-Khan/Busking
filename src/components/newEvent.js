@@ -73,18 +73,11 @@ class NewEvent extends Component {
         show: true,
         error: 'You must select a valid address from the drop down menu!!!',
       });
-    // } else if (this.state.startTime.getTime() >= this.state.endTime.getTime()) {
-    //   this.setState({
-    //     show: true,
-    //     error: 'You must select an end time after the start time!!!',
-    //   });
-    // } else if (this.state.startTime.getTime() < this.state.endTime.getTime()) {
-    //   if (this.state.error === 'You must select an end time after the start time!!!') {
-    //     this.setState({
-    //       show: false,
-    //       error: '',
-    //     });
-    //   }
+    } else if (this.state.startTime.getTime() >= this.state.endTime.getTime()) {
+      this.setState({
+        show: true,
+        error: 'You must select an end time after the start time!!!',
+      });
     } else if (!this.state.show) {
       if (this.state.imageURL.length === 0) {
         const defaultImages = [
