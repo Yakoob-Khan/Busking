@@ -10,9 +10,9 @@ import {
 class eventSearch extends Component {
   render() {
     return (
-      <div>
-        <textarea ref={(searchbar) => { this.searchbar = searchbar; }} />
-        <button type="button" onClick={() => this.props.searchEvents(this.searchbar.value)}>search!</button>
+      <div id="search-events-bar">
+        <input id="search-events-bar-input" ref={(searchbar) => { this.searchbar = searchbar; }} />
+        <button id="search-events-bar-button" type="button" onClick={() => this.props.searchEvents(this.searchbar.value)}>Search</button>
       </div>
     );
   }
