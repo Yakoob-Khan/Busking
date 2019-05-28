@@ -189,6 +189,58 @@ class UnwrappedEvent extends Component {
     }
   }
 
+  renderComments = () => {
+    const numOfComments = this.props.event.comments.length;
+    if (this.props.user) {
+      return (
+        <div id="comments-section">
+          <h3 id="comments-section-header">{numOfComments} {numOfComments === 1 ? 'Comment' : 'Comments'}</h3>
+          <div id="new-comment">
+            <img id="new-comment-current-user" src={this.props.user.photo} alt={this.props.user.name} />
+            <textarea id="new-comment-input" placeholder="Write a comment" ref={(commentInput) => { this.commentInput = commentInput; }} />
+            <button id="new-comment-button" type="button" onClick={() => this.props.writeComment(this.props.event.id, this.commentInput.value, this.props.history)}>Comment</button>
+          </div>
+          <div id="all-previous-comments">
+            {this.props.event.comments.map((comment) => {
+              return (
+                <div id="comment" key={comment.id}>
+                  <div id="comment-author" key={comment.id}>
+                    <img id="comment-author-image" src={comment.author.photo} alt={comment.author.name} />
+                    <div id="comment-author-name-and-text">
+                      <span id="comment-author-name">{comment.author.name}</span>
+                      <span id="comment-text">{comment.text}</span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div id="comments-section">
+          <h3 id="comments-section-header">{numOfComments} {numOfComments === 1 ? 'Comment' : 'Comments'}</h3>
+          <div id="all-previous-comments">
+            {this.props.event.comments.map((comment) => {
+              return (
+                <div id="comment" key={comment.id}>
+                  <div id="comment-author" key={comment.id}>
+                    <img id="comment-author-image" src={comment.author.photo} alt={comment.author.name} />
+                    <div id="comment-author-name-and-text">
+                      <span id="comment-author-name">{comment.author.name}</span>
+                      <span id="comment-text">{comment.text}</span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+  }
+
   renderEvent = () => {
     moment.locale('en');
     const eventImage = {
@@ -196,7 +248,6 @@ class UnwrappedEvent extends Component {
       backgroundRepeat: 'no-repeat',
       backgroundSize: 'cover',
     };
-    const numOfComments = this.props.event.comments.length;
     if ((!this.state.isEditing) && (this.props.user) && (this.props.user.id === this.props.event.host)) {
       return (
         <div id="event-page-background">
@@ -261,33 +312,11 @@ class UnwrappedEvent extends Component {
             <div id="map-wrapper">
               <WrappedEventMap />
             </div>
-            <div id="comments-section">
-              <h3 id="comments-section-header">{numOfComments} {numOfComments === 1 ? 'Comment' : 'Comments'}</h3>
-              <div id="new-comment">
-                <img id="new-comment-current-user" src={this.props.user.photo} alt={this.props.user.name} />
-                <textarea id="new-comment-input" placeholder="Write a comment" ref={(commentInput) => { this.commentInput = commentInput; }} />
-                <button id="new-comment-button" type="button" onClick={() => this.props.writeComment(this.props.event.id, this.commentInput.value, this.props.history)}>Comment</button>
-              </div>
-              <div id="all-previous-comments">
-                {this.props.event.comments.map((comment) => {
-                  return (
-                    <div id="comment" key={comment.id}>
-                      <div id="comment-author" key={comment.id}>
-                        <img id="comment-author-image" src={comment.author.photo} alt={comment.author.name} />
-                        <div id="comment-author-name-and-text">
-                          <span id="comment-author-name">{comment.author.name}</span>
-                          <span id="comment-text">{comment.text}</span>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
+            {this.renderComments()}
           </div>
         </div>
       );
-    } else if (!this.state.isEditing && (this.props.user)) {
+    } else if (!this.state.isEditing) {
       return (
         <div id="event-page-background">
           <div id="event-page">
@@ -369,29 +398,7 @@ class UnwrappedEvent extends Component {
             <div id="map-wrapper">
               <WrappedEventMap />
             </div>
-            <div id="comments-section">
-              <h3 id="comments-section-header">{numOfComments} {numOfComments === 1 ? 'Comment' : 'Comments'}</h3>
-              <div id="new-comment">
-                <img id="new-comment-current-user" src={this.props.user.photo} alt={this.props.user.name} />
-                <textarea id="new-comment-input" placeholder="Write a comment" ref={(commentInput) => { this.commentInput = commentInput; }} />
-                <button id="new-comment-button" type="button" onClick={() => this.props.writeComment(this.props.event.id, this.commentInput.value, this.props.history)}>Comment</button>
-              </div>
-              <div id="all-previous-comments">
-                {this.props.event.comments.map((comment) => {
-                  return (
-                    <div id="comment" key={comment.id}>
-                      <div id="comment-author" key={comment.id}>
-                        <img id="comment-author-image" src={comment.author.photo} alt={comment.author.name} />
-                        <div id="comment-author-name-and-text">
-                          <span id="comment-author-name">{comment.author.name}</span>
-                          <span id="comment-text">{comment.text}</span>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
+            {this.renderComments()}
           </div>
         </div>
       );
