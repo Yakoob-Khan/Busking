@@ -19,7 +19,7 @@ import { facebookResponseLocal } from '../actions';
 import requireAuth from './requireAuth';
 import UserProfile from './userprofile';
 import Users from './users';
-// import UserProfile from './userprofile';
+import StripeAccount from './stripeAccount';
 
 const FallBack = (props) => {
   return <div>URL Not Found</div>;
@@ -49,7 +49,7 @@ class App extends Component {
             <Route exact path="/users/:userId" component={UserProfile} />
             <Route exact path="/users/:userId/followers" component={Users} />
             <Route exact path="/users/:userId/following" component={Users} />
-            {/* <Route path="/payment" component={CheckoutForm} /> */}
+            <Route path="/stripeAccount" component={StripeAccount} />
             <Route component={FallBack} />
           </Switch>
         </div>
