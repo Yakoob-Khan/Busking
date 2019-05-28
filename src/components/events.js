@@ -25,7 +25,8 @@ class UnWrappedEvents extends Component {
   componentDidMount() {
     this.props.fetchEvents();
     this.props.getCurrentLocation();
-    this.sortEvents();
+    this.sortEventsTime();
+    this.sortEventsLocation();
     // console.log('wohoo!');
     // console.log(this.props.events);
   }
@@ -41,7 +42,7 @@ class UnWrappedEvents extends Component {
     return Object.entries(object).length === 0 && object.constructor === Object;
   }
 
-  sortEvents() {
+  sortEventsLocation() {
     if (!this.isObjectEmpty(this.props.currentUserLocation)) {
       this.geocoder.geocode({ location: this.props.currentUserLocation }, (results, status) => {
         if (status === 'OK') {
@@ -66,6 +67,13 @@ class UnWrappedEvents extends Component {
         }
       });
     }
+  }
+
+  sortEventsTime() {
+    const events = this.props.events;
+    events.sort((a, b) => {
+      return new Date(a.startTime) - new Date(b.startTime);
+    });
   }
 
   renderEvents = () => {
@@ -132,7 +140,7 @@ class UnWrappedEvents extends Component {
           <button onClick={this.onToggleMap} className="events-toggle" type="button">{this.state.mapBool ? 'Toggle Grid' : 'Toggle Map' }</button>
         </div>
         <div className="events-container">
-          {this.sortEvents()}
+          {this.sortEventsTime()}
           {this.state.mapBool ? <WrappedMapView /> : this.renderEvents()}
         </div>
       </div>
