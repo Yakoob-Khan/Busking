@@ -56,11 +56,11 @@ export const facebookResponseLocal = (localToken) => {
 
 export function logoutUser(history) {
   return (dispatch) => {
+    history.push('/');
     localStorage.removeItem('jwtToken');
     dispatch({
       type: ActionTypes.DEAUTH_USER_SUCCESS,
     });
-    // history.push('/');
   };
 }
 
