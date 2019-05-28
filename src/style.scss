@@ -644,3 +644,36 @@ textarea {
   margin: 10px;
   padding: 0;
 }
+#tip-input {
+  width: 50px;
+  display: inline-block;
+  background: white;
+  border: 1px solid black;
+  color: black;
+}
+.user {
+  width: 75vw;
+  height: 20vh;
+  box-shadow: 1px 1px 2px gray;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+}
+.users-container {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.user-profile-pic {
+  border-radius: 50%;
+  height: 100%;
+}
+.content-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

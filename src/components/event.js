@@ -13,6 +13,8 @@ import {
 } from '../actions';
 // import PaymentRequestForm from './PaymentRequestForm';
 import WrappedEventMap from './eventMap';
+import '../style.scss';
+
 
 class Event extends Component {
   constructor(props) {
@@ -240,19 +242,23 @@ class Event extends Component {
                     {/* <img src="./../src/assets/basket.svg" alt="delete event" /> */}
                     <p>delete event</p>
                   </button>
-                  {/* <input
-                    type="text"
+                  <p>Enter Tip: </p>
+                  <input
+                    id="tip-input"
+                    type="number"
+                    min="0"
                     name="tip"
                     value={this.state.tip}
                     placeholder="Tip Amount"
                     onChange={this.onFieldChange}
-                    />
-                    <button type="button" onClick={this.payment}> Tip </button> */}
+                  />
+                  {/* <button type="button" onClick={this.payment}> Tip </button> */}
                   <Checkout
                     // `#demo${this.state.id}`
                     name={`Send a tip to ${this.props.users.user.name}!`}
                     description="Your tip goes a long way!"
                     amount={this.state.tip}
+                    stripeId={this.props.user.stripeId}
                   />
                 </div>
               </div>
@@ -326,11 +332,22 @@ class Event extends Component {
                   </div>
                 </div>
                 <div id="event-details-group-3">
+                  <p>Enter Tip: </p>
+                  <input
+                    id="tip-input"
+                    type="number"
+                    min="0"
+                    name="tip"
+                    value={this.state.tip}
+                    placeholder="Tip Amount"
+                    onChange={this.onFieldChange}
+                  />
                   <Checkout
                   // `#demo${this.state.id}`
                     name={`Send a tip to ${this.props.users.user.name}!`}
                     description="Your tip goes a long way!"
                     amount={this.state.tip}
+                    stripeId={this.props.event.stripeId}
                   />
                   {this.renderAttendButton()}
                 </div>

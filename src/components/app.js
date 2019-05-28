@@ -18,6 +18,7 @@ import WrappedMapView from './wrappedMapView';
 import { facebookResponseLocal } from '../actions';
 import requireAuth from './requireAuth';
 import UserProfile from './userprofile';
+import Users from './users';
 // import UserProfile from './userprofile';
 
 const FallBack = (props) => {
@@ -27,24 +28,11 @@ class App extends Component {
   componentDidMount() {
     const token = localStorage.getItem('jwtToken');
     if (token) {
-      console.log('local token');
-      console.log(token);
       this.props.facebookResponseLocal(token);
     } else {
       console.log('no local token');
     }
   }
-
-  // componentWillUpdate() {
-  //   const token = localStorage.getItem('jwtToken');
-  //   if (token) {
-  //     console.log('local token');
-  //     console.log(token);
-  //     this.props.facebookResponseLocal(token);
-  //   } else {
-  //     console.log('no local token');
-  //   }
-  // }
 
   render() {
     return (
@@ -59,8 +47,9 @@ class App extends Component {
             <Route path="/mapView" component={WrappedMapView} />
             <Route exact path="/events/:eventId" component={Event} />
             <Route exact path="/users/:userId" component={UserProfile} />
+            <Route exact path="/users/:userId/followers" component={Users} />
+            <Route exact path="/users/:userId/following" component={Users} />
             {/* <Route path="/payment" component={CheckoutForm} /> */}
-            {/* <Route exact path="/user" component={UserProfile} /> */}
             <Route component={FallBack} />
           </Switch>
         </div>
