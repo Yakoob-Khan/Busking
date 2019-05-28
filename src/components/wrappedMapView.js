@@ -8,6 +8,7 @@ import {
   withRouter, NavLink, BrowserRouter as Router, Route, Switch,
 } from 'react-router-dom';
 import Ratings from 'react-ratings-declarative';
+import moment from 'moment';
 import { fetchEvents, getCurrentLocation } from '../actions';
 
 export class MapView extends Component {
@@ -45,8 +46,10 @@ export class MapView extends Component {
 
 
   renderEvents = () => {
-    if (this.props.events.length !== 0) {
-      return this.props.events.map((event) => {
+    const now = new Date();
+    const events = this.props.events.filter(event => (moment(event.endTime).valueOf() > now.getTime()));
+    if (events.length !== 0) {
+      return events.map((event) => {
         return (
           <Marker key={event.id} event={event} position={{ lat: event.latitude, lng: event.longitude }} onClick={this.onMarkerClick} />
         );
@@ -59,7 +62,9 @@ export class MapView extends Component {
   }
 
   getBounds = () => {
-    const points = this.props.events.map(event => (
+    const now = new Date();
+    const events = this.props.events.filter(event => (moment(event.endTime).valueOf() > now.getTime()));
+    const points = events.map(event => (
       { lat: event.latitude, lng: event.longitude }
     ));
     const userLoc = this.props.currentUserLocation;
@@ -135,6 +140,7 @@ const mapStateToProps = state => (
   }
 );
 
+// return this.props.events.filter(event => (moment(event.endTime).valueOf() > now.getTime())).map((event) => {
 
 // eslint-disable-next-line new-cap
 const WrappedMapView = GoogleApiWrapper({
