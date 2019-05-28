@@ -339,6 +339,8 @@ nav {
 }
 #update-event-button:hover,
 #delete-event-button:hover,
+#attend-event-button:hover,
+#leave-event-button:hover,
 #stripe-checkout-button:hover {
   cursor: pointer;
   color: $accent-color;
