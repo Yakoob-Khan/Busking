@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import Ratings from 'react-ratings-declarative';
+// import axios from 'axios';
 import {
   updateCurrentUser, logoutUser, fetchUser, followUser, unFollowUser,
 } from '../actions';
@@ -76,29 +77,29 @@ class UserProfile extends Component {
           backgroundImage: `url(${event.imageURL})`,
         };
         return (
-          <div className="event-container" key={event.id}>
-            <Link key={event.id} to={`/events/${event.id}`}>
-              <div key={event.id} style={eventStyle} />
+          <div className="attended-event-container event-container" key={event.id}>
+            <Link className="view-details" key={event.id} to={`/events/${event.id}`}>
+              <div className="event" key={event.id} style={eventStyle} />
+              <p className="event-title">{event.title}</p>
+              <p className="event-description">{event.description}</p>
+              <p className="event-address">{event.address}</p>
+              {/* Ratings credit to: https://github.com/ekeric13/react-ratings-declarative */}
+              <div className="event-rating">
+                <Ratings
+                  rating={event.averageRating}
+                  widgetRatedColors="#0099CC"
+                  widgetEmptyColors="#6B6B6B"
+                  widgetSpacings="1px"
+                  widgetDimensions="12px"
+                >
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                </Ratings>
+              </div>
             </Link>
-            <p>
-              {event.title}
-            </p>
-            {/* Ratings credit to: https://github.com/ekeric13/react-ratings-declarative */}
-            <div>
-              <Ratings
-                rating={event.averageRating}
-                widgetRatedColors="#0099CC"
-                widgetEmptyColors="#6B6B6B"
-                widgetSpacings="2px"
-                widgetDimensions="18px"
-              >
-                <Ratings.Widget />
-                <Ratings.Widget />
-                <Ratings.Widget />
-                <Ratings.Widget />
-                <Ratings.Widget />
-              </Ratings>
-            </div>
           </div>
         );
       });
@@ -160,23 +161,26 @@ class UserProfile extends Component {
   }
 
   handleFollow = () => {
-    this.props.followUser(this.props.user.id, this.props.history);
+    this.props.followUser(this.props.user.id);
   }
 
   handleUnFollow = () => {
-    this.props.unFollowUser(this.props.user.id, this.props.history);
+    this.props.unFollowUser(this.props.user.id);
   }
 
   renderFollowButton = () => {
     if (this.props.user.id !== this.props.loggedUser.id) {
+      console.log(this.props.user.followers);
       if (this.props.user.followers.filter(follower => (follower.id === this.props.loggedUser.id)).length > 0) {
         return (
           <button type="button" id="unfollow-button" onClick={this.handleUnFollow}>unfollow</button>
         );
-      } else {
+      } else if (this.props.user.followers.filter(follower => (follower.id === this.props.loggedUser.id)).length === 0) {
         return (
           <button type="button" id="follow-button" onClick={this.handleFollow}>follow</button>
         );
+      } else {
+        return null;
       }
     } else {
       return null;
@@ -186,13 +190,32 @@ class UserProfile extends Component {
   renderLogoutButton = () => {
     if (this.props.user.id === this.props.loggedUser.id) {
       return (
-        <button onClick={this.props.logoutUser} id="log-out-button" className="button" type="submit">
+        <button onClick={() => this.props.logoutUser(this.props.history)} id="log-out-button" className="button" type="submit">
         Log out
         </button>
       );
     } else {
       return null;
     }
+  }
+
+  renderStripeConnectButton = () => {
+    if (this.props.user.id === this.props.loggedUser.id) {
+      return (
+        <a id="stripe-connect-button"
+          href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_F6rBJOefS9FTqzvaRY8cuXnnoDU9SHpV&scope=read_write"
+          rel="noopener noreferrer"
+        >
+          Stripe Connect
+        </a>
+      );
+    } else {
+      return null;
+    }
+  }
+
+  stripeConnect = () => {
+    this.props.stripeRedirect();
   }
 
   render() {
@@ -203,15 +226,17 @@ class UserProfile extends Component {
       const content = this.props.auth
         ? (
           <div id="user-profile">
-            <div id="user-profile-background" />
             <div id="user-profile-details-container">
               <div id="user-profile-details">
                 <div id="user-profile-basic-details">
                   <img id="user-profile-picture" src={this.props.user.photo} alt={this.props.user.name} />
                   <p id="user-profile-name">{this.props.user.name}</p>
                   <p id="user-profile-email">{this.props.user.email}</p>
-                  {this.renderFollowButton()}
-                  {this.renderLogoutButton()}
+                  <div id="user-profile-buttons-container">
+                    {this.renderFollowButton()}
+                    {this.renderLogoutButton()}
+                    {this.renderStripeConnectButton()}
+                  </div>
                 </div>
                 <div id="user-profile-stats">
                   <div id="user-profile-stat-1" className="user-profile-stat">
@@ -220,14 +245,18 @@ class UserProfile extends Component {
                       {this.props.user.averageRating ? this.props.user.averageRating.toFixed(2) : 'No Ratings'}
                     </p>
                   </div>
-                  <div id="user-profile-stat-2" className="user-profile-stat">
-                    <p id="user-profile-followers-label" className="user-profile-stat-label">Followers</p>
-                    <p id="user-profile-followers" className="user-profile-stat-value">{this.getNumOfFollowers()}</p>
-                  </div>
-                  <div id="user-profile-stat-3" className="user-profile-stat">
-                    <p id="user-profile-following-label" className="user-profile-stat-label">Following</p>
-                    <p id="user-profile-following" className="user-profile-stat-value">{this.getNumOfFollowing()}</p>
-                  </div>
+                  <Link className="event-creator-link" to={`/users/${this.props.user._id}/followers`}>
+                    <div id="user-profile-stat-2" className="user-profile-stat">
+                      <p id="user-profile-followers-label" className="user-profile-stat-label">Followers</p>
+                      <p id="user-profile-followers" className="user-profile-stat-value">{this.getNumOfFollowers()}</p>
+                    </div>
+                  </Link>
+                  <Link className="event-creator-link" to={`/users/${this.props.user._id}/following`}>
+                    <div id="user-profile-stat-3" className="user-profile-stat">
+                      <p id="user-profile-following-label" className="user-profile-stat-label">Following</p>
+                      <p id="user-profile-following" className="user-profile-stat-value">{this.getNumOfFollowing()}</p>
+                    </div>
+                  </Link>
                   <div id="user-profile-stat-4" className="user-profile-stat">
                     <p id="user-profile-events-attended-label" className="user-profile-stat-label">Events Attended</p>
                     <p id="user-profile-events-attended" className="user-profile-stat-value">{this.getNumOfEventsAttended()}</p>
@@ -239,6 +268,14 @@ class UserProfile extends Component {
                   <p id="user-profile-events-hosted-label">Events Hosted</p>
                   <div id="hosted-events-grid">
                     {this.renderEventsHosted()}
+                  </div>
+                </div>
+              </div>
+              <div id="user-profile-events-attended-section">
+                <div id="events-attended-section-inner-div">
+                  <p id="user-profile-events-attended-title">Events Attended</p>
+                  <div id="attended-events-grid">
+                    {this.renderEventsAttended()}
                   </div>
                 </div>
               </div>

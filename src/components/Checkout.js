@@ -8,34 +8,36 @@ const PAYMENT_SERVER_URL = 'https://busking-api.herokuapp.com/api/payment';
 const CURRENCY = 'USD';
 const STRIPE_KEY = 'pk_test_cmSKgd5oAKJCXkLZWdG9iPkY00gDJLz3VP';
 
-
-const onToken = (amount, description) => token => axios.post(PAYMENT_SERVER_URL,
+const onToken = (amount, description, stripeId) => token => axios.post(PAYMENT_SERVER_URL,
   {
     description,
     source: token.id,
     currency: 'USD',
     amount: fromDollarToCent(amount),
-  })
-  .catch(console.log('payment error'));
+    stripeId,
+  });
 
-const Checkout = ({ name, description, amount }) => (
-  <StripeCheckout
-    name={name}
-    email="false"
-    description={description}
-    amount={fromDollarToCent(amount)}
-    token={onToken(amount, description)}
-    currency={CURRENCY}
-    stripeKey={STRIPE_KEY}
-    image="https://blog.iconfactory.com/wp-content/uploads/2016/05/OlliesTipJar.png"
-    panelLabel="Tip"
-    label="Give a Tip"
-  >
-    <button id="stripe-checkout-button" className="event-button" type="button">
-      {/* <img src="./../src/assets/bowl.svg" alt="send tip" /> */}
-      <p>Send Tip</p>
-    </button>
-  </StripeCheckout>
-);
+const Checkout = ({
+  name, description, amount, stripeId, eventCreatorImage,
+}) => {
+  return (
+    <StripeCheckout
+      name={name}
+      email="true"
+      description={description}
+      amount={fromDollarToCent(amount)}
+      token={onToken(amount, description, stripeId)}
+      currency={CURRENCY}
+      stripeKey={STRIPE_KEY}
+      image={eventCreatorImage}
+      panelLabel="Tip"
+      label="Give a Tip"
+    >
+      <button id="stripe-checkout-button" className="event-button" type="button">
+        <p>Send Tip</p>
+      </button>
+    </StripeCheckout>
+  );
+};
 
 export default Checkout;

@@ -14,6 +14,9 @@ export const ActionTypes = {
   FETCH_USER: 'FETCH_USER',
   FOLLOW_USER: 'FOLLOW_USER',
   UNFOLLOW_USER: 'UNFOLLOW_USER',
+  ATTEND_EVENT: 'ATTEND_EVENT',
+  LEAVE_EVENT: 'LEAVE_EVENT',
+  UPDATE_STRIPE_ID: 'UPDATE_STRIPE_ID',
 };
 
 const ROOT_URL = 'https://busking-api.herokuapp.com/';
@@ -30,14 +33,13 @@ export const testAPI = () => {
   };
 };
 
+
 export const facebookResponseLocal = (localToken) => {
   return (dispatch) => {
     console.log('hit facebook facebook');
     axios.get(`${ROOT_URL}auth/facebook/refresh`, { headers: { authorization: localToken } }).then((r) => {
       const user = r.data;
-      console.log(user);
       if (r.status === 200) {
-        console.log('hit facebook dispatch');
         dispatch({
           type: ActionTypes.AUTH_USER_SUCCESS,
           payload: { user },
@@ -56,46 +58,16 @@ export const facebookResponseLocal = (localToken) => {
 
 export function logoutUser(history) {
   return (dispatch) => {
+    history.push('/');
     localStorage.removeItem('jwtToken');
     dispatch({
       type: ActionTypes.DEAUTH_USER_SUCCESS,
     });
-    // history.push('/');
   };
 }
 
-
-// export const facebookResponseLocal = (localToken) => {
-//   return (dispatch) => {
-//     console.log('called!');
-//     const tokenBlob = new Blob([JSON.stringify({ access_token: localToken }, null, 2)], { type: 'application/json' });
-//     const options = {
-//       method: 'POST',
-//       body: tokenBlob,
-//       mode: 'cors',
-//       cache: 'default',
-//     };
-//     fetch('http://localhost:9090/auth/facebook', options).then((r) => {
-//       const token = r.headers.get('x-auth-token');
-//       r.json().then((user) => {
-//         if (token) {
-//           // localStorage.setItem('token', token);
-//           // console.log(localStorage.getItem('token'));
-//           dispatch({
-//             type: ActionTypes.AUTH_USER_SUCCESS,
-//             payload: { user, token },
-//           });
-//           // this.setState({ isAuthenticated: true, user, token });
-//         }
-//       });
-//     });
-//   };
-// };
-
 export const facebookResponse = (response) => {
-  console.log(response);
   return (dispatch) => {
-    console.log(response.accessToken);
     const tokenBlob = new Blob([JSON.stringify({ access_token: response.accessToken }, null, 2)], { type: 'application/json' });
     const options = {
       method: 'POST',
@@ -107,7 +79,6 @@ export const facebookResponse = (response) => {
       const token = r.headers.get('x-auth-token');
       localStorage.setItem('jwtToken', token);
       r.json().then((user) => {
-        console.log(user);
         if (token) {
           dispatch({
             type: ActionTypes.AUTH_USER_SUCCESS,
@@ -153,11 +124,41 @@ export function fetchEvents() {
   };
 }
 
+export const searchEvents = (searchTerm) => {
+  return (dispatch) => {
+    if (searchTerm === '') {
+      dispatch(fetchEvents());
+    } else {
+      axios.put(`${ROOT_URL}api/search/event`, { searchTerm }).then((r) => {
+        dispatch(
+          {
+            type: ActionTypes.FETCH_EVENTS,
+            payload: r.data,
+          },
+        );
+      // dispatch({ type: ActionTypes.DELETE_POST, payload: response.data });
+      }).catch((e) => {
+        dispatch(appError(`Error retrieving events :( ${e}`));
+      });
+    }
+  };
+};
+
+// update store events after sorting based on user location
+export function updateStateEvents(events) {
+  return (dispatch) => {
+    dispatch({
+      type: ActionTypes.FETCH_EVENTS,
+      payload: events,
+    });
+  };
+}
+
 export function createEvent(newEvent, history) {
   return (dispatch) => {
     axios.post(`${ROOT_URL}api/events`, newEvent, { headers: { authorization: localStorage.getItem('jwtToken') } })
       .then((response) => {
-        history.push('/events');
+        history.push('/');
       })
       .catch((error) => {
         dispatch(appError(`Error creating post :( ${error}`));
@@ -182,6 +183,20 @@ export function fetchEvent(id, callback) {
   };
 }
 
+export const writeComment = (id, text, history) => {
+  return (dispatch) => {
+    console.log('helo api comment!');
+    axios.post(`${ROOT_URL}api/comment/${id}`, { text }, { headers: { authorization: localStorage.getItem('jwtToken') } }).then((r) => {
+      // console.log(r);
+      dispatch(fetchEvent(id));
+      history.push(`/events/${id}`);
+    // dispatch({ type: ActionTypes.DELETE_POST, payload: response.data });
+    }).catch((e) => {
+      console.log(e);
+    });
+  };
+};
+
 export function updateEvent(update) {
   return (dispatch) => {
     axios.put(`${ROOT_URL}api/events/${update.id}`, update)
@@ -202,6 +217,36 @@ export function deleteEvent(id, history) {
       })
       .catch((error) => {
         dispatch(appError(`Error deleting post :( ${error}`));
+      });
+  };
+}
+
+export function attendEvent(id) {
+  return (dispatch) => {
+    axios.get(`${ROOT_URL}/events/attend/${id}`, { headers: { authorization: localStorage.getItem('jwtToken') } })
+      .then((response) => {
+        dispatch({
+          type: ActionTypes.ATTEND_EVENT,
+          payload: response.data,
+        });
+      })
+      .catch((error) => {
+        dispatch(appError(`Error attending event :( ${error}`));
+      });
+  };
+}
+
+export function leaveEvent(id) {
+  return (dispatch) => {
+    axios.get(`${ROOT_URL}/events/leave/${id}`, { headers: { authorization: localStorage.getItem('jwtToken') } })
+      .then((response) => {
+        dispatch({
+          type: ActionTypes.LEAVE_EVENT,
+          payload: response.data,
+        });
+      })
+      .catch((error) => {
+        dispatch(appError(`Error attending event :( ${error}`));
       });
   };
 }
@@ -231,6 +276,18 @@ export function updateCurrentUser(updatedUser) {
   };
 }
 
+export function updateStripeId(updatedUser) {
+  return (dispatch) => {
+    axios.put(`${ROOT_URL}/userStripeId`, updatedUser)
+      .then((response) => {
+        dispatch({ type: ActionTypes.UPDATE_STRIPE_ID, payload: response.data });
+      })
+      .catch((error) => {
+        dispatch(appError(`Update user failed: ${error}`));
+      });
+  };
+}
+
 export function fetchUser(id) {
   return (dispatch) => {
     axios.get(`${ROOT_URL}/users/${id}`)
@@ -246,7 +303,7 @@ export function fetchUser(id) {
   };
 }
 
-export function followUser(followId, history) {
+export function followUser(followId) {
   return (dispatch) => {
     axios.get(`${ROOT_URL}/users/follow/${followId}`, { headers: { authorization: localStorage.getItem('jwtToken') } })
       .then((response) => {
@@ -254,15 +311,14 @@ export function followUser(followId, history) {
           type: ActionTypes.FOLLOW_USER,
           payload: response.data,
         });
-        history.push('/users/followId');
       })
       .catch((error) => {
-        dispatch(appError(`Error retrieving user :( ${error.response.data}`));
+        dispatch(appError(`Error following user :( ${error}`));
       });
   };
 }
 
-export function unFollowUser(unfollowId, history) {
+export function unFollowUser(unfollowId) {
   return (dispatch) => {
     axios.get(`${ROOT_URL}/users/unfollow/${unfollowId}`, { headers: { authorization: localStorage.getItem('jwtToken') } })
       .then((response) => {
@@ -270,10 +326,9 @@ export function unFollowUser(unfollowId, history) {
           type: ActionTypes.UNFOLLOW_USER,
           payload: response.data,
         });
-        history.push('/users/unfollowId');
       })
       .catch((error) => {
-        dispatch(appError(`Error retrieving user :( ${error.response.data}`));
+        dispatch(appError(`Error unfollowing user :( ${error}`));
       });
   };
 }

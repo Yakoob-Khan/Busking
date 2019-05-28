@@ -19,7 +19,10 @@ export class EventMap extends Component {
       activeMarker: {}, // Shows the active marker upon click
       selectedEvent: {}, // Shows the infoWindow to the selected Event upon a marker
       currentMode: 'DRIVING',
+      map: {},
+      feedback: 'Loading Directions...',
     };
+    this.map = React.createRef();
   }
 
   componentDidMount() {
@@ -27,9 +30,10 @@ export class EventMap extends Component {
     this.props.getCurrentLocation();
     const map1stWrapper = document.getElementById('map-wrapper').firstChild;
     if (map1stWrapper) {
-      map1stWrapper.style.width = '80%';
+      map1stWrapper.style.width = '100%';
       map1stWrapper.style.margin = '0 auto';
     }
+    this.setState({ map: window.map });
   }
 
 
@@ -70,22 +74,27 @@ export class EventMap extends Component {
 
   // Adapted from https://developers.google.com/maps/documentation/javascript/directions
   calcRoute = () => {
-    const start = this.props.currentUserLocation;
-    const end = { lat: this.props.event.latitude, lng: this.props.event.longitude };
-    const request = {
-      origin: start,
-      destination: end,
-      travelMode: this.state.currentMode,
-    };
-    if (window.map) {
-      this.directionsDisplay.setMap(window.map.map);
+    if (!this.isObjectEmpty(this.props.currentUserLocation)) {
+      const start = this.props.currentUserLocation;
+      const end = { lat: this.props.event.latitude, lng: this.props.event.longitude };
+      const request = {
+        origin: start,
+        destination: end,
+        travelMode: this.state.currentMode,
+      };
+      this.directionsDisplay.setMap(this.state.map.map);
       this.directionsDisplay.setPanel(document.getElementById('directionsPanel'));
+      this.directionsService.route(request, (result, status) => {
+        if (status === 'OK') {
+          this.directionsDisplay.setDirections(result);
+          this.setState({ feedback: '' });
+        } else if (status === 'ZERO_RESULTS') {
+          this.setState({ feedback: 'No route to event found' });
+        } else if (status === 'UNKNOWN_ERROR') {
+          this.setState({ feedback: 'Error. Please Try again' });
+        }
+      });
     }
-    this.directionsService.route(request, (result, status) => {
-      if (status === 'OK') {
-        this.directionsDisplay.setDirections(result);
-      }
-    });
   }
 
 
@@ -112,57 +121,54 @@ export class EventMap extends Component {
       borderBottom: '1px dotted gray',
       zIndex: '2',
     };
-    if (!this.isObjectEmpty(event) && !this.isObjectEmpty(userLoc)) {
-      this.calcRoute();
-      return (
-        <div id="map-outermost-wrapper">
-          <div>
-            <h3 id="map-header">Directions to Event</h3>
-            <div id="floating-panel">
-              <p id="map-mode-select-label">Travel By</p>
-              <select id="map-mode-select" onChange={this.onModeChange}>
-                <option value="DRIVING">Driving</option>
-                <option value="WALKING">Walking</option>
-                <option value="BICYCLING">Bicycling</option>
-                <option value="TRANSIT">Transit</option>
-              </select>
-            </div>
-          </div>
-          <div id="directions">
-            <Map
-              // Adapted from https://github.com/tomchentw/react-google-maps/issues/189
-              ref={(map) => { window.map = map; }}
-              google={this.props.google}
-              center={this.props.currentUserLocation}
-              style={mapStyle}
-            >
-              {this.renderEvent()}
-              <Marker
-                title="Your current location"
-                position={this.props.currentUserLocation}
-                icon={{
-                  url: String(this.iconUrl()),
-                  anchor: new window.google.maps.Point(32, 32),
-                  scaledSize: new window.google.maps.Size(60, 60),
-                }}
-              />
-              <InfoWindow className="info-window" marker={this.state.activeMarker} visible={this.state.showingInfoWindow} onClose={this.onClose}>
-                <div>
-                  <div key={this.state.selectedEvent.id}>
-                    <p className="event-title-info">
-                      {this.state.selectedEvent.title}
-                    </p>
-                  </div>
-                </div>
-              </InfoWindow>
-            </Map>
-            <div id="directionsPanel" />
+    return (
+      <div id="map-outermost-wrapper">
+        <div>
+          <h3 id="map-header">Directions to Event</h3>
+          <div id="floating-panel">
+            <p>{this.state.feedback}</p>
+            <p id="map-mode-select-label">Travel By</p>
+            <select id="map-mode-select" onChange={this.onModeChange}>
+              <option value="DRIVING">Driving</option>
+              <option value="WALKING">Walking</option>
+              <option value="BICYCLING">Bicycling</option>
+              <option value="TRANSIT">Transit</option>
+            </select>
           </div>
         </div>
-      );
-    } else {
-      return <div className="directions">Loading...</div>;
-    }
+        <div id="directions">
+          <Map
+            // Adapted from https://github.com/tomchentw/react-google-maps/issues/189
+            ref={(map) => { window.map = map; }}
+            google={this.props.google}
+            center={this.props.currentUserLocation}
+            style={mapStyle}
+          >
+            {this.renderEvent()}
+            {this.calcRoute()}
+            <Marker
+              title="Your current location"
+              position={this.props.currentUserLocation}
+              icon={{
+                url: String(this.iconUrl()),
+                anchor: new window.google.maps.Point(32, 32),
+                scaledSize: new window.google.maps.Size(60, 60),
+              }}
+            />
+            <InfoWindow className="info-window" marker={this.state.activeMarker} visible={this.state.showingInfoWindow} onClose={this.onClose}>
+              <div>
+                <div key={this.state.selectedEvent.id}>
+                  <p className="event-title-info">
+                    {this.state.selectedEvent.title}
+                  </p>
+                </div>
+              </div>
+            </InfoWindow>
+          </Map>
+          <div id="directionsPanel" />
+        </div>
+      </div>
+    );
   }
 }
 

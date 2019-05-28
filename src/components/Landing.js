@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
 import { withRouter } from 'react-router-dom';
 import '../style.scss';
 import Events from './events';
+import { updateStripeId } from '../actions';
 
 class Landing extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {};
   }
 
@@ -32,4 +32,4 @@ class Landing extends React.Component {
   }
 }
 
-export default withRouter(connect(null, null)(Landing));
+export default withRouter(connect(null, { updateStripeId })(Landing));
