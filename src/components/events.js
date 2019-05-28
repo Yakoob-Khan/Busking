@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import Ratings from 'react-ratings-declarative';
 import { GoogleApiWrapper } from 'google-maps-react';
+import moment from 'moment';
 import EventSearch from './eventSearch';
 import { fetchEvents, getCurrentLocation, updateStateEvents } from '../actions';
 import WrappedMapView from './wrappedMapView';
@@ -69,7 +70,12 @@ class UnWrappedEvents extends Component {
 
   renderEvents = () => {
     if (this.props.events.length !== 0) {
-      return this.props.events.map((event) => {
+      const now = new Date();
+      return this.props.events.filter(event => (moment(event.endTime).valueOf() > now.getTime())).map((event) => {
+      // return this.props.events.map((event) => {
+      //   console.log(moment(event.endTime).valueOf());
+      //   console.log(now.getTime());
+      //   console.log(moment(event.endTime).valueOf() > now.getTime());
         const eventStyle = {
           backgroundImage: `url(${event.imageURL})`,
         };

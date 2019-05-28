@@ -43,7 +43,7 @@ class NewEvent extends Component {
         show: true,
         error: 'You must select a valid address from the drop down menu!!!',
       });
-    } else if (this.state.startTime.getTime() >= this.state.endTime.getTime()) {
+    } else if (this.state.startTime.getTime() > this.state.endTime.getTime()) {
       this.setState({
         show: true,
         error: 'You must select an end time after the start time!!!',
