@@ -41,16 +41,14 @@ class Event extends Component {
     this.onFieldChange = this.onFieldChange.bind(this);
     // this.submitForm = this.submitForm.bind(this);
     this.changeRating = this.changeRating.bind(this);
+    this.onStartTimeChange = this.onStartTimeChange.bind(this);
+    this.onEndTimeChange = this.onEndTimeChange.bind(this);
   }
 
   componentDidMount() {
     this.props.fetchEvent(this.props.match.params.eventId, () => this.props.fetchUser(this.props.event.host));
     window.scrollTo(0, 0);
   }
-
-  onStartTimeChange = startTime => this.setState({ startTime });
-
-  onEndTimeChange = endTime => this.setState({ endTime });
 
   onEdit(event) {
     this.setState(prevState => ({
@@ -84,6 +82,18 @@ class Event extends Component {
 
   onFieldChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
+  }
+
+  onStartTimeChange = (startTime) => {
+    if (startTime instanceof Date) {
+      this.setState({ startTime });
+    }
+  }
+
+  onEndTimeChange = (endTime) => {
+    if (endTime instanceof Date) {
+      this.setState({ endTime });
+    }
   }
 
   startEdit = () => {
@@ -187,9 +197,6 @@ class Event extends Component {
   }
 
   renderEvent = () => {
-    const today = new Date();
-    const oneweek = new Date();
-    oneweek.setDate(oneweek.getDate() + 7);
     moment.locale('en');
     const eventImage = {
       backgroundImage: `url(${this.props.event.imageURL})`,
@@ -367,6 +374,9 @@ class Event extends Component {
         </div>
       );
     } else {
+      const today = new Date();
+      const oneweek = new Date();
+      oneweek.setDate(oneweek.getDate() + 7);
       const divStyle = {
         margin: '-18px auto 0 auto',
         position: 'absolute',
@@ -441,7 +451,7 @@ class Event extends Component {
                 onChange={this.onStartTimeChange}
                 required
                 disableClock
-                value={this.state.startTime}
+                value={today}
                 minDate={today}
                 maxDate={oneweek}
               />
@@ -449,7 +459,7 @@ class Event extends Component {
                 onChange={this.onEndTimeChange}
                 required
                 disableClock
-                value={this.state.endTime}
+                value={oneweek}
                 minDate={today}
                 maxDate={oneweek}
               />
