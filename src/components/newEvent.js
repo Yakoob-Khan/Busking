@@ -8,6 +8,7 @@ import PlacesAutocomplete, {
 } from 'react-places-autocomplete';
 import { GoogleApiWrapper } from 'google-maps-react';
 import Modal from 'simple-react-modal';
+import DateTimePicker from 'react-datetime-picker';
 import { createEvent, updateCurrentUser } from '../actions';
 
 class NewEvent extends Component {
@@ -20,14 +21,17 @@ class NewEvent extends Component {
       latitude: '',
       description: '',
       address: '',
-      startTime: '',
-      endTime: '',
+      startTime: new Date(),
+      endTime: new Date(),
       show: false,
       error: '',
     };
     this.onFieldChange = this.onFieldChange.bind(this);
   }
 
+  onStartTimeChange = startTime => this.setState({ startTime });
+
+  onEndTimeChange = endTime => this.setState({ endTime });
 
   onFieldChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
@@ -102,6 +106,9 @@ class NewEvent extends Component {
   // }
 
   render() {
+    const today = new Date();
+    const oneweek = new Date();
+    oneweek.setDate(oneweek.getDate() + 7);
     const divStyle = {
       margin: '-18px auto 0 auto',
       position: 'absolute',
@@ -158,7 +165,7 @@ class NewEvent extends Component {
                 onChange={this.onFieldChange}
               />
             </label>
-            <label className="input-label" htmlFor="new-event-startTime">Event Start Time
+            {/* <label className="input-label" htmlFor="new-event-startTime">Event Start Time
               <input
                 type="text"
                 name="startTime"
@@ -168,8 +175,8 @@ class NewEvent extends Component {
                 placeholder="Start Time"
                 onChange={this.onFieldChange}
               />
-            </label>
-            <label className="input-label" htmlFor="new-event-endTime">Event End Time
+            </label> */}
+            {/* <label className="input-label" htmlFor="new-event-endTime">Event End Time
               <input
                 type="text"
                 name="endTime"
@@ -179,7 +186,23 @@ class NewEvent extends Component {
                 placeholder="End Time"
                 onChange={this.onFieldChange}
               />
-            </label>
+            </label> */}
+            <DateTimePicker
+              onChange={this.onStartTimeChange}
+              required
+              disableClock
+              value={this.state.startTime}
+              minDate={today}
+              maxDate={oneweek}
+            />
+            <DateTimePicker
+              onChange={this.onEndTimeChange}
+              required
+              disableClock
+              value={this.state.endTime}
+              minDate={today}
+              maxDate={oneweek}
+            />
             <p className="input-label" id="new-event-location-label">Event Location</p>
             <PlacesAutocomplete
               id="new-event-location"
@@ -249,6 +272,7 @@ class NewEvent extends Component {
 
 const mapStateToProps = state => (
   {
+    event: state.events.event,
     user: state.users.user,
     auth: state.auth.isAuthenticated,
     loggedUser: state.auth.user,
