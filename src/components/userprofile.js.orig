@@ -1,6 +1,3 @@
-/* eslint-disable brace-style */
-/* eslint-disable no-trailing-spaces */
-/* eslint-disable max-len */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
@@ -193,8 +190,13 @@ class UserProfile extends Component {
   renderLogoutButton = () => {
     if (this.props.user.id === this.props.loggedUser.id) {
       return (
+<<<<<<< HEAD
+        <button onClick={this.props.logoutUser} id="log-out-button" className="button" type="submit">
+          Log out
+=======
         <button onClick={() => this.props.logoutUser(this.props.history)} id="log-out-button" className="button" type="submit">
         Log out
+>>>>>>> origin/master
         </button>
       );
     } else {
@@ -203,30 +205,16 @@ class UserProfile extends Component {
   }
 
   renderStripeConnectButton = () => {
-    // First if statement deploying on local host. Comment out the second if statement!
     if (this.props.user.id === this.props.loggedUser.id) {
       return (
         <a id="stripe-connect-button"
-          href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_F6rBJOefS9FTqzvaRY8cuXnnoDU9SHpV&scope=read_write&redirect_uri=http://localhost:8080/stripeAccount"
+          href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_F6rBJOefS9FTqzvaRY8cuXnnoDU9SHpV&scope=read_write"
           rel="noopener noreferrer"
         >
           Stripe Connect
         </a>
       );
-    // eslint-disable-next-line brace-style
-    }
-    // Second if statement deploying on surge. Comment out the first if statement!
-    // if (this.props.user.id === this.props.loggedUser.id) {
-    //   return (
-    //     <a id="stripe-connect-button"
-    //       href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_F6rBJOefS9FTqzvaRY8cuXnnoDU9SHpV&scope=read_write&redirect_uri=https://busking-api.herokuapp.com/api/stripeAccount"
-    //       rel="noopener noreferrer"
-    //     >
-    //       Stripe Connect
-    //     </a>
-    //   );
-    // } 
-    else {
+    } else {
       return null;
     }
   }
@@ -312,6 +300,7 @@ class UserProfile extends Component {
     }
   }
 }
+
 const mapStateToProps = state => (
   {
     user: state.users.user,

@@ -29,7 +29,7 @@ class LogIn extends React.Component {
           </div>
           <div>
             <button onClick={this.props.logoutUser} className="button" type="submit">
-                    Log out
+              Log out
             </button>
             <button onClick={this.props.testAPI} className="button" type="submit">TEST API</button>
           </div>

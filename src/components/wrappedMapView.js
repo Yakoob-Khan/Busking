@@ -82,6 +82,34 @@ export class MapView extends Component {
   //   }
   // }
 
+  renderUserMarker() {
+    if (this.props.user) {
+      return (
+        <Marker
+          title="Your current location"
+          position={this.props.currentUserLocation}
+          icon={{
+            url: `${this.props.user.photo}`,
+            anchor: new window.google.maps.Point(32, 32),
+            scaledSize: new window.google.maps.Size(40, 40),
+          }}
+        />
+      );
+    } else {
+      return (
+        <Marker
+          title="Your current location"
+          position={this.props.currentUserLocation}
+          icon={{
+            url: 'https://www.shareicon.net/data/2015/08/14/85301_public_512x512.png',
+            anchor: new window.google.maps.Point(32, 32),
+            scaledSize: new window.google.maps.Size(40, 40),
+          }}
+        />
+      );
+    }
+  }
+
   render() {
     return (
       <div>
@@ -92,15 +120,7 @@ export class MapView extends Component {
           zoom={6}
         >
           {this.renderEvents()}
-          <Marker
-            title="Your current location"
-            position={this.props.currentUserLocation}
-            icon={{
-              url: `${this.props.user.photo}`,
-              anchor: new window.google.maps.Point(32, 32),
-              scaledSize: new window.google.maps.Size(40, 40),
-            }}
-          />
+          {this.renderUserMarker()}
           <InfoWindow className="info-window" marker={this.state.activeMarker} visible={this.state.showingInfoWindow} onClose={this.onClose}>
             <div className="info-container">
               <div key={this.state.selectedEvent.id}>
