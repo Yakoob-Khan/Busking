@@ -19,7 +19,7 @@ export class MapView extends Component {
       activeMarker: {}, // Shows the active marker upon click
       selectedEvent: {}, // Shows the infoWindow to the selected Event upon a marker
     };
-    this.getBounds = this.getBounds.bind(this);
+    // this.getBounds = this.getBounds.bind(this);
   }
 
   componentDidMount() {
@@ -47,9 +47,10 @@ export class MapView extends Component {
 
   renderEvents = () => {
     const now = new Date();
-    const events = this.props.events.filter(event => (moment(event.endTime).valueOf() > now.getTime()));
-    if (events.length !== 0) {
-      return events.map((event) => {
+    // const events = this.props.events.filter(event => (moment(event.endTime).valueOf() > now.getTime()));
+    // const events = this.props.events.filter(event => (moment(event.endTime).valueOf() > now.getTime()));
+    if (this.props.events.filter(event => (moment(event.endTime).valueOf() > now.getTime())).length !== 0) {
+      return this.props.events.filter(event => (moment(event.endTime).valueOf() > now.getTime())).map((event) => {
         return (
           <Marker key={event.id} event={event} position={{ lat: event.latitude, lng: event.longitude }} onClick={this.onMarkerClick} />
         );
@@ -61,23 +62,25 @@ export class MapView extends Component {
     }
   }
 
-  getBounds = () => {
-    const now = new Date();
-    const events = this.props.events.filter(event => (moment(event.endTime).valueOf() > now.getTime()));
-    const points = events.map(event => (
-      { lat: event.latitude, lng: event.longitude }
-    ));
-    const userLoc = this.props.currentUserLocation;
-    // empty object check adapted from https://stackoverflow.com/questions/679915/how-do-i-test-for-an-empty-javascript-object
-    if (!(Object.entries(userLoc).length === 0 && userLoc.constructor === Object)) {
-      points.push(this.props.currentUserLocation);
-    }
-    const bounds = new this.props.google.maps.LatLngBounds();
-    points.forEach((point) => {
-      bounds.extend(point);
-    });
-    return bounds;
-  }
+  // getBounds = () => {
+  //   const now = new Date();
+  //   const events = this.props.events.filter(event => (moment(event.endTime).valueOf() > now.getTime()));
+  //   if (events.length !== 0) {
+  //     const points = events.map(event => (
+  //       { lat: event.latitude, lng: event.longitude }
+  //     ));
+  //     const userLoc = this.props.currentUserLocation;
+  //     // empty object check adapted from https://stackoverflow.com/questions/679915/how-do-i-test-for-an-empty-javascript-object
+  //     if (!(Object.entries(userLoc).length === 0 && userLoc.constructor === Object)) {
+  //       points.push(this.props.currentUserLocation);
+  //     }
+  //     const bounds = new this.props.google.maps.LatLngBounds();
+  //     points.forEach((point) => {
+  //       bounds.extend(point);
+  //     });
+  //     return bounds;
+  //   }
+  // }
 
   render() {
     return (
