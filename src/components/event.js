@@ -266,13 +266,18 @@ class Event extends Component {
               <textarea id="new-comment-input" placeholder="Write a comment" ref={(commentInput) => { this.commentInput = commentInput; }} />
               <button id="new-comment-button" type="button" onClick={() => this.props.writeComment(this.props.event.id, this.commentInput.value, this.props.history)}>Comment</button>
             </div>
-            <div>
+            <div id="all-previous-comments">
               {this.props.event.comments.map((comment) => {
                 return (
                   <div id="comment">
-                    <img id="comment-author-image" src={comment.author.photo} alt={comment.author.name} />
-                    <span id="comment-author-name">{comment.author.name}</span>
-                    <span id="comment-text">{comment.text}</span>
+                    <div id="comment-author">
+                      <img id="comment-author-image" src={comment.author.photo} alt={comment.author.name} />
+                      <div id="comment-author-name-and-text">
+                        <span id="comment-author-name">{comment.author.name}</span>
+                        <span id="comment-text">{comment.text}</span>
+                      </div>
+                    </div>
+                    {/* <span id="comment-text">{comment.text}</span> */}
                   </div>
                 );
               })}
