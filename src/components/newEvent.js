@@ -129,6 +129,7 @@ class NewEvent extends Component {
                 type="text"
                 name="title"
                 id="new-event-title"
+                className="new-event-input"
                 value={this.state.title}
                 placeholder="Tony's Guitar Performance"
                 onChange={this.onFieldChange}
@@ -139,6 +140,7 @@ class NewEvent extends Component {
                 type="text"
                 name="description"
                 id="new-event-description"
+                className="new-event-input"
                 value={this.state.description}
                 placeholder="Check out my latest gig."
                 onChange={this.onFieldChange}
@@ -150,6 +152,7 @@ class NewEvent extends Component {
                 type="text"
                 name="imageURL"
                 id="new-event-image"
+                className="new-event-input"
                 value={this.state.imageURL}
                 placeholder="image URL"
                 onChange={this.onFieldChange}
@@ -160,6 +163,7 @@ class NewEvent extends Component {
                 type="text"
                 name="startTime"
                 id="new-event-time"
+                className="new-event-input"
                 value={this.state.startTime}
                 placeholder="Start Time"
                 onChange={this.onFieldChange}
@@ -170,6 +174,7 @@ class NewEvent extends Component {
                 type="text"
                 name="endTime"
                 id="new-event-time"
+                className="new-event-input"
                 value={this.state.endTime}
                 placeholder="End Time"
                 onChange={this.onFieldChange}
@@ -189,7 +194,7 @@ class NewEvent extends Component {
                   <input
                     {...getInputProps({
                       placeholder: 'Enter a location',
-                      className: 'location-search-input',
+                      className: 'new-event-input',
                     })}
                   />
                   <div className="autocomplete-dropdown-container" style={divStyle}>

@@ -185,6 +185,7 @@ class Event extends Component {
       backgroundSize: 'cover',
     };
     if ((!this.state.isEditing) && (this.props.user) && (this.props.user.id === this.props.event.host)) {
+      const numOfComments = this.props.event.comments.length;
       return (
         <div id="event-page-background">
           <div id="event-page">
@@ -247,15 +248,26 @@ class Event extends Component {
           <div id="map-wrapper">
             <WrappedEventMap />
           </div>
-          <div>
-            <textarea ref={(commentInput) => { this.commentInput = commentInput; }} />
-            <button type="button" onClick={() => this.props.writeComment(this.props.event.id, this.commentInput.value, this.props.history)} />
-          </div>
-          <div>
-            <h3>Comments</h3>
-            {this.props.event.comments.map((comment) => { return <div>{comment.author.name} | {comment.text}</div>; })}
-            {/* {this.props.event.comments.map(comment => comment.text)} */}
-            {console.log(this.props.event.latitude)}
+          <div id="comments-section">
+            <h3 id="comments-section-header">{numOfComments} {numOfComments === 1 ? 'Comment' : 'Comments'}</h3>
+            <div id="new-comment">
+              <img id="new-comment-current-user" src={this.props.user.photo} alt={this.props.user.name} />
+              <textarea id="new-comment-input" placeholder="Write a comment" ref={(commentInput) => { this.commentInput = commentInput; }} />
+              <button id="new-comment-button" type="button" onClick={() => this.props.writeComment(this.props.event.id, this.commentInput.value, this.props.history)}>Comment</button>
+            </div>
+            <div>
+              {this.props.event.comments.map((comment) => {
+                return (
+                  <div id="comment">
+                    <img id="comment-author-image" src={comment.author.photo} alt={comment.author.name} />
+                    <span id="comment-author-name">{comment.author.name}</span>
+                    <span id="comment-text">{comment.text}</span>
+                  </div>
+                );
+              })}
+              {/* {this.props.event.comments.map(comment => comment.text)} */}
+              {console.log(this.props.event.latitude)}
+            </div>
           </div>
         </div>
       );
@@ -358,6 +370,7 @@ class Event extends Component {
                   type="text"
                   name="title"
                   id="update-event-title"
+                  className="update-event-input"
                   value={this.state.title}
                   // defaultValue={this.state.title}
                   placeholder="Event Title"
@@ -369,6 +382,7 @@ class Event extends Component {
                   type="text"
                   name="description"
                   id="update-event-description"
+                  className="update-event-input"
                   value={this.state.description}
                   // defaultValue={this.state.description}
                   placeholder="Event Description"
@@ -382,6 +396,7 @@ class Event extends Component {
                   type="text"
                   name="imageURL"
                   id="update-event-image"
+                  className="update-event-input"
                   value={this.state.imageURL}
                   // defaultValue={this.state.imageURL}
                   placeholder="Image url"
@@ -393,6 +408,7 @@ class Event extends Component {
                   type="text"
                   name="startTime"
                   id="new-event-time"
+                  className="update-event-input"
                   value={this.state.startTime}
                   placeholder="Start Time"
                   onChange={this.onFieldChange}
@@ -403,6 +419,7 @@ class Event extends Component {
                   type="text"
                   name="endTime"
                   id="new-event-time"
+                  className="update-event-input"
                   value={this.state.endTime}
                   placeholder="End Time"
                   onChange={this.onFieldChange}
@@ -421,7 +438,7 @@ class Event extends Component {
                     <input
                       {...getInputProps({
                         placeholder: 'Enter a location',
-                        className: 'location-search-input',
+                        className: 'new-event-input',
                       })}
                     />
                     <div className="autocomplete-dropdown-container" style={divStyle}>

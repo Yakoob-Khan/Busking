@@ -135,6 +135,7 @@ nav {
 #search-events-bar {
   display: flex;
   align-items: center;
+  margin-top: 10px;
   opacity: 0.8;
   position: relative;
   z-index: 1;
@@ -144,14 +145,20 @@ nav {
   border: 1px solid $primary-font-color;
   border-radius: 0;
   color: black;
+  font-size: 14px;
+  outline: none;
+  padding: 10px;
+  width: 50%;
+}
+#search-events-bar-input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: $primary-font-color;
 }
 #search-events-bar-button {
   background-color: white;
   border: 1px solid $primary-font-color;
-  padding: 10px 14px 11px 14px;
+  padding: 10px 14px;
   font-size: 14px;
   margin-left: -1px;
-  margin-top: -8px;
   outline: none;
 }
 #search-events-bar-button:hover,
@@ -256,7 +263,7 @@ nav {
 /* EVENT PAGE */
 #event-page-background {
   background-color: rgb(235, 235, 235);
-  height: 120vh;
+  height: 200vh;
   padding-top: 70px;
 }
 #event-page {
@@ -318,7 +325,7 @@ nav {
   text-transform: uppercase;
 }
 #event-creator-name {
-  color: $primary-font-color;
+  color: black;
   font-size: 14px;
   font-weight: 600;
   margin-top: 2px;
@@ -359,7 +366,8 @@ nav {
   padding: 0 10px;
   text-transform: capitalize;
 }
-#strip-checkout-button {
+#strip-checkout-button,
+#update-event-button {
   margin-left: 0;
 }
 #update-event-button:hover,
@@ -432,8 +440,8 @@ nav {
 #update-event-location-label {
   margin-top: -10px;
 }
-input,
-textarea {
+.update-event-input,
+.new-event-input {
   border: none;
   border-radius: 3px;
   background-color: rgba(158, 163, 190, 0.6);
@@ -494,7 +502,8 @@ textarea {
   opacity: 1;
 }
 /* EVENT PAGE MAP */
-#map-header {
+#map-header,
+#comments-section-header {
   font-family: 'Raleway', sans-serif;
   font-size: 20px;
   font-weight: 600;
@@ -576,6 +585,48 @@ textarea {
 #login-close {
   display: inline-block;
   margin-left: 7%;
+}
+/* EVENT PAGE COMMENTS */
+#comments-section {
+  background-color: white;
+  box-shadow: 1px 1px 2px gray;
+  font-family: 'Raleway', sans-serif;
+  width: 80%;
+  height: 450px;
+  margin: 0 auto;
+}
+#new-comment {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#new-comment-input {
+  background-color: white;
+  border: 1px solid lightgray;
+  color: black;
+  font-size: 14px;
+  margin: 12px -1px 12px 12px;
+  outline: none;
+  padding: 8px;
+  width: 50%;
+}
+#new-comment-input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: $primary-font-color;
+}
+#new-comment-button {
+  background-color: white;
+  border: 1px solid lightgray;
+  border-radius: 0 3px 3px 0;
+  color: gray;
+  font-size: 14px;
+  outline: none;
+  padding: 17px 12px 16px 12px;
+}
+#new-comment-current-user,
+#comment-author-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 100px;
 }
 /* PROFILE */
 #user-profile-details-container {
