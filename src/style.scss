@@ -525,17 +525,16 @@ textarea {
   margin-left: 7%;
 }
 /* PROFILE */
-#user-profile-background {
-  background-color: rgba(26,34,76,0.8);
-  padding-top: 90px;
-}
 #user-profile-details-container {
-  background-color: rgba(26,34,76,0.8);
+  background-color: rgb(187, 187, 187);
+  background-image: url(./../src/assets/landing-image.jpg);
+  background-size: cover;
+  padding-top: 100px;
 }
 #user-profile-details {
-  background-color: rgba(255,255,255,0.8);
+  background-color: white;
   box-shadow: 1px 1px 2px gray;
-  width: 80%;
+  width: 60%;
   margin: 0 auto;
   position: relative;
   z-index: 1000;
@@ -564,35 +563,33 @@ textarea {
   font-weight: 400;
   margin: 4px 0 0 0;
 }
-#log-out-button {
-  border: 1px solid gray;
-  font-size: 12px;
-  margin: 10px 0 0 0;
-  opacity: 0.7;
+#user-profile-buttons-container {
+  display: flex;
 }
-#log-out-button:hover {
-  cursor: pointer;
-  opacity: 1;
-}
-#follow-button {
-  border: 1px solid gray;
-  font-size: 12px;
-  margin: 10px 0 0 0;
-  opacity: 0.7;
-}
-#follow-button:hover {
-  cursor: pointer;
-  opacity: 1;
-}
+#log-out-button,
+#stripe-connect-button,
+#strip-connect-button:visited,
+#follow-button,
 #unfollow-button {
+  background-color: white;
   border: 1px solid gray;
+  color: $primary-font-color;
+  font-family: 'Raleway', sans-serif;
   font-size: 12px;
-  margin: 10px 0 0 0;
-  opacity: 0.7;
+  font-weight: 400;
+  margin: 10px 4px;
+  padding: 4px 8px;
+  opacity: 0.8;
+  outline: none;
+  text-decoration: none;
 }
+#log-out-button:hover,
+#stripe-connect-button:hover,
+#follow-button:hover,
 #unfollow-button:hover {
+  border: 1px solid $accent-color;
+  color: $accent-color;
   cursor: pointer;
-  opacity: 1;
 }
 #user-profile-stats {
   display: flex;
@@ -603,7 +600,7 @@ textarea {
 }
 .user-profile-stat {
   font-family: 'Raleway', sans-serif;
-  margin: 20px;
+  margin: 0 20px 20px 20px;
   text-align: center;
 }
 .user-profile-stat-label {
