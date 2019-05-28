@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import Ratings from 'react-ratings-declarative';
 import { GoogleApiWrapper } from 'google-maps-react';
+import EventSearch from './eventSearch';
 import { fetchEvents, getCurrentLocation, updateStateEvents } from '../actions';
 import WrappedMapView from './wrappedMapView';
 
@@ -120,6 +121,7 @@ class UnWrappedEvents extends Component {
       <div className="events-section">
         <p className="events-header" id="events-nearby">Events nearby</p>
         <p className="events-subheader">See what&apos;s happening now</p>
+        <EventSearch />
         <div className="events-button-container">
           <button onClick={this.onToggleMap} className="events-toggle" type="button">{this.state.mapBool ? 'Toggle Grid' : 'Toggle Map' }</button>
         </div>
