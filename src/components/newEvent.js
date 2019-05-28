@@ -170,23 +170,31 @@ class NewEvent extends Component {
                 onChange={this.onFieldChange}
               />
             </label>
-            <DateTimePicker
-              onChange={this.onStartTimeChange}
-              required
-              disableClock
-              value={this.state.startTime}
-              minDate={today}
-              maxDate={oneweek}
-            />
-            <DateTimePicker
-              onChange={this.onEndTimeChange}
-              required
-              disableClock
-              value={this.state.endTime}
-              minDate={today}
-              maxDate={oneweek}
-            />
-            <p className="input-label" id="new-event-location-label">Event Location</p>
+            <div id="create-event-start-time">
+              <p className="input-label input-label-p" htmlFor="create-event-start-time">Event Start Time</p>
+              <DateTimePicker
+                onChange={this.onStartTimeChange}
+                required
+                disableClock
+                clearIcon={null}
+                value={this.state.startTime}
+                minDate={today}
+                maxDate={oneweek}
+              />
+            </div>
+            <div id="create-event-end-time">
+              <p className="input-label input-label-p" htmlFor="create-event-end-time">Event End Time</p>
+              <DateTimePicker
+                onChange={this.onEndTimeChange}
+                required
+                disableClock
+                clearIcon={null}
+                value={this.state.endTime}
+                minDate={today}
+                maxDate={oneweek}
+              />
+            </div>
+            <p className="input-label input-label-p" id="new-event-location-label">Event Location</p>
             <PlacesAutocomplete
               id="new-event-location"
               value={this.state.address}
