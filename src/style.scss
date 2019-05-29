@@ -1116,30 +1116,132 @@ nav {
   margin: 10px;
   padding: 0;
 }
-/* FOLLOWERS & FOLLOWING */
-.user {
-  width: 75vw;
-  height: 20vh;
-  box-shadow: 1px 1px 2px gray;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px;
+@media screen and (max-width: 1100px) {
+  #user-profile-details {
+    width: 80%;
+  }
+  #events-hosted-section-inner-div,
+  #events-attended-section-inner-div {
+    width: 90%;
+  }
+  #hosted-events-grid,
+  #attended-events-grid {
+    grid-template-columns: auto auto auto;
+  }
+  .no-events-yet-div {
+    border: none;
+  }
+  .event-details-container {
+    padding: 0 8px;
+  }
 }
-.users-container {
-  margin-top: 15px;
+@media screen and (max-width: 750px) {
+  #user-profile-details {
+    width: 100%;
+  }
+  #hosted-events-grid,
+  #attended-events-grid {
+    grid-template-columns: auto auto;
+  }
+}
+@media screen and (max-width: 500px) {
+  .user-profile-stat-label,
+  .user-profile-stat-value {
+    font-size: 13px;
+    margin: 2px;
+  }
+  #hosted-events-grid,
+  #attended-events-grid {
+    grid-template-columns: auto;
+  }
+}
+@media screen and (max-width: 450px) {
+  #user-profile-stats {
+    padding-bottom: 0;
+  }
+  .user-profile-stat-label,
+  .user-profile-stat-value {
+    font-size: 12px;
+    margin: 2px;
+  }
+  #events-hosted-section-inner-div,
+  #events-attended-section-inner-div {
+    width: 100%;
+  }
+}
+/* FOLLOWERS & FOLLOWING */
+.follower-profile-pic,
+.following-profile-pic {
+  border-radius: 100px;
+  width: 50px;
+  height: 50px;
+}
+.modal-header {
+  border-bottom: 1px solid lightgray;
+  font-family: sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin: 20px 0 -1px 0;
+  padding-bottom: 8px;
+  text-align: center;
+  width: 340px;
+}
+.styles_modal__gNwvD {
+  border-radius: 4px;
+  padding: 0;
+  width: 340px;
+  height: 100vw;
+}
+.styles_closeButton__20ID4 {
+  width: 20px;
+  height: 20px;
+  outline: none;
+  opacity: 0.6;
+}
+.styles_closeButton__20ID4:hover {
+  outline: none;
+  cursor: pointer;
+  opacity: 1;
+}
+.modal-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
-.user-profile-pic {
-  border-radius: 50%;
-  height: 100%;
-}
 .content-container {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.following,
+.followers {
+  align-items: center;
+  box-sizing: border-box;
+  border-top: 1px solid lightgray;
+  border-bottom: 1px solid lightgray;
+  display: flex;
+  padding: 12px 20px;
+  width: 340px;
+}
+.following-user-name,
+.follower-user-name {
+  color: black;
+  font-weight: 400;
+  margin: 12px 74px 12px 12px;
+}
+.user-profile-link {
+  text-decoration: none;
+  outline: none;
+}
+#not-following-anyone-yet-div,
+#no-followers-yet-div {
+  margin-top: 12px;
+}
+@media screen and (max-width: 375px) {
+  .following-user-name,
+  .follower-user-name {
+    margin: 12px 50px 12px 12px;
+  }
 }
