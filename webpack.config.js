@@ -73,7 +73,7 @@ module.exports = {
       template: './src/index.html',
       filename: './200.html',
     }),
-    new FaviconsWebpackPlugin('saxophone_1f3b7.png'),
+    new FaviconsWebpackPlugin('./src/assets/saxophone_1f3b7.png'),
   ],
 
   devServer: {
