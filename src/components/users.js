@@ -95,18 +95,38 @@ class Followers extends Component {
     }
   }
 
+  // renderUsers = () => {
+  //   if (this.props.match.path === '/users/:userId/followers') {
+  //     return (
+  //       <div className="users-container">
+  //         Followers:
+  //         {this.renderFollowers()}
+  //       </div>
+  //     );
+  //   } else if (this.props.match.path === '/users/:userId/following') {
+  //     return (
+  //       <div className="users-container">
+  //         Following:
+  //         {this.renderFollowing()}
+  //       </div>
+  //     );
+  //   } else {
+  //     return null;
+  //   }
+  // }
+
   renderUsers = () => {
-    if (this.props.match.path === '/users/:userId/followers') {
+    if (this.props.option === 'followers') {
       return (
         <div className="users-container">
-          Followers:
+          <h2>Followers:</h2>
           {this.renderFollowers()}
         </div>
       );
-    } else if (this.props.match.path === '/users/:userId/following') {
+    } else if (this.props.option === 'following') {
       return (
         <div className="users-container">
-          Following:
+          <h2>Following:</h2>
           {this.renderFollowing()}
         </div>
       );
