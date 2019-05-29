@@ -145,8 +145,9 @@ class UserProfile extends Component {
   }
 
   renderFollowButton = () => {
-    if (this.props.user.id !== this.props.loggedUser.id) {
-      console.log(this.props.user.followers);
+    if (!this.props.loggedUser) {
+      return null;
+    } else if (this.props.user.id !== this.props.loggedUser.id) {
       if (this.props.user.followers.filter(follower => (follower.id === this.props.loggedUser.id)).length > 0) {
         return (
           <button type="button" id="unfollow-button" onClick={this.handleUnFollow}>unfollow</button>
@@ -164,7 +165,9 @@ class UserProfile extends Component {
   }
 
   renderLogoutButton = () => {
-    if (this.props.user.id === this.props.loggedUser.id) {
+    if (!this.props.loggedUser) {
+      return null;
+    } else if (this.props.user.id === this.props.loggedUser.id) {
       return (
         <button onClick={() => this.props.logoutUser(this.props.history)} id="log-out-button" className="button" type="submit">
         Log out
@@ -177,19 +180,9 @@ class UserProfile extends Component {
 
   renderStripeConnectButton = () => {
     // First if statement deploying on local host. Comment out the second if statement!
-    // if (this.props.user.id === this.props.loggedUser.id) {
-    //   return (
-    //     <a id="stripe-connect-button"
-    //       href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_F6rBJOefS9FTqzvaRY8cuXnnoDU9SHpV&scope=read_write"
-    //       rel="noopener noreferrer"
-    //     >
-    //       Stripe Connect
-    //     </a>
-    //   );
-    // // eslint-disable-next-line brace-style
-    // }
-    // Second if statement deploying on surge. Comment out the first if statement!
-    if (this.props.user.id === this.props.loggedUser.id) {
+    if (!this.props.loggedUser) {
+      return null;
+    } else if (this.props.user.id === this.props.loggedUser.id) {
       return (
         <a id="stripe-connect-button"
           href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_F6rBJOefS9FTqzvaRY8cuXnnoDU9SHpV&scope=read_write"
@@ -236,78 +229,140 @@ class UserProfile extends Component {
       this.props.fetchUser(this.props.match.params.userId);
     }
     if (!this.isObjectEmpty(this.props.user)) {
-      const content = this.props.auth
-        ? (
-          <div id="user-profile">
-            <div id="user-profile-details-container">
-              <div id="user-profile-details">
-                <div id="user-profile-basic-details">
-                  <img id="user-profile-picture" src={this.props.user.photo} alt={this.props.user.name} />
-                  <p id="user-profile-name">{this.props.user.name}</p>
-                  <p id="user-profile-email">{this.props.user.email}</p>
-                  <div id="user-profile-buttons-container">
-                    {this.renderFollowButton()}
-                    {this.renderLogoutButton()}
-                    {this.renderStripeConnectButton()}
-                  </div>
-                </div>
-                <div id="user-profile-stats">
-                  <div id="user-profile-stat-1" className="user-profile-stat">
-                    <p id="user-profile-average-rating-label" className="user-profile-stat-label">Average Rating</p>
-                    <p id="user-profile-average-rating" className="user-profile-stat-value">
-                      {this.props.user.averageRating ? this.props.user.averageRating.toFixed(2) : 'No Ratings'}
-                    </p>
-                  </div>
-                  {/* <Link className="event-creator-link" to={`/users/${this.props.user._id}/followers`}> */}
-                  <Modal open={this.state.openFollowers} onClose={this.onCloseModal} center>
-                    <Users option="followers" />
-                  </Modal>
-                  <div id="user-profile-stat-2" className="user-profile-stat" onClick={this.onOpenFollowers}>
-                    <p id="user-profile-followers-label" className="user-profile-stat-label">Followers</p>
-                    <p id="user-profile-followers" className="user-profile-stat-value">{this.getNumOfFollowers()}</p>
-                  </div>
-                  {/* </Link> */}
-                  {/* <Link className="event-creator-link" to={`/users/${this.props.user._id}/following`}> */}
-                  <Modal open={this.state.openFollowing} onClose={this.onCloseModal} center>
-                    <Users option="following" />
-                  </Modal>
-                  <div id="user-profile-stat-3" className="user-profile-stat" onClick={this.onOpenFollowing}>
-                    <p id="user-profile-following-label" className="user-profile-stat-label">Following</p>
-                    <p id="user-profile-following" className="user-profile-stat-value">{this.getNumOfFollowing()}</p>
-                  </div>
-                  {/* </Link> */}
-                  <div id="user-profile-stat-4" className="user-profile-stat">
-                    <p id="user-profile-events-attended-label" className="user-profile-stat-label">Events Attended</p>
-                    <p id="user-profile-events-attended" className="user-profile-stat-value">{this.getNumOfEventsAttended()}</p>
-                  </div>
+      // console.log(this.props.user);
+      // const content = this.props.auth
+      //   ? (
+      //     <div id="user-profile">
+      //       <div id="user-profile-details-container">
+      //         <div id="user-profile-details">
+      //           <div id="user-profile-basic-details">
+      //             <img id="user-profile-picture" src={this.props.user.photo} alt={this.props.user.name} />
+      //             <p id="user-profile-name">{this.props.user.name}</p>
+      //             <p id="user-profile-email">{this.props.user.email}</p>
+      //             <div id="user-profile-buttons-container">
+      //               {this.renderFollowButton()}
+      //               {this.renderLogoutButton()}
+      //               {this.renderStripeConnectButton()}
+      //             </div>
+      //           </div>
+      //           <div id="user-profile-stats">
+      //             <div id="user-profile-stat-1" className="user-profile-stat">
+      //               <p id="user-profile-average-rating-label" className="user-profile-stat-label">Average Rating</p>
+      //               <p id="user-profile-average-rating" className="user-profile-stat-value">
+      //                 {this.props.user.averageRating ? this.props.user.averageRating.toFixed(2) : 'No Ratings'}
+      //               </p>
+      //             </div>
+      //             {/* <Link className="event-creator-link" to={`/users/${this.props.user._id}/followers`}> */}
+      //             <Modal open={this.state.openFollowers} onClose={this.onCloseModal} center>
+      //               <Users option="followers" />
+      //             </Modal>
+      //             <div id="user-profile-stat-2" className="user-profile-stat" onClick={this.onOpenFollowers}>
+      //               <p id="user-profile-followers-label" className="user-profile-stat-label">Followers</p>
+      //               <p id="user-profile-followers" className="user-profile-stat-value">{this.getNumOfFollowers()}</p>
+      //             </div>
+      //             {/* </Link> */}
+      //             {/* <Link className="event-creator-link" to={`/users/${this.props.user._id}/following`}> */}
+      //             <Modal open={this.state.openFollowing} onClose={this.onCloseModal} center>
+      //               <Users option="following" />
+      //             </Modal>
+      //             <div id="user-profile-stat-3" className="user-profile-stat" onClick={this.onOpenFollowing}>
+      //               <p id="user-profile-following-label" className="user-profile-stat-label">Following</p>
+      //               <p id="user-profile-following" className="user-profile-stat-value">{this.getNumOfFollowing()}</p>
+      //             </div>
+      //             {/* </Link> */}
+      //             <div id="user-profile-stat-4" className="user-profile-stat">
+      //               <p id="user-profile-events-attended-label" className="user-profile-stat-label">Events Attended</p>
+      //               <p id="user-profile-events-attended" className="user-profile-stat-value">{this.getNumOfEventsAttended()}</p>
+      //             </div>
+      //           </div>
+      //         </div>
+      //         <div id="user-profile-events-hosted-section">
+      //           <div id="events-hosted-section-inner-div">
+      //             <p id="user-profile-events-hosted-label">Events Hosted</p>
+      //             <div id="hosted-events-grid">
+      //               {this.renderEventsHosted()}
+      //             </div>
+      //           </div>
+      //         </div>
+      //         <div id="user-profile-events-attended-section">
+      //           <div id="events-attended-section-inner-div">
+      //             <p id="user-profile-events-attended-title">Events Attended</p>
+      //             <div id="attended-events-grid">
+      //               {this.renderEventsAttended()}
+      //             </div>
+      //           </div>
+      //         </div>
+      //       </div>
+      //     </div>
+      //   )
+      //   : (
+      //     <div>
+      //       Redirect back to home page here.
+      //     </div>
+      //   );
+      return (
+        <div id="user-profile">
+          <div id="user-profile-details-container">
+            <div id="user-profile-details">
+              <div id="user-profile-basic-details">
+                <img id="user-profile-picture" src={this.props.user.photo} alt={this.props.user.name} />
+                <p id="user-profile-name">{this.props.user.name}</p>
+                <p id="user-profile-email">{this.props.user.email}</p>
+                <div id="user-profile-buttons-container">
+                  {this.renderFollowButton()}
+                  {this.renderLogoutButton()}
+                  {this.renderStripeConnectButton()}
                 </div>
               </div>
-              <div id="user-profile-events-hosted-section">
-                <div id="events-hosted-section-inner-div">
-                  <p id="user-profile-events-hosted-label">Events Hosted</p>
-                  <div id="hosted-events-grid">
-                    {this.renderEventsHosted()}
-                  </div>
+              <div id="user-profile-stats">
+                <div id="user-profile-stat-1" className="user-profile-stat">
+                  <p id="user-profile-average-rating-label" className="user-profile-stat-label">Average Rating</p>
+                  <p id="user-profile-average-rating" className="user-profile-stat-value">
+                    {this.props.user.averageRating ? this.props.user.averageRating.toFixed(2) : 'No Ratings'}
+                  </p>
+                </div>
+                {/* <Link className="event-creator-link" to={`/users/${this.props.user._id}/followers`}> */}
+                <Modal open={this.state.openFollowers} onClose={this.onCloseModal} center>
+                  <Users option="followers" />
+                </Modal>
+                <div id="user-profile-stat-2" className="user-profile-stat" onClick={this.onOpenFollowers}>
+                  <p id="user-profile-followers-label" className="user-profile-stat-label">Followers</p>
+                  <p id="user-profile-followers" className="user-profile-stat-value">{this.getNumOfFollowers()}</p>
+                </div>
+                {/* </Link> */}
+                {/* <Link className="event-creator-link" to={`/users/${this.props.user._id}/following`}> */}
+                <Modal open={this.state.openFollowing} onClose={this.onCloseModal} center>
+                  <Users option="following" />
+                </Modal>
+                <div id="user-profile-stat-3" className="user-profile-stat" onClick={this.onOpenFollowing}>
+                  <p id="user-profile-following-label" className="user-profile-stat-label">Following</p>
+                  <p id="user-profile-following" className="user-profile-stat-value">{this.getNumOfFollowing()}</p>
+                </div>
+                {/* </Link> */}
+                <div id="user-profile-stat-4" className="user-profile-stat">
+                  <p id="user-profile-events-attended-label" className="user-profile-stat-label">Events Attended</p>
+                  <p id="user-profile-events-attended" className="user-profile-stat-value">{this.getNumOfEventsAttended()}</p>
                 </div>
               </div>
-              <div id="user-profile-events-attended-section">
-                <div id="events-attended-section-inner-div">
-                  <p id="user-profile-events-attended-title">Events Attended</p>
-                  <div id="attended-events-grid">
-                    {this.renderEventsAttended()}
-                  </div>
+            </div>
+            <div id="user-profile-events-hosted-section">
+              <div id="events-hosted-section-inner-div">
+                <p id="user-profile-events-hosted-label">Events Hosted</p>
+                <div id="hosted-events-grid">
+                  {this.renderEventsHosted()}
+                </div>
+              </div>
+            </div>
+            <div id="user-profile-events-attended-section">
+              <div id="events-attended-section-inner-div">
+                <p id="user-profile-events-attended-title">Events Attended</p>
+                <div id="attended-events-grid">
+                  {this.renderEventsAttended()}
                 </div>
               </div>
             </div>
           </div>
-        )
-        : (
-          <div>
-            Redirect back to home page here.
-          </div>
-        );
-      return (
-        <div>{content}</div>
+        </div>
       );
     } else {
       return <div>Loading...</div>;
