@@ -63,7 +63,7 @@ We deployed the both the front-end and back-end using **Heruko**. See our deploy
 
 ## Authors
 
-Rafi Khaled '20, Xingran Zhuang '20 , Tianxing Dai '20, Chikezie Onungwa'20, Yakoob Khan '21
+Xingran Zhuang '19, Rafi Khaled '20 , Tianxing Dai '20, Chikezie Onungwa'20, Yakoob Khan '21
 
 ## Acknowledgments
 We have to thank Tim, our TA and the entire cs52 team for organizing such an amazing class and helping us make this project a success and something that we are proud to display to others.
