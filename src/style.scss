@@ -12,6 +12,7 @@ body, html, #main, #main-child {
 /* NAVIGATION BAR */
 nav {
   background-color: black;
+  position: relative;
 }
 .navbar {
   align-items: center;
@@ -21,6 +22,21 @@ nav {
   list-style: none;
   margin: 0 16%;
   padding-bottom: 7px;
+  position: relative;
+}
+#hamburger-menu {
+  color: white;
+  visibility: hidden;
+  opacity: 0.8;
+  position: absolute;
+  top: 7px;
+  left: 7px;
+}
+#hamburger-menu:hover {
+  opacity: 1;
+}
+#drop-down-menu {
+  display: none;
 }
 .nav-link {
   color: white;
@@ -134,7 +150,7 @@ nav {
     margin-left: 0;
   }
   #landing {
-    height: 100vh;
+    height: 50vh;
   }
   #landing-title {
     font-size: 2.2em;
@@ -146,6 +162,54 @@ nav {
   }
   #landing-subtitle {
     font-size: 1em;
+  }
+}
+@media screen and (max-width: 375px) {
+  .navbar {
+    height: 30px;
+    position: relative;
+    z-index: 1100;
+  }
+  .nav-item {
+    display: none;
+  }
+  #hamburger-menu {
+    visibility: visible;
+    z-index: 2000;
+  }
+  #drop-down-menu {
+    background-color: rgba(26, 34, 76, 0.8);
+    margin-top: 29px;
+    position: absolute;
+    width: 100%;
+    z-index: 1000;
+    .drop-down-menu-list {
+      box-shadow: 1px 1px 4px rgb(10, 12, 27);
+      margin: 0;
+      padding: 0;
+      .menu-list-item {
+        display: block;
+        font-size: 0.8em;
+        margin: 0;
+        opacity: 0.8;
+        padding: 3px 7px 6px 7px;
+      }
+      .menu-list-item:hover {
+        background-color: $accent-color;
+        cursor: pointer;
+        opacity: 1;
+      }
+    }
+  }
+  #landing {
+    height: 30vh;
+  }
+  #landing-title {
+    font-size: 2em;
+    margin-bottom: 10px;
+  }
+  #landing-subtitle {
+    font-size: 0.8em;
   }
 }
 /* LANDING PAGE - 
@@ -303,6 +367,15 @@ nav {
 }
 .info-window-view-detail:hover {
   color: $accent-color;
+}
+@media screen and (max-width: 375px) {
+
+  #events-nearby {
+    font-size: 1.2em;
+  }
+  .events-subheader {
+    font-size: 0.5em;
+  }
 }
 /* EVENT PAGE */
 #event-page-background {

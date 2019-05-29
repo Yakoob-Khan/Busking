@@ -5,22 +5,33 @@ import { withRouter, NavLink } from 'react-router-dom';
 import '../style.scss';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 import Modal from 'simple-react-modal';
+import { slide as Menu } from 'react-burger-menu';
 import config from '../config.json';
 import { facebookResponse } from '../actions';
 
+
 class NavBar extends React.Component {
+  // _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
       show: false,
+      // isMenuOpened: false,
     };
+
+    // this.toggleDropDownMenu = this.toggleDropDownMenu.bind(this);
   }
+
+  // componentDidMount() {
+  //   this._isMounted = true;
+  // }
 
   renderLogIn = () => {
     if (this.props.auth.isAuthenticated) {
       return (
         <NavLink to={`/users/${this.props.auth.user._id}`} className="nav-link">
-          <li className="nav-item">
+          <li className="nav-item menu-list-item">
             <span role="img" aria-label="see events" className="emoji">&#128075;</span>
             My Profile
           </li>
@@ -28,7 +39,7 @@ class NavBar extends React.Component {
       );
     } else {
       return (
-        <li className="nav-item">
+        <li className="nav-item menu-list-item">
           <NavLink to="/" className="nav-link">
             <span role="img" aria-label="see events" className="emoji">&#128075;</span>
             {/* Login with Facebook */}
@@ -55,10 +66,69 @@ class NavBar extends React.Component {
     this.setState({ show: false });
   }
 
+  showSettings(event) {
+    event.preventDefault();
+  }
+
+
+  // toggleDropDownMenu = () => {
+  //   this.setState({ isMenuOpened: false });
+  //   console.log(this.isMenuOpened);
+  // }
+
+  // toggleDropDownMenu(event) {
+  //   console.log(this.isMenuOpened);
+  //   this.setState(prevState => ({
+  //     isMenuOpened: !prevState.isMenuOpened,
+  //   }));
+  //   this.setState({ isMenuOpened: true });
+  //   const dropDownMenu = document.getElementById('drop-down-menu');
+  //   if (dropDownMenu) {
+  //     dropDownMenu.style.display = 'block';
+  //   }
+  // }
+
   render() {
+    // let menuStyle = {};
+
+    // if (this.state.isMenuOpened) {
+    //   menuStyle = {
+    //     display: 'block',
+    //   };
+    // } else {
+    //   menuStyle = {
+    //     display: 'none',
+    //   };
+    // }
     if (this.props.auth.isAuthenticated) {
       return (
         <nav>
+          {/* Hamburger Menu -- Start */}
+          {/* <i className="fas fa-bars" id="hamburger-menu" onClick={this.toggleDropDownMenu.bind(this)} />
+          <div id="drop-down-menu" style={menuStyle}>
+            <ul className="drop-down-menu-list">
+              <NavLink to="/" exact className="nav-link">
+                <li className="menu-list-item">
+                  <span role="img" aria-label="home" className="emoji">&#11088;</span>
+                  Home
+                </li>
+              </NavLink>
+              <NavLink to="/createEvent" exact className="nav-link">
+                <li className="menu-list-item">
+                  <span role="img" aria-label="see events" className="emoji">&#127927;</span>
+                  Create Event
+                </li>
+              </NavLink>
+              {this.renderLogIn()}
+            </ul>
+          </div> */}
+          <Menu>
+            <button type="button" id="home" className="menu-item" href="/">Home</button>
+            <button type="button" id="about" className="menu-item" href="/about">About</button>
+            <button type="button" id="contact" className="menu-item" href="/contact">Contact</button>
+            <button type="button" onClick={this.showSettings} className="menu-item--small" href="">Settings</button>
+          </Menu>
+          {/* Hamburger Menu -- End */}
           <ul className="navbar">
             <NavLink to="/" exact className="nav-link">
               <li className="nav-item">
@@ -79,6 +149,32 @@ class NavBar extends React.Component {
     } else {
       return (
         <nav>
+          {/* Hamburger Menu -- Start */}
+          {/* <i className="fas fa-bars" id="hamburger-menu" onClick={this.toggleDropDownMenu.bind(this)} />
+          <div id="drop-down-menu" style={menuStyle}>
+            <ul className="drop-down-menu-list">
+              <NavLink to="/" exact className="nav-link">
+                <li className="menu-list-item">
+                  <span role="img" aria-label="home" className="emoji">&#11088;</span>
+                  Home
+                </li>
+              </NavLink>
+              <NavLink to="/createEvent" exact className="nav-link">
+                <li className="menu-list-item">
+                  <span role="img" aria-label="see events" className="emoji">&#127927;</span>
+                  Create Event
+                </li>
+              </NavLink>
+              {this.renderLogIn()}
+            </ul>
+          </div> */}
+          <Menu>
+            <button type="button" id="home" className="menu-item" href="/">Home</button>
+            <button type="button" id="about" className="menu-item" href="/about">About</button>
+            <button type="button" id="contact" className="menu-item" href="/contact">Contact</button>
+            <button type="button" onClick={this.showSettings} className="menu-item--small" href="">Settings</button>
+          </Menu>
+          {/* Hamburger Menu -- End */}
           <ul className="navbar">
             <NavLink to="/" exact className="nav-link">
               <li className="nav-item">
