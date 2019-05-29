@@ -108,11 +108,26 @@ class UnwrappedEvent extends Component {
         // use url for content_url and
         // either run your createPost actionCreator
         // or your updatePost actionCreator
+        let newurl = url;
+        if (url === 'https://buskingapp.s3.amazonaws.com/undefined') {
+          console.log('TRUE');
+          const defaultImages = [
+            'https://www.jetsetter.com/uploads/sites/7/2018/05/L-ddNDL7-1380x690.jpeg',
+            'https://purewows3.imgix.net/images/articles/2017_03/beautiful_city_paris.png?auto=format,compress&cs=strip',
+            'https://besthqwallpapers.com/img/original/48870/spanish-steps-fontana-della-barcaccia-piazza-di-spagna-rome-italy.jpg',
+            'https://handluggageonly.co.uk/wp-content/uploads/2017/03/Hong-Kong-At-Night.jpg',
+            'https://learnallnow.com/wp-content/uploads/2018/06/los-angeles-dest1215.jpg',
+          ];
+          const listLength = defaultImages.length;
+          const randomIndex = Math.floor(Math.random() * listLength);
+          const randomlySelectedDefaultImage = defaultImages[randomIndex];
+          newurl = randomlySelectedDefaultImage;
+        }
         const update = {
           id: this.props.event._id,
           title: this.state.title,
           description: this.state.description,
-          imageURL: url,
+          imageURL: newurl,
           longitude: this.state.longitude,
           latitude: this.state.latitude,
           address: this.state.address,
@@ -137,83 +152,7 @@ class UnwrappedEvent extends Component {
         // handle error
         console.log('Error: Image Upload');
       });
-    } else {
-      const defaultImages = [
-        'https://www.jetsetter.com/uploads/sites/7/2018/05/L-ddNDL7-1380x690.jpeg',
-        'https://purewows3.imgix.net/images/articles/2017_03/beautiful_city_paris.png?auto=format,compress&cs=strip',
-        'https://besthqwallpapers.com/img/original/48870/spanish-steps-fontana-della-barcaccia-piazza-di-spagna-rome-italy.jpg',
-        'https://handluggageonly.co.uk/wp-content/uploads/2017/03/Hong-Kong-At-Night.jpg',
-        'https://learnallnow.com/wp-content/uploads/2018/06/los-angeles-dest1215.jpg',
-      ];
-      const listLength = defaultImages.length;
-      const randomIndex = Math.floor(Math.random() * listLength);
-      const randomlySelectedDefaultImage = defaultImages[randomIndex];
-      // this.state.imageURL = randomlySelectedDefaultImage;
-      const update = {
-        id: this.props.event._id,
-        title: this.state.title,
-        description: this.state.description,
-        imageURL: randomlySelectedDefaultImage,
-        longitude: this.state.longitude,
-        latitude: this.state.latitude,
-        address: this.state.address,
-        eventCreator: this.state.eventCreator,
-        startTime: this.state.startTime,
-        endTime: this.state.endTime,
-      };
-      this.setState({
-        isEditing: false,
-        title: '',
-        description: '',
-        // imageURL: '',
-        longitude: '',
-        latitude: '',
-        eventCreator: '',
-        address: '',
-        startTime: new Date(),
-        endTime: new Date(),
-      });
-      this.props.updateEvent(update);
     }
-
-    // if (this.state.imageURL.length === 0) {
-    //   const defaultImages = [
-    //     'https://www.jetsetter.com/uploads/sites/7/2018/05/L-ddNDL7-1380x690.jpeg',
-    //     'https://purewows3.imgix.net/images/articles/2017_03/beautiful_city_paris.png?auto=format,compress&cs=strip',
-    //     'https://besthqwallpapers.com/img/original/48870/spanish-steps-fontana-della-barcaccia-piazza-di-spagna-rome-italy.jpg',
-    //     'https://handluggageonly.co.uk/wp-content/uploads/2017/03/Hong-Kong-At-Night.jpg',
-    //     'https://learnallnow.com/wp-content/uploads/2018/06/los-angeles-dest1215.jpg',
-    //   ];
-    //   const listLength = defaultImages.length;
-    //   const randomIndex = Math.floor(Math.random() * listLength);
-    //   const randomlySelectedDefaultImage = defaultImages[randomIndex];
-    //   this.state.imageURL = randomlySelectedDefaultImage;
-    // }
-    // const update = {
-    //   id: this.props.event._id,
-    //   title: this.state.title,
-    //   description: this.state.description,
-    //   imageURL: this.state.imageURL,
-    //   longitude: this.state.longitude,
-    //   latitude: this.state.latitude,
-    //   address: this.state.address,
-    //   eventCreator: this.state.eventCreator,
-    //   startTime: this.state.startTime,
-    //   endTime: this.state.endTime,
-    // };
-    // this.setState({
-    //   isEditing: false,
-    //   title: '',
-    //   description: '',
-    //   imageURL: '',
-    //   longitude: '',
-    //   latitude: '',
-    //   eventCreator: '',
-    //   address: '',
-    //   startTime: new Date(),
-    //   endTime: new Date(),
-    // });
-    // this.props.updateEvent(update);
   }
 
   deleteEvent = () => {
