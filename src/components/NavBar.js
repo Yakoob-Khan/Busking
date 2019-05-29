@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from 'react';
 import { connect } from 'react-redux';
@@ -17,6 +18,7 @@ class NavBar extends React.Component {
     super(props);
     this.state = {
       show: false,
+      menuOpen: false,
       // isMenuOpened: false,
     };
 
@@ -70,6 +72,24 @@ class NavBar extends React.Component {
     event.preventDefault();
   }
 
+  // This keeps your state in sync with the opening/closing of the menu
+  // via the default means, e.g. clicking the X, pressing the ESC key etc.
+  handleStateChange(state) {
+    this.setState({ menuOpen: state.isOpen });
+  }
+
+  // This can be used to close the menu, e.g. when a user clicks a menu item
+  closeMenu() {
+    this.setState({ menuOpen: false });
+  }
+
+  // This can be used to toggle the menu, e.g. when using a custom icon
+  // Tip: You probably want to hide either/both default icons if using a custom icon
+  // See https://github.com/negomi/react-burger-menu#custom-icons
+  toggleMenu() {
+    this.setState(state => ({ menuOpen: !state.menuOpen }));
+  }
+
 
   // toggleDropDownMenu = () => {
   //   this.setState({ isMenuOpened: false });
@@ -89,6 +109,50 @@ class NavBar extends React.Component {
   // }
 
   render() {
+    const styles = {
+      bmBurgerButton: {
+        position: 'fixed',
+        width: '36px',
+        height: '30px',
+        left: '36px',
+        top: '36px',
+      },
+      bmBurgerBars: {
+        background: '#373a47',
+      },
+      bmBurgerBarsHover: {
+        background: '#a90000',
+      },
+      bmCrossButton: {
+        height: '24px',
+        width: '24px',
+      },
+      bmCross: {
+        background: '#bdc3c7',
+      },
+      bmMenuWrap: {
+        position: 'fixed',
+        height: '100%',
+      },
+      bmMenu: {
+        background: '#373a47',
+        padding: '2.5em 1.5em 0',
+        fontSize: '1.15em',
+      },
+      bmMorphShape: {
+        fill: '#373a47',
+      },
+      bmItemList: {
+        color: '#b8b7ad',
+        padding: '0.8em',
+      },
+      bmItem: {
+        display: 'inline-block',
+      },
+      bmOverlay: {
+        background: 'rgba(0, 0, 0, 0.3)',
+      },
+    };
     // let menuStyle = {};
 
     // if (this.state.isMenuOpened) {
@@ -122,11 +186,33 @@ class NavBar extends React.Component {
               {this.renderLogIn()}
             </ul>
           </div> */}
-          <Menu>
-            <button type="button" id="home" className="menu-item" href="/">Home</button>
-            <button type="button" id="about" className="menu-item" href="/about">About</button>
-            <button type="button" id="contact" className="menu-item" href="/contact">Contact</button>
-            <button type="button" onClick={this.showSettings} className="menu-item--small" href="">Settings</button>
+          <Menu
+            styles={styles}
+            isOpen={this.state.menuOpen}
+            onStateChange={state => this.handleStateChange(state)}
+          >
+            <ul className="hamburgerbar">
+              <NavLink to="/" exact className="nav-link">
+                <li className="menu-item">
+                  <span role="img" aria-label="home" className="emoji">&#11088;</span>
+                Home
+                </li>
+              </NavLink>
+              <NavLink to="/createEvent" exact className="nav-link">
+                <li className="menu-item">
+                  <span role="img" aria-label="see events" className="emoji">&#127927;</span>
+                Create Event
+                </li>
+              </NavLink>
+              <NavLink to={`/users/${this.props.auth.user._id}`} className="nav-link">
+                <li className="menu-item menu-list-item">
+                  <span role="img" aria-label="see events" className="emoji">&#128075;</span>
+            My Profile
+                </li>
+              </NavLink>
+            </ul>
+
+            <a onClick={this.showSettings} className="menu-item--small" href="">Settings</a>
           </Menu>
           {/* Hamburger Menu -- End */}
           <ul className="navbar">
@@ -168,11 +254,39 @@ class NavBar extends React.Component {
               {this.renderLogIn()}
             </ul>
           </div> */}
-          <Menu>
-            <button type="button" id="home" className="menu-item" href="/">Home</button>
-            <button type="button" id="about" className="menu-item" href="/about">About</button>
-            <button type="button" id="contact" className="menu-item" href="/contact">Contact</button>
-            <button type="button" onClick={this.showSettings} className="menu-item--small" href="">Settings</button>
+          <Menu
+            styles={styles}
+            isOpen={this.state.menuOpen}
+            onStateChange={state => this.handleStateChange(state)}
+          >
+            <NavLink to="/" exact className="nav-link">
+              <li className="menu-item">
+                <span role="img" aria-label="home" className="emoji">&#11088;</span>
+                Home
+              </li>
+            </NavLink>
+            <NavLink to="/createEvent" exact className="nav-link">
+              <li className="menu-item">
+                <span role="img" aria-label="see events" className="emoji">&#127927;</span>
+                Create Event
+              </li>
+            </NavLink>
+            <NavLink to="/" className="nav-link">
+              <li className="menu-item">
+                <span role="img" aria-label="see events" className="emoji">&#128075;</span>
+                {/* Login with Facebook */}
+                <FacebookLogin
+                  appId={config.FACEBOOK_APP_ID}
+                  callback={this.props.facebookResponse}
+              // onClick={this.props.facebookResponse}
+                  render={renderProps => (
+                    <span onClick={renderProps.onClick}>Login with Facebook</span>
+                  // <button type="button" id="facebooksignin" onClick={renderProps.onClick}>This is my custom FB button</button>
+                  )}
+                />
+              </li>
+            </NavLink>
+            <a onClick={this.showSettings} className="menu-item--small" href="">Settings</a>
           </Menu>
           {/* Hamburger Menu -- End */}
           <ul className="navbar">
