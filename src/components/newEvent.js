@@ -10,13 +10,14 @@ import { GoogleApiWrapper } from 'google-maps-react';
 import Modal from 'simple-react-modal';
 import DateTimePicker from 'react-datetime-picker';
 import { createEvent, updateCurrentUser } from '../actions';
+import uploadImage from '../s3';
 
 class NewEvent extends Component {
   constructor(props) {
     super(props);
     this.state = {
       title: '',
-      imageURL: '',
+      // imageURL: '',
       longitude: '',
       latitude: '',
       description: '',
@@ -25,9 +26,12 @@ class NewEvent extends Component {
       endTime: new Date(),
       show: false,
       error: '',
+      preview: '',
+      file: {},
     };
     this.onFieldChange = this.onFieldChange.bind(this);
     this.close = this.close.bind(this);
+    this.onImageUpload = this.onImageUpload.bind(this);
   }
 
   onStartTimeChange = (startTime) => {
@@ -68,6 +72,15 @@ class NewEvent extends Component {
     this.setState({ [event.target.name]: event.target.value });
   }
 
+  onImageUpload(event) {
+    const file = event.target.files[0];
+    // Handle null file
+    // Get url of the file and set it to the src of preview
+    if (file) {
+      this.setState({ preview: window.URL.createObjectURL(file), file });
+    }
+  }
+
   submitForm = () => {
     if (this.state.latitude === '' || this.state.longitude === '') {
       this.setState({
@@ -80,7 +93,41 @@ class NewEvent extends Component {
         error: 'Please provide valid start and end times for your event!',
       });
     } else if (!this.state.show) {
-      if (this.state.imageURL.length === 0) {
+      // if (this.state.imageURL.length === 0) {
+      //   const defaultImages = [
+      //     'https://www.jetsetter.com/uploads/sites/7/2018/05/L-ddNDL7-1380x690.jpeg',
+      //     'https://purewows3.imgix.net/images/articles/2017_03/beautiful_city_paris.png?auto=format,compress&cs=strip',
+      //     'https://besthqwallpapers.com/img/original/48870/spanish-steps-fontana-della-barcaccia-piazza-di-spagna-rome-italy.jpg',
+      //     'https://handluggageonly.co.uk/wp-content/uploads/2017/03/Hong-Kong-At-Night.jpg',
+      //     'https://learnallnow.com/wp-content/uploads/2018/06/los-angeles-dest1215.jpg',
+      //   ];
+      //   const listLength = defaultImages.length;
+      //   const randomIndex = Math.floor(Math.random() * listLength);
+      //   const randomlySelectedDefaultImage = defaultImages[randomIndex];
+      //   this.state.imageURL = randomlySelectedDefaultImage;
+      // }
+      if (this.state.file) {
+        uploadImage(this.state.file).then((url) => {
+          // use url for content_url and
+          // either run your createPost actionCreator
+          // or your updatePost actionCreator
+          const newEvent = {
+            title: this.state.title,
+            imageURL: url,
+            longitude: this.state.longitude,
+            latitude: this.state.latitude,
+            description: this.state.description,
+            address: this.state.address,
+            startTime: this.state.startTime,
+            endTime: this.state.endTime,
+            stripeId: this.props.user.stripeId,
+          };
+          this.props.createEvent(newEvent, this.props.history);
+        }).catch((error) => {
+          // handle error
+          console.log('Error: Image Upload');
+        });
+      } else {
         const defaultImages = [
           'https://www.jetsetter.com/uploads/sites/7/2018/05/L-ddNDL7-1380x690.jpeg',
           'https://purewows3.imgix.net/images/articles/2017_03/beautiful_city_paris.png?auto=format,compress&cs=strip',
@@ -91,20 +138,20 @@ class NewEvent extends Component {
         const listLength = defaultImages.length;
         const randomIndex = Math.floor(Math.random() * listLength);
         const randomlySelectedDefaultImage = defaultImages[randomIndex];
-        this.state.imageURL = randomlySelectedDefaultImage;
+        // this.state.imageURL = randomlySelectedDefaultImage;
+        const newEvent = {
+          title: this.state.title,
+          imageURL: randomlySelectedDefaultImage,
+          longitude: this.state.longitude,
+          latitude: this.state.latitude,
+          description: this.state.description,
+          address: this.state.address,
+          startTime: this.state.startTime,
+          endTime: this.state.endTime,
+          stripeId: this.props.user.stripeId,
+        };
+        this.props.createEvent(newEvent, this.props.history);
       }
-      const newEvent = {
-        title: this.state.title,
-        imageURL: this.state.imageURL,
-        longitude: this.state.longitude,
-        latitude: this.state.latitude,
-        description: this.state.description,
-        address: this.state.address,
-        startTime: this.state.startTime,
-        endTime: this.state.endTime,
-        stripeId: this.props.user.stripeId,
-      };
-      this.props.createEvent(newEvent, this.props.history);
     }
   }
 
@@ -196,7 +243,9 @@ class NewEvent extends Component {
               />
             </label>
             <label className="input-label" htmlFor="new-event-image">Event Image
-              <input
+              <img id="preview" alt="preview" src={this.state.preview} />
+              <input type="file" name="coverImage" id="new-event-image" onChange={this.onImageUpload} />
+              {/* <input
                 type="text"
                 name="imageURL"
                 id="new-event-image"
@@ -204,7 +253,7 @@ class NewEvent extends Component {
                 value={this.state.imageURL}
                 placeholder="image URL"
                 onChange={this.onFieldChange}
-              />
+              /> */}
             </label>
             <div id="create-event-start-time">
               <p className="input-label input-label-p" htmlFor="create-event-start-time">Event Start Time</p>

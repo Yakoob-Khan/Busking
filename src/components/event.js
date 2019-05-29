@@ -16,6 +16,7 @@ import {
 } from '../actions';
 // import PaymentRequestForm from './PaymentRequestForm';
 import WrappedEventMap from './eventMap';
+import uploadImage from '../s3';
 import '../style.scss';
 
 
@@ -26,7 +27,7 @@ class UnwrappedEvent extends Component {
       isEditing: false,
       title: '',
       description: '',
-      imageURL: '',
+      // imageURL: '',
       longitude: '',
       latitude: '',
       address: '',
@@ -34,6 +35,8 @@ class UnwrappedEvent extends Component {
       tip: '',
       startTime: new Date(),
       endTime: new Date(),
+      preview: '',
+      file: {},
     };
 
     this.onEdit = this.onEdit.bind(this);
@@ -44,6 +47,7 @@ class UnwrappedEvent extends Component {
     this.changeRating = this.changeRating.bind(this);
     this.onStartTimeChange = this.onStartTimeChange.bind(this);
     this.onEndTimeChange = this.onEndTimeChange.bind(this);
+    this.onImageUpload = this.onImageUpload.bind(this);
   }
 
   componentDidMount() {
@@ -61,7 +65,7 @@ class UnwrappedEvent extends Component {
       this.setState({
         title: this.props.event.title,
         description: this.props.event.description,
-        imageURL: this.props.event.imageURL,
+        // imageURL: this.props.event.imageURL,
         longitude: this.props.event.longitude,
         latitude: this.props.event.latitude,
         address: this.props.event.address,
@@ -69,6 +73,15 @@ class UnwrappedEvent extends Component {
         // startTime: this.props.event.startTime,
         // endTime: this.props.event.endTime,
       });
+    }
+  }
+
+  onImageUpload(event) {
+    const file = event.target.files[0];
+    // Handle null file
+    // Get url of the file and set it to the src of preview
+    if (file) {
+      this.setState({ preview: window.URL.createObjectURL(file), file });
     }
   }
 
@@ -90,7 +103,41 @@ class UnwrappedEvent extends Component {
   onEndTimeChange = endTime => this.setState({ endTime });
 
   startEdit = () => {
-    if (this.state.imageURL.length === 0) {
+    if (this.state.file) {
+      uploadImage(this.state.file).then((url) => {
+        // use url for content_url and
+        // either run your createPost actionCreator
+        // or your updatePost actionCreator
+        const update = {
+          id: this.props.event._id,
+          title: this.state.title,
+          description: this.state.description,
+          imageURL: url,
+          longitude: this.state.longitude,
+          latitude: this.state.latitude,
+          address: this.state.address,
+          eventCreator: this.state.eventCreator,
+          startTime: this.state.startTime,
+          endTime: this.state.endTime,
+        };
+        this.setState({
+          isEditing: false,
+          title: '',
+          description: '',
+          // imageURL: '',
+          longitude: '',
+          latitude: '',
+          eventCreator: '',
+          address: '',
+          startTime: new Date(),
+          endTime: new Date(),
+        });
+        this.props.updateEvent(update);
+      }).catch((error) => {
+        // handle error
+        console.log('Error: Image Upload');
+      });
+    } else {
       const defaultImages = [
         'https://www.jetsetter.com/uploads/sites/7/2018/05/L-ddNDL7-1380x690.jpeg',
         'https://purewows3.imgix.net/images/articles/2017_03/beautiful_city_paris.png?auto=format,compress&cs=strip',
@@ -101,33 +148,72 @@ class UnwrappedEvent extends Component {
       const listLength = defaultImages.length;
       const randomIndex = Math.floor(Math.random() * listLength);
       const randomlySelectedDefaultImage = defaultImages[randomIndex];
-      this.state.imageURL = randomlySelectedDefaultImage;
+      // this.state.imageURL = randomlySelectedDefaultImage;
+      const update = {
+        id: this.props.event._id,
+        title: this.state.title,
+        description: this.state.description,
+        imageURL: randomlySelectedDefaultImage,
+        longitude: this.state.longitude,
+        latitude: this.state.latitude,
+        address: this.state.address,
+        eventCreator: this.state.eventCreator,
+        startTime: this.state.startTime,
+        endTime: this.state.endTime,
+      };
+      this.setState({
+        isEditing: false,
+        title: '',
+        description: '',
+        // imageURL: '',
+        longitude: '',
+        latitude: '',
+        eventCreator: '',
+        address: '',
+        startTime: new Date(),
+        endTime: new Date(),
+      });
+      this.props.updateEvent(update);
     }
-    const update = {
-      id: this.props.event._id,
-      title: this.state.title,
-      description: this.state.description,
-      imageURL: this.state.imageURL,
-      longitude: this.state.longitude,
-      latitude: this.state.latitude,
-      address: this.state.address,
-      eventCreator: this.state.eventCreator,
-      startTime: this.state.startTime,
-      endTime: this.state.endTime,
-    };
-    this.setState({
-      isEditing: false,
-      title: '',
-      description: '',
-      imageURL: '',
-      longitude: '',
-      latitude: '',
-      eventCreator: '',
-      address: '',
-      startTime: new Date(),
-      endTime: new Date(),
-    });
-    this.props.updateEvent(update);
+
+    // if (this.state.imageURL.length === 0) {
+    //   const defaultImages = [
+    //     'https://www.jetsetter.com/uploads/sites/7/2018/05/L-ddNDL7-1380x690.jpeg',
+    //     'https://purewows3.imgix.net/images/articles/2017_03/beautiful_city_paris.png?auto=format,compress&cs=strip',
+    //     'https://besthqwallpapers.com/img/original/48870/spanish-steps-fontana-della-barcaccia-piazza-di-spagna-rome-italy.jpg',
+    //     'https://handluggageonly.co.uk/wp-content/uploads/2017/03/Hong-Kong-At-Night.jpg',
+    //     'https://learnallnow.com/wp-content/uploads/2018/06/los-angeles-dest1215.jpg',
+    //   ];
+    //   const listLength = defaultImages.length;
+    //   const randomIndex = Math.floor(Math.random() * listLength);
+    //   const randomlySelectedDefaultImage = defaultImages[randomIndex];
+    //   this.state.imageURL = randomlySelectedDefaultImage;
+    // }
+    // const update = {
+    //   id: this.props.event._id,
+    //   title: this.state.title,
+    //   description: this.state.description,
+    //   imageURL: this.state.imageURL,
+    //   longitude: this.state.longitude,
+    //   latitude: this.state.latitude,
+    //   address: this.state.address,
+    //   eventCreator: this.state.eventCreator,
+    //   startTime: this.state.startTime,
+    //   endTime: this.state.endTime,
+    // };
+    // this.setState({
+    //   isEditing: false,
+    //   title: '',
+    //   description: '',
+    //   imageURL: '',
+    //   longitude: '',
+    //   latitude: '',
+    //   eventCreator: '',
+    //   address: '',
+    //   startTime: new Date(),
+    //   endTime: new Date(),
+    // });
+    // this.props.updateEvent(update);
   }
 
   deleteEvent = () => {
@@ -445,7 +531,7 @@ class UnwrappedEvent extends Component {
                 />
               </label>
               <label className="input-label" htmlFor="update-event-image">Event Image
-                <input
+                {/* <input
                   type="text"
                   name="imageURL"
                   id="update-event-image"
@@ -453,6 +539,12 @@ class UnwrappedEvent extends Component {
                   value={this.state.imageURL}
                   placeholder="Image url"
                   onChange={this.onFieldChange}
+                /> */}
+                <img id="preview" alt="preview" src={this.state.preview} />
+                <input type="file"
+                  name="coverImage"
+                  id="update-event-image"
+                  onChange={this.onImageUpload}
                 />
               </label>
               <div id="update-event-start-time">

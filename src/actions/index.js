@@ -19,7 +19,7 @@ export const ActionTypes = {
   UPDATE_STRIPE_ID: 'UPDATE_STRIPE_ID',
 };
 
-const ROOT_URL = 'http://localhost:9090/api';
+export const ROOT_URL = 'http://localhost:9090/api';
 
 export const testAPI = () => {
   return () => {
