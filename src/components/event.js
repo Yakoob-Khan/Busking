@@ -391,7 +391,10 @@ class UnwrappedEvent extends Component {
                         eventCreatorImage={this.props.users.user.photo}
                       />
                     </div>
-                    {this.renderAttendButton()}
+                    <div id="attendance-group">
+                      <p id="event-num-of-attendees"> Number of Attendees: {this.props.event.attendees.length}</p>
+                      {this.renderAttendButton()}
+                    </div>
                   </div>
                 </div>
               </div>

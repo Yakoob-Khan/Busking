@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable brace-style */
 /* eslint-disable no-trailing-spaces */
 /* eslint-disable max-len */
@@ -5,6 +6,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import Ratings from 'react-ratings-declarative';
+import Modal from 'react-responsive-modal';
+import Users from './users';
 // import axios from 'axios';
 import {
   updateCurrentUser, logoutUser, fetchUser, followUser, unFollowUser,
@@ -15,6 +18,8 @@ class UserProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      openFollowers: false,
+      openFollowing: false,
     };
   }
 
@@ -41,24 +46,26 @@ class UserProfile extends Component {
           <div className="hosted-event-container event-container" key={event.id}>
             <Link className="view-details" key={event.id} to={`/events/${event.id}`}>
               <div className="event" key={event.id} style={eventStyle} />
-              <p className="event-title">{event.title}</p>
-              <p className="event-description">{event.description}</p>
-              <p className="event-address">{event.address}</p>
-              {/* Ratings credit to: https://github.com/ekeric13/react-ratings-declarative */}
-              <div className="event-rating">
-                <Ratings
-                  rating={event.averageRating}
-                  widgetRatedColors="#0099CC"
-                  widgetEmptyColors="#6B6B6B"
-                  widgetSpacings="1px"
-                  widgetDimensions="12px"
-                >
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                </Ratings>
+              <div className="event-details-container">
+                <p className="event-title">{event.title}</p>
+                <p className="event-description">{event.description}</p>
+                <p className="event-address">{event.address}</p>
+                {/* Ratings credit to: https://github.com/ekeric13/react-ratings-declarative */}
+                <div className="event-rating">
+                  <Ratings
+                    rating={event.averageRating}
+                    widgetRatedColors="#0099CC"
+                    widgetEmptyColors="#6B6B6B"
+                    widgetSpacings="1px"
+                    widgetDimensions="12px"
+                  >
+                    <Ratings.Widget />
+                    <Ratings.Widget />
+                    <Ratings.Widget />
+                    <Ratings.Widget />
+                    <Ratings.Widget />
+                  </Ratings>
+                </div>
               </div>
             </Link>
           </div>
@@ -66,7 +73,7 @@ class UserProfile extends Component {
       });
     } else {
       return (
-        <div className="hosted-event-container event-container">
+        <div className="no-events-yet-div hosted-event-container event-container">
           No events yet <span role="img" aria-label="unamused face">&#128530;</span>
         </div>
       );
@@ -83,24 +90,26 @@ class UserProfile extends Component {
           <div className="attended-event-container event-container" key={event.id}>
             <Link className="view-details" key={event.id} to={`/events/${event.id}`}>
               <div className="event" key={event.id} style={eventStyle} />
-              <p className="event-title">{event.title}</p>
-              <p className="event-description">{event.description}</p>
-              <p className="event-address">{event.address}</p>
-              {/* Ratings credit to: https://github.com/ekeric13/react-ratings-declarative */}
-              <div className="event-rating">
-                <Ratings
-                  rating={event.averageRating}
-                  widgetRatedColors="#0099CC"
-                  widgetEmptyColors="#6B6B6B"
-                  widgetSpacings="1px"
-                  widgetDimensions="12px"
-                >
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                </Ratings>
+              <div className="event-details-container">
+                <p className="event-title">{event.title}</p>
+                <p className="event-description">{event.description}</p>
+                <p className="event-address">{event.address}</p>
+                {/* Ratings credit to: https://github.com/ekeric13/react-ratings-declarative */}
+                <div className="event-rating">
+                  <Ratings
+                    rating={event.averageRating}
+                    widgetRatedColors="#0099CC"
+                    widgetEmptyColors="#6B6B6B"
+                    widgetSpacings="1px"
+                    widgetDimensions="12px"
+                  >
+                    <Ratings.Widget />
+                    <Ratings.Widget />
+                    <Ratings.Widget />
+                    <Ratings.Widget />
+                    <Ratings.Widget />
+                  </Ratings>
+                </div>
               </div>
             </Link>
           </div>
@@ -108,7 +117,7 @@ class UserProfile extends Component {
       });
     } else {
       return (
-        <div className="attended-event-container event-container">
+        <div className="no-events-yet-div attended-event-container event-container">
           No events yet <span role="img" aria-label="unamused face">&#128530;</span>
         </div>
       );
@@ -119,45 +128,9 @@ class UserProfile extends Component {
     return this.props.user.eventsAttended.length;
   }
 
-  // renderFollowers = () => {
-  //   if (this.props.user.followers.length !== 0) {
-  //     return this.props.user.followers.map((user) => {
-  //       return (
-  //         <div className="user" key={user.id}>
-  //           {user.name}
-  //         </div>
-  //       );
-  //     });
-  //   } else {
-  //     return (
-  //       <div>
-  //         No followers yet
-  //       </div>
-  //     );
-  //   }
-  // }
-
   getNumOfFollowers = () => {
     return this.props.user.followers.length;
   }
-
-  // renderFollowing = () => {
-  //   if (this.props.user.following.length !== 0) {
-  //     return this.props.user.following.map((user) => {
-  //       return (
-  //         <div className="user" key={user.id}>
-  //           {user.name}
-  //         </div>
-  //       );
-  //     });
-  //   } else {
-  //     return (
-  //       <div>
-  //         No following yet
-  //       </div>
-  //     );
-  //   }
-  // }
 
   getNumOfFollowing = () => {
     return this.props.user.following.length;
@@ -226,6 +199,20 @@ class UserProfile extends Component {
         </a>
       );
     }
+<<<<<<< HEAD
+=======
+    // Second if statement deploying on surge. Comment out the first if statement!
+    // if (this.props.user.id === this.props.loggedUser.id) {
+    //   return (
+    //     <a id="stripe-connect-button"
+    //       href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_F6rBJOefS9FTqzvaRY8cuXnnoDU9SHpV&scope=read_write"
+    //       rel="noopener noreferrer"
+    //     >
+    //       Stripe Connect
+    //     </a>
+    //   );
+    // } 
+>>>>>>> master
     else {
       return null;
     }
@@ -234,6 +221,18 @@ class UserProfile extends Component {
   stripeConnect = () => {
     this.props.stripeRedirect();
   }
+
+  onOpenFollowers = () => {
+    this.setState({ openFollowers: true });
+  };
+ 
+  onOpenFollowing = () => {
+    this.setState({ openFollowing: true });
+  };
+
+  onCloseModal = () => {
+    this.setState({ openFollowing: false, openFollowers: false });
+  };
 
   render() {
     if (this.props.match.params.userId !== this.props.user.id) {
@@ -262,18 +261,24 @@ class UserProfile extends Component {
                       {this.props.user.averageRating ? this.props.user.averageRating.toFixed(2) : 'No Ratings'}
                     </p>
                   </div>
-                  <Link className="event-creator-link" to={`/users/${this.props.user._id}/followers`}>
-                    <div id="user-profile-stat-2" className="user-profile-stat">
-                      <p id="user-profile-followers-label" className="user-profile-stat-label">Followers</p>
-                      <p id="user-profile-followers" className="user-profile-stat-value">{this.getNumOfFollowers()}</p>
-                    </div>
-                  </Link>
-                  <Link className="event-creator-link" to={`/users/${this.props.user._id}/following`}>
-                    <div id="user-profile-stat-3" className="user-profile-stat">
-                      <p id="user-profile-following-label" className="user-profile-stat-label">Following</p>
-                      <p id="user-profile-following" className="user-profile-stat-value">{this.getNumOfFollowing()}</p>
-                    </div>
-                  </Link>
+                  {/* <Link className="event-creator-link" to={`/users/${this.props.user._id}/followers`}> */}
+                  <Modal open={this.state.openFollowers} onClose={this.onCloseModal} center>
+                    <Users option="followers" />
+                  </Modal>
+                  <div id="user-profile-stat-2" className="user-profile-stat" onClick={this.onOpenFollowers}>
+                    <p id="user-profile-followers-label" className="user-profile-stat-label">Followers</p>
+                    <p id="user-profile-followers" className="user-profile-stat-value">{this.getNumOfFollowers()}</p>
+                  </div>
+                  {/* </Link> */}
+                  {/* <Link className="event-creator-link" to={`/users/${this.props.user._id}/following`}> */}
+                  <Modal open={this.state.openFollowing} onClose={this.onCloseModal} center>
+                    <Users option="following" />
+                  </Modal>
+                  <div id="user-profile-stat-3" className="user-profile-stat" onClick={this.onOpenFollowing}>
+                    <p id="user-profile-following-label" className="user-profile-stat-label">Following</p>
+                    <p id="user-profile-following" className="user-profile-stat-value">{this.getNumOfFollowing()}</p>
+                  </div>
+                  {/* </Link> */}
                   <div id="user-profile-stat-4" className="user-profile-stat">
                     <p id="user-profile-events-attended-label" className="user-profile-stat-label">Events Attended</p>
                     <p id="user-profile-events-attended" className="user-profile-stat-value">{this.getNumOfEventsAttended()}</p>

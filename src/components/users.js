@@ -27,10 +27,10 @@ class Followers extends Component {
     if (this.props.user.followers.length !== 0) {
       return this.props.user.followers.map((user) => {
         return (
-          <Link key={user.id} to={`/users/${user.id}`}>
-            <div className="follower" key={user.id}>
+          <Link className="user-profile-link" key={user.id} to={`/users/${user.id}`}>
+            <div className="followers" key={user.id}>
               <img src={user.photo} alt="follower-profile" className="follower-profile-pic" />
-              {user.name}
+              <span className="follower-user-name">{user.name}</span>
               <div className="follower-average-event-rating">
                 <Ratings
                   rating={user.averageRating}
@@ -52,7 +52,7 @@ class Followers extends Component {
       });
     } else {
       return (
-        <div>
+        <div id="no-followers-yet-div">
           No followers yet <span role="img" aria-label="unamused face">&#128530;</span>
         </div>
       );
@@ -63,10 +63,10 @@ class Followers extends Component {
     if (this.props.user.following.length !== 0) {
       return this.props.user.following.map((user) => {
         return (
-          <Link key={user.id} to={`/users/${user.id}`}>
+          <Link className="user-profile-link" key={user.id} to={`/users/${user.id}`}>
             <div className="following" key={user.id}>
               <img src={user.photo} alt="following-profile" className="following-profile-pic" />
-              {user.name}
+              <span className="following-user-name">{user.name}</span>
               <div className="following-average-event-rating">
                 <Ratings
                   rating={user.averageRating}
@@ -88,25 +88,45 @@ class Followers extends Component {
       });
     } else {
       return (
-        <div>
-          No following yet <span role="img" aria-label="unamused face">&#128530;</span>
+        <div id="not-following-anyone-yet-div">
+          Not following anyone yet <span role="img" aria-label="unamused face">&#128530;</span>
         </div>
       );
     }
   }
 
+  // renderUsers = () => {
+  //   if (this.props.match.path === '/users/:userId/followers') {
+  //     return (
+  //       <div className="users-container">
+  //         Followers:
+  //         {this.renderFollowers()}
+  //       </div>
+  //     );
+  //   } else if (this.props.match.path === '/users/:userId/following') {
+  //     return (
+  //       <div className="users-container">
+  //         Following:
+  //         {this.renderFollowing()}
+  //       </div>
+  //     );
+  //   } else {
+  //     return null;
+  //   }
+  // }
+
   renderUsers = () => {
-    if (this.props.match.path === '/users/:userId/followers') {
+    if (this.props.option === 'followers') {
       return (
-        <div className="users-container">
-          Followers:
+        <div className="modal-container">
+          <h2 className="modal-header">Followers</h2>
           {this.renderFollowers()}
         </div>
       );
-    } else if (this.props.match.path === '/users/:userId/following') {
+    } else if (this.props.option === 'following') {
       return (
-        <div className="users-container">
-          Following:
+        <div className="modal-container">
+          <h2 className="modal-header">Following</h2>
           {this.renderFollowing()}
         </div>
       );
