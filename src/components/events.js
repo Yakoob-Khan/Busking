@@ -104,31 +104,33 @@ class UnWrappedEvents extends Component {
           <div className="event-container" key={event.id}>
             <Link className="view-details" key={event.id} to={`/events/${event.id}`}>
               <div className="event" key={event.id} style={eventStyle} />
-              <p className="event-title">
-                {event.title}
-              </p>
-              <p className="event-description">
-                {event.description}
-              </p>
-              <p className="event-address">
-                {event.address}
-              </p>
+              <div className="event-details-preview">
+                <p className="event-title">
+                  {event.title}
+                </p>
+                <p className="event-description">
+                  {event.description}
+                </p>
+                <p className="event-address">
+                  {event.address}
+                </p>
 
-              {/* Ratings credit to: https://github.com/ekeric13/react-ratings-declarative */}
-              <div className="event-rating">
-                <Ratings
-                  rating={event.averageRating}
-                  widgetRatedColors="#0099CC"
-                  widgetEmptyColors="#6B6B6B"
-                  widgetSpacings="1px"
-                  widgetDimensions="12px"
-                >
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                </Ratings>
+                {/* Ratings credit to: https://github.com/ekeric13/react-ratings-declarative */}
+                <div className="event-rating">
+                  <Ratings
+                    rating={event.averageRating}
+                    widgetRatedColors="#0099CC"
+                    widgetEmptyColors="#6B6B6B"
+                    widgetSpacings="1px"
+                    widgetDimensions="12px"
+                  >
+                    <Ratings.Widget />
+                    <Ratings.Widget />
+                    <Ratings.Widget />
+                    <Ratings.Widget />
+                    <Ratings.Widget />
+                  </Ratings>
+                </div>
               </div>
             </Link>
           </div>

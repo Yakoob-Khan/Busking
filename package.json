@@ -50,6 +50,7 @@
     "moment": "^2.24.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
+    "react-burger-menu": "^2.6.10",
     "react-datetime-picker": "^2.4.0",
     "react-dom": "^16.8.6",
     "react-facebook-login": "^4.1.1",
