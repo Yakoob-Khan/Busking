@@ -13,7 +13,7 @@ class ErrorModal extends Component {
   render() {
     return (
       <Modal
-            // trigger={<Button onClick={this.handleOpen}>Show Modal</Button>}
+        // trigger={<Button onClick={this.handleOpen}>Show Modal</Button>}
         open={this.props.isOpen}
         onClose={this.props.closeModal}
         basic

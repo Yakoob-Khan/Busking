@@ -46,24 +46,26 @@ class UserProfile extends Component {
           <div className="hosted-event-container event-container" key={event.id}>
             <Link className="view-details" key={event.id} to={`/events/${event.id}`}>
               <div className="event" key={event.id} style={eventStyle} />
-              <p className="event-title">{event.title}</p>
-              <p className="event-description">{event.description}</p>
-              <p className="event-address">{event.address}</p>
-              {/* Ratings credit to: https://github.com/ekeric13/react-ratings-declarative */}
-              <div className="event-rating">
-                <Ratings
-                  rating={event.averageRating}
-                  widgetRatedColors="#0099CC"
-                  widgetEmptyColors="#6B6B6B"
-                  widgetSpacings="1px"
-                  widgetDimensions="12px"
-                >
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                </Ratings>
+              <div className="event-details-container">
+                <p className="event-title">{event.title}</p>
+                <p className="event-description">{event.description}</p>
+                <p className="event-address">{event.address}</p>
+                {/* Ratings credit to: https://github.com/ekeric13/react-ratings-declarative */}
+                <div className="event-rating">
+                  <Ratings
+                    rating={event.averageRating}
+                    widgetRatedColors="#0099CC"
+                    widgetEmptyColors="#6B6B6B"
+                    widgetSpacings="1px"
+                    widgetDimensions="12px"
+                  >
+                    <Ratings.Widget />
+                    <Ratings.Widget />
+                    <Ratings.Widget />
+                    <Ratings.Widget />
+                    <Ratings.Widget />
+                  </Ratings>
+                </div>
               </div>
             </Link>
           </div>
@@ -71,7 +73,7 @@ class UserProfile extends Component {
       });
     } else {
       return (
-        <div className="hosted-event-container event-container">
+        <div className="no-events-yet-div hosted-event-container event-container">
           No events yet <span role="img" aria-label="unamused face">&#128530;</span>
         </div>
       );
@@ -88,24 +90,26 @@ class UserProfile extends Component {
           <div className="attended-event-container event-container" key={event.id}>
             <Link className="view-details" key={event.id} to={`/events/${event.id}`}>
               <div className="event" key={event.id} style={eventStyle} />
-              <p className="event-title">{event.title}</p>
-              <p className="event-description">{event.description}</p>
-              <p className="event-address">{event.address}</p>
-              {/* Ratings credit to: https://github.com/ekeric13/react-ratings-declarative */}
-              <div className="event-rating">
-                <Ratings
-                  rating={event.averageRating}
-                  widgetRatedColors="#0099CC"
-                  widgetEmptyColors="#6B6B6B"
-                  widgetSpacings="1px"
-                  widgetDimensions="12px"
-                >
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                  <Ratings.Widget />
-                </Ratings>
+              <div className="event-details-container">
+                <p className="event-title">{event.title}</p>
+                <p className="event-description">{event.description}</p>
+                <p className="event-address">{event.address}</p>
+                {/* Ratings credit to: https://github.com/ekeric13/react-ratings-declarative */}
+                <div className="event-rating">
+                  <Ratings
+                    rating={event.averageRating}
+                    widgetRatedColors="#0099CC"
+                    widgetEmptyColors="#6B6B6B"
+                    widgetSpacings="1px"
+                    widgetDimensions="12px"
+                  >
+                    <Ratings.Widget />
+                    <Ratings.Widget />
+                    <Ratings.Widget />
+                    <Ratings.Widget />
+                    <Ratings.Widget />
+                  </Ratings>
+                </div>
               </div>
             </Link>
           </div>
@@ -113,7 +117,7 @@ class UserProfile extends Component {
       });
     } else {
       return (
-        <div className="attended-event-container event-container">
+        <div className="no-events-yet-div attended-event-container event-container">
           No events yet <span role="img" aria-label="unamused face">&#128530;</span>
         </div>
       );
@@ -124,45 +128,9 @@ class UserProfile extends Component {
     return this.props.user.eventsAttended.length;
   }
 
-  // renderFollowers = () => {
-  //   if (this.props.user.followers.length !== 0) {
-  //     return this.props.user.followers.map((user) => {
-  //       return (
-  //         <div className="user" key={user.id}>
-  //           {user.name}
-  //         </div>
-  //       );
-  //     });
-  //   } else {
-  //     return (
-  //       <div>
-  //         No followers yet
-  //       </div>
-  //     );
-  //   }
-  // }
-
   getNumOfFollowers = () => {
     return this.props.user.followers.length;
   }
-
-  // renderFollowing = () => {
-  //   if (this.props.user.following.length !== 0) {
-  //     return this.props.user.following.map((user) => {
-  //       return (
-  //         <div className="user" key={user.id}>
-  //           {user.name}
-  //         </div>
-  //       );
-  //     });
-  //   } else {
-  //     return (
-  //       <div>
-  //         No following yet
-  //       </div>
-  //     );
-  //   }
-  // }
 
   getNumOfFollowing = () => {
     return this.props.user.following.length;
