@@ -797,7 +797,7 @@ nav {
   #update-event-form {
     box-sizing: border-box;
     width: 100vw;
-    height: 100vh;
+    height: fit-content;
   }
   #create-new-event-button-container,
   #make-changes-button-container  {
@@ -1095,6 +1095,9 @@ nav {
   margin: -134px auto 0 auto;
   z-index: -10;
 }
+#user-profile-events-attended-section {
+  margin-bottom: 40px;
+}
 #events-attended-section-inner-div,
 #events-hosted-section-inner-div {
   width: 80%;
@@ -1191,7 +1194,8 @@ nav {
   border-radius: 4px;
   padding: 0;
   width: 340px;
-  height: 100vw;
+  height: 75vh;
+  overflow-y: scroll;
 }
 .styles_closeButton__20ID4 {
   width: 20px;
