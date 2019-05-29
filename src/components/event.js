@@ -111,17 +111,7 @@ class UnwrappedEvent extends Component {
         let newurl = url;
         if (url === 'https://buskingapp.s3.amazonaws.com/undefined') {
           console.log('TRUE');
-          const defaultImages = [
-            'https://www.jetsetter.com/uploads/sites/7/2018/05/L-ddNDL7-1380x690.jpeg',
-            'https://purewows3.imgix.net/images/articles/2017_03/beautiful_city_paris.png?auto=format,compress&cs=strip',
-            'https://besthqwallpapers.com/img/original/48870/spanish-steps-fontana-della-barcaccia-piazza-di-spagna-rome-italy.jpg',
-            'https://handluggageonly.co.uk/wp-content/uploads/2017/03/Hong-Kong-At-Night.jpg',
-            'https://learnallnow.com/wp-content/uploads/2018/06/los-angeles-dest1215.jpg',
-          ];
-          const listLength = defaultImages.length;
-          const randomIndex = Math.floor(Math.random() * listLength);
-          const randomlySelectedDefaultImage = defaultImages[randomIndex];
-          newurl = randomlySelectedDefaultImage;
+          newurl = this.props.event.imageURL;
         }
         const update = {
           id: this.props.event._id,
@@ -479,7 +469,7 @@ class UnwrappedEvent extends Component {
                   placeholder="Image url"
                   onChange={this.onFieldChange}
                 /> */}
-                <img id="preview" alt="preview" src={this.state.preview} />
+                <img id="preview" alt="file preview" src={this.state.preview} />
                 <input type="file"
                   name="coverImage"
                   id="update-event-image"

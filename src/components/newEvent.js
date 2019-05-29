@@ -234,8 +234,8 @@ class NewEvent extends Component {
               />
             </label>
             <label className="input-label" htmlFor="new-event-image">Event Image
-              <img id="preview" alt="preview" src={this.state.preview} />
-              <input type="file" name="coverImage" id="new-event-image" onChange={this.onImageUpload} />
+              <img id="preview" alt="file preview" src={this.state.preview} />
+              <input id="new-event-image" type="file" name="coverImage" onChange={this.onImageUpload} />
               {/* <input
                 type="text"
                 name="imageURL"
