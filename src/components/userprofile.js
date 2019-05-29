@@ -199,8 +199,6 @@ class UserProfile extends Component {
         </a>
       );
     }
-<<<<<<< HEAD
-=======
     // Second if statement deploying on surge. Comment out the first if statement!
     // if (this.props.user.id === this.props.loggedUser.id) {
     //   return (
@@ -212,7 +210,6 @@ class UserProfile extends Component {
     //     </a>
     //   );
     // } 
->>>>>>> master
     else {
       return null;
     }
