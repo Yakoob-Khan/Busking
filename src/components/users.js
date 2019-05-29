@@ -140,17 +140,17 @@ class Followers extends Component {
       this.props.fetchUser(this.props.match.params.userId);
     }
     if (!this.isObjectEmpty(this.props.user)) {
-      const content = this.props.auth
-        ? (
-          this.renderUsers()
-        )
-        : (
-          <div>
-            Redirect back to home page here.
-          </div>
-        );
+      // const content = this.props.auth
+      //   ? (
+      //     this.renderUsers()
+      //   )
+      //   : (
+      //     <div>
+      //       Redirect back to home page here.
+      //     </div>
+      //   );
       return (
-        <div className="content-container">{content}</div>
+        <div className="content-container">{this.renderUsers()}</div>
         // <div>test</div>
       );
     } else {
