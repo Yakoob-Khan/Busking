@@ -16,7 +16,7 @@ class StripeAccount extends React.Component {
     if (!this.props.user.stripe_user_id) {
       const code = window.location.search.split('=')[2];
 
-      axios.post('https://busking-api.herokuapp.com/api/stripeAccount',
+      axios.post('https://busking.surge.sh/stripeAccount',
         { code })
         .then((response) => {
           const updatedUser = {
