@@ -280,6 +280,7 @@ export function updateStripeId(updatedUser) {
   return (dispatch) => {
     axios.put(`${ROOT_URL}/api/userStripeId`, updatedUser)
       .then((response) => {
+        console.log(response.data);
         dispatch({ type: ActionTypes.UPDATE_STRIPE_ID, payload: response.data });
       })
       .catch((error) => {
