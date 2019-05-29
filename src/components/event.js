@@ -259,7 +259,6 @@ class UnwrappedEvent extends Component {
                   <div id="event-details-group-1">
                     <p id="event-title">{this.props.event.title}</p>
                     <p id="event-location">{this.props.event.address}</p>
-                    <p> Number of Attendees: {this.props.event.attendees.length}</p>
                     <p id="event-time">
                       <span>{moment(this.props.event.startTime).format('MMM DD LT')}</span>
                       <span> &#45; </span>
@@ -328,7 +327,6 @@ class UnwrappedEvent extends Component {
                   <div id="event-details-group-1">
                     <p id="event-title">{this.props.event.title}</p>
                     <p id="event-location">{this.props.event.address}</p>
-                    <p> Number of Attendees: {this.props.event.attendees.length}</p>
                     <p id="event-time">
                       <span>{moment(this.props.event.startTime).format('MMM DD LT')}</span>
                       <span> &#45; </span>
@@ -393,7 +391,10 @@ class UnwrappedEvent extends Component {
                         eventCreatorImage={this.props.users.user.photo}
                       />
                     </div>
-                    {this.renderAttendButton()}
+                    <div id="attendance-group">
+                      <p id="event-num-of-attendees"> Number of Attendees: {this.props.event.attendees.length}</p>
+                      {this.renderAttendButton()}
+                    </div>
                   </div>
                 </div>
               </div>

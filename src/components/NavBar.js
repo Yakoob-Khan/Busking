@@ -12,22 +12,13 @@ import { facebookResponse } from '../actions';
 
 
 class NavBar extends React.Component {
-  // _isMounted = false;
-
   constructor(props) {
     super(props);
     this.state = {
       show: false,
       menuOpen: false,
-      // isMenuOpened: false,
     };
-
-    // this.toggleDropDownMenu = this.toggleDropDownMenu.bind(this);
   }
-
-  // componentDidMount() {
-  //   this._isMounted = true;
-  // }
 
   renderLogIn = () => {
     if (this.props.auth.isAuthenticated) {
@@ -90,42 +81,23 @@ class NavBar extends React.Component {
     this.setState(state => ({ menuOpen: !state.menuOpen }));
   }
 
-
-  // toggleDropDownMenu = () => {
-  //   this.setState({ isMenuOpened: false });
-  //   console.log(this.isMenuOpened);
-  // }
-
-  // toggleDropDownMenu(event) {
-  //   console.log(this.isMenuOpened);
-  //   this.setState(prevState => ({
-  //     isMenuOpened: !prevState.isMenuOpened,
-  //   }));
-  //   this.setState({ isMenuOpened: true });
-  //   const dropDownMenu = document.getElementById('drop-down-menu');
-  //   if (dropDownMenu) {
-  //     dropDownMenu.style.display = 'block';
-  //   }
-  // }
-
   render() {
-    const styles = {
+    const burgerStyle = {
       bmBurgerButton: {
-        position: 'fixed',
-        width: '36px',
-        height: '30px',
-        left: '36px',
-        top: '36px',
+        position: 'absolute',
+        width: '24px',
+        height: '24px',
+        left: '8px',
+        top: '9px',
+        fontSize: '24px',
       },
-      bmBurgerBars: {
-        background: '#373a47',
-      },
-      bmBurgerBarsHover: {
-        background: '#a90000',
+      bmIcon: {
+        color: 'white',
+        opacity: '0.8',
       },
       bmCrossButton: {
-        height: '24px',
-        width: '24px',
+        height: '20px',
+        width: '20px',
       },
       bmCross: {
         background: '#bdc3c7',
@@ -135,86 +107,49 @@ class NavBar extends React.Component {
         height: '100%',
       },
       bmMenu: {
-        background: '#373a47',
-        padding: '2.5em 1.5em 0',
+        background: 'black',
         fontSize: '1.15em',
       },
-      bmMorphShape: {
-        fill: '#373a47',
-      },
       bmItemList: {
-        color: '#b8b7ad',
-        padding: '0.8em',
+        background: 'black',
       },
       bmItem: {
         display: 'inline-block',
       },
-      bmOverlay: {
-        background: 'rgba(0, 0, 0, 0.3)',
-      },
     };
-    // let menuStyle = {};
-
-    // if (this.state.isMenuOpened) {
-    //   menuStyle = {
-    //     display: 'block',
-    //   };
-    // } else {
-    //   menuStyle = {
-    //     display: 'none',
-    //   };
-    // }
     if (this.props.auth.isAuthenticated) {
       return (
         <nav>
-          {/* Hamburger Menu -- Start */}
-          {/* <i className="fas fa-bars" id="hamburger-menu" onClick={this.toggleDropDownMenu.bind(this)} />
-          <div id="drop-down-menu" style={menuStyle}>
-            <ul className="drop-down-menu-list">
+          {/* HAMBURGER MENU -- START */}
+          <Menu
+            customBurgerIcon={<i className="fas fa-bars" />}
+            styles={burgerStyle}
+            isOpen={this.state.menuOpen}
+            onStateChange={state => this.handleStateChange(state)}
+            width={250}
+          >
+            <ul className="burger-menu">
               <NavLink to="/" exact className="nav-link">
-                <li className="menu-list-item">
+                <li className="burger-menu-item menu-item-1">
                   <span role="img" aria-label="home" className="emoji">&#11088;</span>
-                  Home
+                 Home
                 </li>
               </NavLink>
               <NavLink to="/createEvent" exact className="nav-link">
-                <li className="menu-list-item">
+                <li className="burger-menu-item">
                   <span role="img" aria-label="see events" className="emoji">&#127927;</span>
                   Create Event
                 </li>
               </NavLink>
-              {this.renderLogIn()}
-            </ul>
-          </div> */}
-          <Menu
-            styles={styles}
-            isOpen={this.state.menuOpen}
-            onStateChange={state => this.handleStateChange(state)}
-          >
-            <ul className="hamburgerbar">
-              <NavLink to="/" exact className="nav-link">
-                <li className="menu-item">
-                  <span role="img" aria-label="home" className="emoji">&#11088;</span>
-                Home
-                </li>
-              </NavLink>
-              <NavLink to="/createEvent" exact className="nav-link">
-                <li className="menu-item">
-                  <span role="img" aria-label="see events" className="emoji">&#127927;</span>
-                Create Event
-                </li>
-              </NavLink>
               <NavLink to={`/users/${this.props.auth.user._id}`} className="nav-link">
-                <li className="menu-item menu-list-item">
+                <li className="burger-menu-item">
                   <span role="img" aria-label="see events" className="emoji">&#128075;</span>
-            My Profile
+                  My Profile
                 </li>
               </NavLink>
             </ul>
-
-            <a onClick={this.showSettings} className="menu-item--small" href="">Settings</a>
           </Menu>
-          {/* Hamburger Menu -- End */}
+          {/* HAMBURGER MENU -- END */}
           <ul className="navbar">
             <NavLink to="/" exact className="nav-link">
               <li className="nav-item">
@@ -235,60 +170,45 @@ class NavBar extends React.Component {
     } else {
       return (
         <nav>
-          {/* Hamburger Menu -- Start */}
-          {/* <i className="fas fa-bars" id="hamburger-menu" onClick={this.toggleDropDownMenu.bind(this)} />
-          <div id="drop-down-menu" style={menuStyle}>
-            <ul className="drop-down-menu-list">
+          {/* HAMBURGER MENU -- START */}
+          <Menu
+            customBurgerIcon={<i className="fas fa-bars" />}
+            styles={burgerStyle}
+            isOpen={this.state.menuOpen}
+            onStateChange={state => this.handleStateChange(state)}
+            width={250}
+          >
+            <ul className="burger-menu">
               <NavLink to="/" exact className="nav-link">
-                <li className="menu-list-item">
+                <li className="burger-menu-item menu-item-1">
                   <span role="img" aria-label="home" className="emoji">&#11088;</span>
                   Home
                 </li>
               </NavLink>
               <NavLink to="/createEvent" exact className="nav-link">
-                <li className="menu-list-item">
+                <li className="burger-menu-item">
                   <span role="img" aria-label="see events" className="emoji">&#127927;</span>
                   Create Event
                 </li>
               </NavLink>
-              {this.renderLogIn()}
+              <NavLink to="/" className="nav-link">
+                <li className="burger-menu-item">
+                  <span role="img" aria-label="see events" className="emoji">&#128075;</span>
+                  {/* Login with Facebook */}
+                  <FacebookLogin
+                    appId={config.FACEBOOK_APP_ID}
+                    callback={this.props.facebookResponse}
+                    // onClick={this.props.facebookResponse}
+                    render={renderProps => (
+                      <span onClick={renderProps.onClick}>Login with Facebook</span>
+                    // <button type="button" id="facebooksignin" onClick={renderProps.onClick}>This is my custom FB button</button>
+                    )}
+                  />
+                </li>
+              </NavLink>
             </ul>
-          </div> */}
-          <Menu
-            styles={styles}
-            isOpen={this.state.menuOpen}
-            onStateChange={state => this.handleStateChange(state)}
-          >
-            <NavLink to="/" exact className="nav-link">
-              <li className="menu-item">
-                <span role="img" aria-label="home" className="emoji">&#11088;</span>
-                Home
-              </li>
-            </NavLink>
-            <NavLink to="/createEvent" exact className="nav-link">
-              <li className="menu-item">
-                <span role="img" aria-label="see events" className="emoji">&#127927;</span>
-                Create Event
-              </li>
-            </NavLink>
-            <NavLink to="/" className="nav-link">
-              <li className="menu-item">
-                <span role="img" aria-label="see events" className="emoji">&#128075;</span>
-                {/* Login with Facebook */}
-                <FacebookLogin
-                  appId={config.FACEBOOK_APP_ID}
-                  callback={this.props.facebookResponse}
-              // onClick={this.props.facebookResponse}
-                  render={renderProps => (
-                    <span onClick={renderProps.onClick}>Login with Facebook</span>
-                  // <button type="button" id="facebooksignin" onClick={renderProps.onClick}>This is my custom FB button</button>
-                  )}
-                />
-              </li>
-            </NavLink>
-            <a onClick={this.showSettings} className="menu-item--small" href="">Settings</a>
           </Menu>
-          {/* Hamburger Menu -- End */}
+          {/* HAMBURGER MENU -- END */}
           <ul className="navbar">
             <NavLink to="/" exact className="nav-link">
               <li className="nav-item">
