@@ -571,17 +571,6 @@ class UnwrappedEvent extends Component {
       return (
         <div>
           {this.renderEvent()}
-          {/* HI MAX HERE IS A COMMENT EXAMPLE BELOW
-          IT IS VERY UGLY AND RUINS THE DISPLAY
-          BUT CAN BE REMOVED WITH A comment
-          I DONT KNOW HOW TO STYLE THIS STUFF SO I ASSUME
-          YOU WANT TO MAKE IT PRETTY
-           */}
-          {/* <textarea ref={(commentInput) => { this.commentInput = commentInput; }} />
-          <button type="button" onClick={() => this.props.writeComment(this.props.event.id, this.commentInput.value, this.props.history)} /> */}
-          {/* <div id="map-wrapper">
-            <WrappedEventMap />
-          </div> */}
         </div>
       );
     } else {
