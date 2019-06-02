@@ -26,7 +26,6 @@ export const testAPI = () => {
   return () => {
     axios.get(`${ROOT_URL}/`, { headers: { authorization: localStorage.getItem('jwtToken') } }).then((r) => {
       console.log(r);
-    // dispatch({ type: ActionTypes.DELETE_POST, payload: response.data });
     }).catch((e) => {
       console.log(e);
     });
@@ -44,11 +43,9 @@ export const facebookResponseLocal = (localToken) => {
           type: ActionTypes.AUTH_USER_SUCCESS,
           payload: { user },
         });
-        // this.setState({ isAuthenticated: true, user, token });
       } else {
         dispatch({ type: ActionTypes.ERROR });
       }
-    // dispatch({ type: ActionTypes.DELETE_POST, payload: response.data });
     }).catch((e) => {
       console.log(e);
     });
@@ -85,7 +82,6 @@ export const facebookResponse = (response) => {
             payload: { user, token },
           });
           dispatch({ type: ActionTypes.UPDATE_CURRENT_USER, payload: { user } });
-          // this.setState({ isAuthenticated: true, user, token });
         } else {
           dispatch({ type: ActionTypes.ERROR });
         }
@@ -136,7 +132,6 @@ export const searchEvents = (searchTerm) => {
             payload: r.data,
           },
         );
-      // dispatch({ type: ActionTypes.DELETE_POST, payload: response.data });
       }).catch((e) => {
         dispatch(appError(`Error retrieving events :( ${e}`));
       });
@@ -190,7 +185,6 @@ export const writeComment = (id, text, history) => {
       // console.log(r);
       dispatch(fetchEvent(id));
       history.push(`/events/${id}`);
-    // dispatch({ type: ActionTypes.DELETE_POST, payload: response.data });
     }).catch((e) => {
       console.log(e);
     });
