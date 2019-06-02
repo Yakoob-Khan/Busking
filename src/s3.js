@@ -3,6 +3,7 @@ import { ROOT_URL } from './actions';
 
 function getSignedRequest(file) {
   const fileName = encodeURIComponent(file.name);
+
   // hit our own server to get a signed s3 url
   return axios.get(`${ROOT_URL}/sign-s3?file-name=${fileName}&file-type=${file.type}`);
 }
