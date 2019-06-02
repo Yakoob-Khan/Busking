@@ -644,7 +644,7 @@ nav {
 #update-event-background {
   background-image: url("./../src/assets/mountain-background.jpg");
   background-size: cover;
-  height: fit-content;
+  height: 100vh;
 }
 #new-event-form,
 #update-event-form {
@@ -677,6 +677,21 @@ nav {
 .input-label-p {
   margin: 20px 0 14px 8px;
 }
+#preview {
+  display: block;
+  font-size: 8px !important;
+  line-height: 2;
+  margin-left: 4px;
+  margin-top: 8px;
+  text-align: right;
+  width: 88px;
+}
+#new-event-image,
+#update-event-image {
+  margin-left: 4px;
+  margin-top: 8px;
+  width: 100%;
+}
 .update-event-input,
 .new-event-input {
   border: none;
@@ -693,7 +708,7 @@ nav {
 }
 #update-event-start-time,
 #create-event-start-time {
-  margin-top: -34px;
+  margin-top: -4px;
 }
 .react-datetime-picker {
   border-radius: 3px;

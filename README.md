@@ -50,7 +50,7 @@ We used Facebook authentication to sign users into a platform. We used the `Face
 
 ## Setup
 
-Clone both the front-end and back-end and run `yarn` to install all the project dependencies. Make sure you have a mongo process running in another terminal in the background. Then run `yarn start` in the front-end, `yarn-dev` in the backend, to load the run the project locally.
+Clone both the front-end and back-end and run `yarn` to install all the project dependencies. Make sure you have a mongo process running in another terminal in the background with `mongod &`. Then run `yarn start` in the front-end, `yarn-dev` in the backend, to load the project locally. Navigate to localhost:8080 to to view the app.
 
 ## Deployment
 
