@@ -25,7 +25,6 @@ export const testAPI = () => {
   return () => {
     axios.get('http://localhost:9090/', { headers: { authorization: localStorage.getItem('jwtToken') } }).then((r) => {
       console.log(r);
-    // dispatch({ type: ActionTypes.DELETE_POST, payload: response.data });
     }).catch((e) => {
       console.log(e);
     });
@@ -42,11 +41,9 @@ export const facebookResponseLocal = (localToken) => {
           type: ActionTypes.AUTH_USER_SUCCESS,
           payload: { user },
         });
-        // this.setState({ isAuthenticated: true, user, token });
       } else {
         dispatch({ type: ActionTypes.ERROR });
       }
-    // dispatch({ type: ActionTypes.DELETE_POST, payload: response.data });
     }).catch((e) => {
       console.log(e);
     });
@@ -83,7 +80,6 @@ export const facebookResponse = (response) => {
             payload: { user, token },
           });
           dispatch({ type: ActionTypes.UPDATE_CURRENT_USER, payload: { user } });
-          // this.setState({ isAuthenticated: true, user, token });
         } else {
           dispatch({ type: ActionTypes.ERROR });
         }
@@ -134,7 +130,6 @@ export const searchEvents = (searchTerm) => {
             payload: r.data,
           },
         );
-      // dispatch({ type: ActionTypes.DELETE_POST, payload: response.data });
       }).catch((e) => {
         dispatch(appError(`Error retrieving events :( ${e}`));
       });
@@ -185,10 +180,8 @@ export const writeComment = (id, text, history) => {
   return (dispatch) => {
     console.log('helo api comment!');
     axios.post(`http://localhost:9090/api/comment/${id}`, { text }, { headers: { authorization: localStorage.getItem('jwtToken') } }).then((r) => {
-      // console.log(r);
       dispatch(fetchEvent(id));
       history.push(`/events/${id}`);
-    // dispatch({ type: ActionTypes.DELETE_POST, payload: response.data });
     }).catch((e) => {
       console.log(e);
     });
@@ -345,8 +338,8 @@ export function getCurrentLocation() {
       });
     } else {
       // Browser doesn't support Geolocation
-      console.log('your browswer does not support this 2019 shit');
-      dispatch(appError('your browswer does not support this 2019 shit'));
+      console.log('your browser does not support this 2019 shit');
+      dispatch(appError('your browser does not support this 2019 shit'));
     }
   };
 }

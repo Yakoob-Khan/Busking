@@ -36,22 +36,7 @@ class LogIn extends React.Component {
         </div>
       )
       : (
-        <div>
-          {/* <FacebookLogin
-            appId={config.FACEBOOK_APP_ID}
-            autoLoad={false}
-            fields="name,email,picture"
-            callback={this.props.facebookResponse}
-          /> */}
-          {/* <FacebookLogin
-            appId={config.FACEBOOK_APP_ID}
-            autoLoad
-            callback={this.props.facebookResponse}
-            render={renderProps => (
-              <button type="button" onClick={renderProps.onClick}>This is my custom FB button</button>
-            )}
-          /> */}
-        </div>
+        <div />
       );
 
     return (

@@ -112,12 +112,14 @@ class NewEvent extends Component {
           // either run your createPost actionCreator
           // or your updatePost actionCreator
           let newurl = url;
+
           let i = 0;
           // eslint-disable-next-line no-plusplus
           for (i; i < newurl.length; i++) {
             newurl = newurl.replace(' ', '+');
           }
           console.log(newurl);
+
           if (url === 'https://buskingapp.s3.amazonaws.com/undefined') {
             console.log('TRUE');
             const defaultImages = [
