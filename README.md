@@ -7,9 +7,16 @@ A decentralized platform that empowers street performers to publicize their musi
 
 ## Architecture
 ### API's used
-- **Google Maps API**
-	- Some Maps API
-	- READ/WRITE => Longitude/Latitude
+- **Google Maps Javascript API**
+	- We used the Google Maps Javascript API to display events on a map
+- **Geolocation API**
+	- We used the Geolocation API to determine the user's location and sort events based on proximity to user.
+- **Google Directions API**
+	- We used the Google Directions API to display directions from the user's location to an event. These directions were rendered on the map and as step by step instructions.
+- **Google Geocoding API**
+	- We used the Google Geocoding API to convert places to latitude and longitude. This allowed for a better user experience as users did not have to enter the longitude and latitude of their event location.
+- **Google Places API**
+	- We used the Google Places API to convert latitude and longitude to actual addresses. This was used in the event sorting algorithm to display events closer to the user first. 
 - **Stripe Connects API**
 	- we used the Stripe Connects API to build the payments infrastructure for our app. 
 	- From a user flow perspective, users can **directly** receive tips from the public by either linking their own Stripe account into our platform or going through the Stripe Connect OAuth flow to create their Stripe accounts. Then, they will be **redirected** to our landing page to see the full list of events.
