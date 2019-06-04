@@ -66,6 +66,7 @@ We deployed the both the front-end and back-end using **Heruko**. See our deploy
 ## Documented Bugs
 1. When we use the [react-datetime-picker](http://projects.wojtekmaj.pl/react-datetime-picker) library, the creators of the library did not add input validation to their code. This allows users to enter times like **4:0000 pm** or **5:001 pm**, a bunch of trailing zeros that have no meaning. Since we did not write this library, its impossible for us to change it without issuing a pull request to the creators of this library. 
 2. Sometimes, we get a React`mapCenter` console.log warning in the browser. This problem is occuring because `react-google-maps` prop name is called `center` whereas google browser expects the prop name to be called `mapCenter`. Other than issuing a pull request to the creators of this library, there is little else to do. Thankfully, functionally everything works!
+3. Side note: When testing locally using local host, Facebook auth will complain that "The method FB.api will soon stop working when called from http pages. Please update your site to use https for Facebook Login." This is simply a security warning from Facebook's side that goes away when we go to the deployed version on surge that uses HTTPS.
 
 
 ## Authors
