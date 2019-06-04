@@ -2,7 +2,7 @@
 
 A decentralized platform that empowers street performers to publicize their musical events. This democratizes information so that more people can support up-and-coming artists in their region.
 
-![Team](assets/team.jpg)
+![Team](src/assets/team.jpg)
 
 ## Tech Stack
 - React.js, Redux, Node.js/Express, MongoDB.
@@ -62,7 +62,7 @@ We used Facebook authentication to sign users into a platform. We used the `Face
 
 ## Setup
 
-Clone both the front-end and back-end and run `yarn` to install all the project dependencies. Make sure you have a mongo process running in another terminal in the background with `mongod &`. Then run `yarn start` in the front-end, `yarn-dev` in the backend, to load the project locally. Navigate to localhost:8080 to to view the app.
+Clone both the front-end and back-end and run `yarn` to install all the project dependencies. Make sure you have a mongo process running in another terminal in the background with `mongod &`.  Make sure you have the `config.js` file added so that Facebook authorization stategy works! Then run `yarn start` in the front-end, `yarn-dev` in the backend, to load the project locally. Navigate to `localhost:8080` to to view the app.
 
 ## Deployment
 
