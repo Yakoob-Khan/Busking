@@ -59,6 +59,9 @@ The following features are associate with each event:
 ### Sign up
 We used Facebook authentication to sign users into a platform. We used the `Facebook Strategy` using Passport.js and use sessions so that when users refresh the page, they are still logged in!
 
+### Testing Connect Stripe and Payment Integration
+Search for a pinned post in our slack busking channel for account details to log into our central Stripe Busking Dashboard. Note, you can `skip account creation` when taken to the OAuth flow page of Stripe since for testing purposes, there is no need to fill out that long form.
+
 
 ## Setup
 
