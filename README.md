@@ -4,6 +4,12 @@ A decentralized platform that empowers street performers to publicize their musi
 
 ![Team](src/assets/team.jpg)
 
+## Product Demos
+![Landing](src/assets/landing.gif)
+![Event](src/assets/event.gif)
+![Pay](src/assets/pay.gif)
+![Profile](src/assets/profile.gif)
+
 ## Tech Stack
 - React.js, Redux, Node.js/Express, MongoDB.
 
