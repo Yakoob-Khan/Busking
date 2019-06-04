@@ -16,6 +16,7 @@ import {
 } from '../actions';
 // import PaymentRequestForm from './PaymentRequestForm';
 import WrappedEventMap from './eventMap';
+import uploadImage from '../s3';
 import '../style.scss';
 
 
@@ -26,7 +27,7 @@ class UnwrappedEvent extends Component {
       isEditing: false,
       title: '',
       description: '',
-      imageURL: '',
+      // imageURL: '',
       longitude: '',
       latitude: '',
       address: '',
@@ -34,6 +35,8 @@ class UnwrappedEvent extends Component {
       tip: '',
       startTime: new Date(),
       endTime: new Date(),
+      preview: '',
+      file: {},
     };
 
     this.onEdit = this.onEdit.bind(this);
@@ -44,6 +47,7 @@ class UnwrappedEvent extends Component {
     this.changeRating = this.changeRating.bind(this);
     this.onStartTimeChange = this.onStartTimeChange.bind(this);
     this.onEndTimeChange = this.onEndTimeChange.bind(this);
+    this.onImageUpload = this.onImageUpload.bind(this);
   }
 
   componentDidMount() {
@@ -61,7 +65,7 @@ class UnwrappedEvent extends Component {
       this.setState({
         title: this.props.event.title,
         description: this.props.event.description,
-        imageURL: this.props.event.imageURL,
+        // imageURL: this.props.event.imageURL,
         longitude: this.props.event.longitude,
         latitude: this.props.event.latitude,
         address: this.props.event.address,
@@ -69,6 +73,15 @@ class UnwrappedEvent extends Component {
         // startTime: this.props.event.startTime,
         // endTime: this.props.event.endTime,
       });
+    }
+  }
+
+  onImageUpload(event) {
+    const file = event.target.files[0];
+    // Handle null file
+    // Get url of the file and set it to the src of preview
+    if (file) {
+      this.setState({ preview: window.URL.createObjectURL(file), file });
     }
   }
 
@@ -90,44 +103,52 @@ class UnwrappedEvent extends Component {
   onEndTimeChange = endTime => this.setState({ endTime });
 
   startEdit = () => {
-    if (this.state.imageURL.length === 0) {
-      const defaultImages = [
-        'https://www.jetsetter.com/uploads/sites/7/2018/05/L-ddNDL7-1380x690.jpeg',
-        'https://purewows3.imgix.net/images/articles/2017_03/beautiful_city_paris.png?auto=format,compress&cs=strip',
-        'https://besthqwallpapers.com/img/original/48870/spanish-steps-fontana-della-barcaccia-piazza-di-spagna-rome-italy.jpg',
-        'https://handluggageonly.co.uk/wp-content/uploads/2017/03/Hong-Kong-At-Night.jpg',
-        'https://learnallnow.com/wp-content/uploads/2018/06/los-angeles-dest1215.jpg',
-      ];
-      const listLength = defaultImages.length;
-      const randomIndex = Math.floor(Math.random() * listLength);
-      const randomlySelectedDefaultImage = defaultImages[randomIndex];
-      this.state.imageURL = randomlySelectedDefaultImage;
+    if (this.state.file) {
+      uploadImage(this.state.file).then((url) => {
+        // use url for content_url and
+        // either run your createPost actionCreator
+        // or your updatePost actionCreator
+        let newurl = url;
+        let i = 0;
+        // eslint-disable-next-line no-plusplus
+        for (i; i < newurl.length; i++) {
+          newurl = newurl.replace(' ', '+');
+        }
+
+        if (url === 'https://buskingapp.s3.amazonaws.com/undefined') {
+          console.log('TRUE');
+          newurl = this.props.event.imageURL;
+        }
+        const update = {
+          id: this.props.event._id,
+          title: this.state.title,
+          description: this.state.description,
+          imageURL: newurl,
+          longitude: this.state.longitude,
+          latitude: this.state.latitude,
+          address: this.state.address,
+          eventCreator: this.state.eventCreator,
+          startTime: this.state.startTime,
+          endTime: this.state.endTime,
+        };
+        this.setState({
+          isEditing: false,
+          title: '',
+          description: '',
+          // imageURL: '',
+          longitude: '',
+          latitude: '',
+          eventCreator: '',
+          address: '',
+          startTime: new Date(),
+          endTime: new Date(),
+        });
+        this.props.updateEvent(update);
+      }).catch((error) => {
+        // handle error
+        console.log('Error: Image Upload');
+      });
     }
-    const update = {
-      id: this.props.event._id,
-      title: this.state.title,
-      description: this.state.description,
-      imageURL: this.state.imageURL,
-      longitude: this.state.longitude,
-      latitude: this.state.latitude,
-      address: this.state.address,
-      eventCreator: this.state.eventCreator,
-      startTime: this.state.startTime,
-      endTime: this.state.endTime,
-    };
-    this.setState({
-      isEditing: false,
-      title: '',
-      description: '',
-      imageURL: '',
-      longitude: '',
-      latitude: '',
-      eventCreator: '',
-      address: '',
-      startTime: new Date(),
-      endTime: new Date(),
-    });
-    this.props.updateEvent(update);
   }
 
   deleteEvent = () => {
@@ -189,6 +210,58 @@ class UnwrappedEvent extends Component {
     }
   }
 
+  renderComments = () => {
+    const numOfComments = this.props.event.comments.length;
+    if (this.props.user) {
+      return (
+        <div id="comments-section">
+          <h3 id="comments-section-header">{numOfComments} {numOfComments === 1 ? 'Comment' : 'Comments'}</h3>
+          <div id="new-comment">
+            <img id="new-comment-current-user" src={this.props.user.photo} alt={this.props.user.name} />
+            <textarea id="new-comment-input" placeholder="Write a comment" ref={(commentInput) => { this.commentInput = commentInput; }} />
+            <button id="new-comment-button" type="button" onClick={() => this.props.writeComment(this.props.event.id, this.commentInput.value, this.props.history)}>Comment</button>
+          </div>
+          <div id="all-previous-comments">
+            {this.props.event.comments.map((comment) => {
+              return (
+                <div id="comment" key={comment.id}>
+                  <div id="comment-author" key={comment.id}>
+                    <img id="comment-author-image" src={comment.author.photo} alt={comment.author.name} />
+                    <div id="comment-author-name-and-text">
+                      <span id="comment-author-name">{comment.author.name}</span>
+                      <span id="comment-text">{comment.text}</span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div id="comments-section">
+          <h3 id="comments-section-header">{numOfComments} {numOfComments === 1 ? 'Comment' : 'Comments'}</h3>
+          <div id="all-previous-comments">
+            {this.props.event.comments.map((comment) => {
+              return (
+                <div id="comment" key={comment.id}>
+                  <div id="comment-author" key={comment.id}>
+                    <img id="comment-author-image" src={comment.author.photo} alt={comment.author.name} />
+                    <div id="comment-author-name-and-text">
+                      <span id="comment-author-name">{comment.author.name}</span>
+                      <span id="comment-text">{comment.text}</span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+  }
+
   renderEvent = () => {
     moment.locale('en');
     const eventImage = {
@@ -196,7 +269,6 @@ class UnwrappedEvent extends Component {
       backgroundRepeat: 'no-repeat',
       backgroundSize: 'cover',
     };
-    const numOfComments = this.props.event.comments.length;
     if ((!this.state.isEditing) && (this.props.user) && (this.props.user.id === this.props.event.host)) {
       return (
         <div id="event-page-background">
@@ -261,33 +333,11 @@ class UnwrappedEvent extends Component {
             <div id="map-wrapper">
               <WrappedEventMap />
             </div>
-            <div id="comments-section">
-              <h3 id="comments-section-header">{numOfComments} {numOfComments === 1 ? 'Comment' : 'Comments'}</h3>
-              <div id="new-comment">
-                <img id="new-comment-current-user" src={this.props.user.photo} alt={this.props.user.name} />
-                <textarea id="new-comment-input" placeholder="Write a comment" ref={(commentInput) => { this.commentInput = commentInput; }} />
-                <button id="new-comment-button" type="button" onClick={() => this.props.writeComment(this.props.event.id, this.commentInput.value, this.props.history)}>Comment</button>
-              </div>
-              <div id="all-previous-comments">
-                {this.props.event.comments.map((comment) => {
-                  return (
-                    <div id="comment" key={comment.id}>
-                      <div id="comment-author" key={comment.id}>
-                        <img id="comment-author-image" src={comment.author.photo} alt={comment.author.name} />
-                        <div id="comment-author-name-and-text">
-                          <span id="comment-author-name">{comment.author.name}</span>
-                          <span id="comment-text">{comment.text}</span>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
+            {this.renderComments()}
           </div>
         </div>
       );
-    } else if (!this.state.isEditing && (this.props.user)) {
+    } else if (!this.state.isEditing) {
       return (
         <div id="event-page-background">
           <div id="event-page">
@@ -343,25 +393,29 @@ class UnwrappedEvent extends Component {
                   <div id="event-details-group-3">
                     <div id="tip-input-group">
                       <p id="tip-input-label" htmlFor="tip-input">Tip Amount</p>
-                      <input
-                        id="tip-input"
-                        type="number"
-                        min="0.01"
-                        step="0.01"
-                        name="tip"
-                        value={this.state.tip}
-                        onChange={this.onFieldChange}
-                      />
+                      <span id="tip-input">$
+                        <input
+                          type="number"
+                          min="0.01"
+                          step="0.01"
+                          name="tip"
+                          value={this.state.tip}
+                          onChange={this.onFieldChange}
+                        />
+                      </span>
                       <Checkout
                         // `#demo${this.state.id}`
-                        name={`Send a tip to ${this.props.users.user.name}!`}
+                        name={`Send a tip to ${this.props.users.user.name}`}
                         description="Your tip goes a long way!"
                         amount={this.state.tip}
                         stripeId={this.props.event.stripeId}
                         eventCreatorImage={this.props.users.user.photo}
                       />
                     </div>
-                    {this.renderAttendButton()}
+                    <div id="attendance-group">
+                      <p id="event-num-of-attendees"> Number of Attendees: {this.props.event.attendees.length}</p>
+                      {this.renderAttendButton()}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -369,29 +423,7 @@ class UnwrappedEvent extends Component {
             <div id="map-wrapper">
               <WrappedEventMap />
             </div>
-            <div id="comments-section">
-              <h3 id="comments-section-header">{numOfComments} {numOfComments === 1 ? 'Comment' : 'Comments'}</h3>
-              <div id="new-comment">
-                <img id="new-comment-current-user" src={this.props.user.photo} alt={this.props.user.name} />
-                <textarea id="new-comment-input" placeholder="Write a comment" ref={(commentInput) => { this.commentInput = commentInput; }} />
-                <button id="new-comment-button" type="button" onClick={() => this.props.writeComment(this.props.event.id, this.commentInput.value, this.props.history)}>Comment</button>
-              </div>
-              <div id="all-previous-comments">
-                {this.props.event.comments.map((comment) => {
-                  return (
-                    <div id="comment" key={comment.id}>
-                      <div id="comment-author" key={comment.id}>
-                        <img id="comment-author-image" src={comment.author.photo} alt={comment.author.name} />
-                        <div id="comment-author-name-and-text">
-                          <span id="comment-author-name">{comment.author.name}</span>
-                          <span id="comment-text">{comment.text}</span>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
+            {this.renderComments()}
           </div>
         </div>
       );
@@ -434,7 +466,7 @@ class UnwrappedEvent extends Component {
                 />
               </label>
               <label className="input-label" htmlFor="update-event-image">Event Image
-                <input
+                {/* <input
                   type="text"
                   name="imageURL"
                   id="update-event-image"
@@ -442,6 +474,12 @@ class UnwrappedEvent extends Component {
                   value={this.state.imageURL}
                   placeholder="Image url"
                   onChange={this.onFieldChange}
+                /> */}
+                <img id="preview" alt="file preview" src={this.state.preview} />
+                <input type="file"
+                  name="coverImage"
+                  id="update-event-image"
+                  onChange={this.onImageUpload}
                 />
               </label>
               <div id="update-event-start-time">
@@ -539,17 +577,6 @@ class UnwrappedEvent extends Component {
       return (
         <div>
           {this.renderEvent()}
-          {/* HI MAX HERE IS A COMMENT EXAMPLE BELOW
-          IT IS VERY UGLY AND RUINS THE DISPLAY
-          BUT CAN BE REMOVED WITH A comment
-          I DONT KNOW HOW TO STYLE THIS STUFF SO I ASSUME
-          YOU WANT TO MAKE IT PRETTY
-           */}
-          {/* <textarea ref={(commentInput) => { this.commentInput = commentInput; }} />
-          <button type="button" onClick={() => this.props.writeComment(this.props.event.id, this.commentInput.value, this.props.history)} /> */}
-          {/* <div id="map-wrapper">
-            <WrappedEventMap />
-          </div> */}
         </div>
       );
     } else {

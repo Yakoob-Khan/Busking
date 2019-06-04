@@ -27,11 +27,11 @@ class Followers extends Component {
     if (this.props.user.followers.length !== 0) {
       return this.props.user.followers.map((user) => {
         return (
-          <Link key={user.id} to={`/users/${user.id}`}>
-            <div className="user" key={user.id}>
-              <img src={user.photo} alt="profile" className="user-profile-pic" />
-              {user.name}
-              <div className="event-rating">
+          <Link className="user-profile-link" key={user.id} to={`/users/${user.id}`}>
+            <div className="followers" key={user.id}>
+              <img src={user.photo} alt="follower-profile" className="follower-profile-pic" />
+              <span className="follower-user-name">{user.name}</span>
+              <div className="follower-average-event-rating">
                 <Ratings
                   rating={user.averageRating}
                   widgetRatedColors="#0099CC"
@@ -52,8 +52,8 @@ class Followers extends Component {
       });
     } else {
       return (
-        <div>
-          No followers yet
+        <div id="no-followers-yet-div">
+          No followers yet <span role="img" aria-label="unamused face">&#128530;</span>
         </div>
       );
     }
@@ -63,11 +63,11 @@ class Followers extends Component {
     if (this.props.user.following.length !== 0) {
       return this.props.user.following.map((user) => {
         return (
-          <Link key={user.id} to={`/users/${user.id}`}>
-            <div className="user" key={user.id}>
-              <img src={user.photo} alt="profile" className="user-profile-pic" />
-              {user.name}
-              <div className="event-rating">
+          <Link className="user-profile-link" key={user.id} to={`/users/${user.id}`}>
+            <div className="following" key={user.id}>
+              <img src={user.photo} alt="following-profile" className="following-profile-pic" />
+              <span className="following-user-name">{user.name}</span>
+              <div className="following-average-event-rating">
                 <Ratings
                   rating={user.averageRating}
                   widgetRatedColors="#0099CC"
@@ -88,25 +88,26 @@ class Followers extends Component {
       });
     } else {
       return (
-        <div>
-          No following yet
+        <div id="not-following-anyone-yet-div">
+          Not following anyone yet <span role="img" aria-label="unamused face">&#128530;</span>
         </div>
       );
     }
   }
 
+
   renderUsers = () => {
-    if (this.props.match.path === '/users/:userId/followers') {
+    if (this.props.option === 'followers') {
       return (
-        <div classnmae="users-container">
-          Followers:
+        <div className="modal-container">
+          <h2 className="modal-header">Followers</h2>
           {this.renderFollowers()}
         </div>
       );
-    } else if (this.props.match.path === '/users/:userId/following') {
+    } else if (this.props.option === 'following') {
       return (
-        <div classnmae="users-container">
-          Following:
+        <div className="modal-container">
+          <h2 className="modal-header">Following</h2>
           {this.renderFollowing()}
         </div>
       );
@@ -120,18 +121,8 @@ class Followers extends Component {
       this.props.fetchUser(this.props.match.params.userId);
     }
     if (!this.isObjectEmpty(this.props.user)) {
-      const content = this.props.auth
-        ? (
-          this.renderUsers()
-        )
-        : (
-          <div>
-            Redirect back to home page here.
-          </div>
-        );
       return (
-        <div className="content-container">{content}</div>
-        // <div>test</div>
+        <div className="content-container">{this.renderUsers()}</div>
       );
     } else {
       return <div>Loading...</div>;

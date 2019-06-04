@@ -4,14 +4,7 @@ import { connect } from 'react-redux';
 
 export default function (ComposedComponent) {
   class requireAuth extends Component {
-    //   constructor(props) {
-    //     super(props);
-    //   }
-
     componentWillMount() {
-      // if (!this.props.authenticated) {
-      //   this.props.history.push('/');
-      // }
     }
 
     componentWillUpdate(nextProps) {

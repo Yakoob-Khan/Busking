@@ -10,13 +10,14 @@ import { GoogleApiWrapper } from 'google-maps-react';
 import Modal from 'simple-react-modal';
 import DateTimePicker from 'react-datetime-picker';
 import { createEvent, updateCurrentUser } from '../actions';
+import uploadImage from '../s3';
 
 class NewEvent extends Component {
   constructor(props) {
     super(props);
     this.state = {
       title: '',
-      imageURL: '',
+      // imageURL: '',
       longitude: '',
       latitude: '',
       description: '',
@@ -25,14 +26,18 @@ class NewEvent extends Component {
       endTime: new Date(),
       show: false,
       error: '',
+      preview: '',
+      file: {},
     };
     this.onFieldChange = this.onFieldChange.bind(this);
+    this.close = this.close.bind(this);
+    this.onImageUpload = this.onImageUpload.bind(this);
   }
 
   onStartTimeChange = (startTime) => {
     this.setState({ startTime });
     if (startTime.getTime() < this.state.endTime.getTime()) {
-      if (this.state.error === 'You must select an end time after the start time!!!') {
+      if (this.state.error === 'Please provide valid start and end times for your event!') {
         this.setState({
           show: false,
           error: '',
@@ -41,7 +46,7 @@ class NewEvent extends Component {
     } else {
       this.setState({
         show: true,
-        error: 'You must select an end time after the start time!!!',
+        error: 'Please provide valid start and end times for your event!',
       });
     }
   };
@@ -49,7 +54,7 @@ class NewEvent extends Component {
   onEndTimeChange = (endTime) => {
     this.setState({ endTime });
     if (this.state.startTime.getTime() < endTime.getTime()) {
-      if (this.state.error === 'You must select an end time after the start time!!!') {
+      if (this.state.error === 'Please provide valid start and end times for your event!') {
         this.setState({
           show: false,
           error: '',
@@ -58,7 +63,7 @@ class NewEvent extends Component {
     } else {
       this.setState({
         show: true,
-        error: 'You must select an end time after the start time!!!',
+        error: 'Please provide valid start and end times for your event!',
       });
     }
   };
@@ -67,43 +72,85 @@ class NewEvent extends Component {
     this.setState({ [event.target.name]: event.target.value });
   }
 
+  onImageUpload(event) {
+    const file = event.target.files[0];
+    // Handle null file
+    // Get url of the file and set it to the src of preview
+    if (file) {
+      this.setState({ preview: window.URL.createObjectURL(file), file });
+    }
+  }
+
   submitForm = () => {
     if (this.state.latitude === '' || this.state.longitude === '') {
       this.setState({
         show: true,
-        error: 'You must select a valid address from the drop down menu!!!',
+        error: 'Please select a valid address from the drop-down menu!',
       });
     } else if (this.state.startTime.getTime() >= this.state.endTime.getTime()) {
       this.setState({
         show: true,
-        error: 'You must select an end time after the start time!!!',
+        error: 'Please provide valid start and end times for your event!',
       });
     } else if (!this.state.show) {
-      if (this.state.imageURL.length === 0) {
-        const defaultImages = [
-          'https://www.jetsetter.com/uploads/sites/7/2018/05/L-ddNDL7-1380x690.jpeg',
-          'https://purewows3.imgix.net/images/articles/2017_03/beautiful_city_paris.png?auto=format,compress&cs=strip',
-          'https://besthqwallpapers.com/img/original/48870/spanish-steps-fontana-della-barcaccia-piazza-di-spagna-rome-italy.jpg',
-          'https://handluggageonly.co.uk/wp-content/uploads/2017/03/Hong-Kong-At-Night.jpg',
-          'https://learnallnow.com/wp-content/uploads/2018/06/los-angeles-dest1215.jpg',
-        ];
-        const listLength = defaultImages.length;
-        const randomIndex = Math.floor(Math.random() * listLength);
-        const randomlySelectedDefaultImage = defaultImages[randomIndex];
-        this.state.imageURL = randomlySelectedDefaultImage;
+      // if (this.state.imageURL.length === 0) {
+      //   const defaultImages = [
+      //     'https://www.jetsetter.com/uploads/sites/7/2018/05/L-ddNDL7-1380x690.jpeg',
+      //     'https://purewows3.imgix.net/images/articles/2017_03/beautiful_city_paris.png?auto=format,compress&cs=strip',
+      //     'https://besthqwallpapers.com/img/original/48870/spanish-steps-fontana-della-barcaccia-piazza-di-spagna-rome-italy.jpg',
+      //     'https://handluggageonly.co.uk/wp-content/uploads/2017/03/Hong-Kong-At-Night.jpg',
+      //     'https://learnallnow.com/wp-content/uploads/2018/06/los-angeles-dest1215.jpg',
+      //   ];
+      //   const listLength = defaultImages.length;
+      //   const randomIndex = Math.floor(Math.random() * listLength);
+      //   const randomlySelectedDefaultImage = defaultImages[randomIndex];
+      //   this.state.imageURL = randomlySelectedDefaultImage;
+      // }
+      if (this.state.file) {
+        uploadImage(this.state.file).then((url) => {
+          // use url for content_url and
+          // either run your createPost actionCreator
+          // or your updatePost actionCreator
+          let newurl = url;
+
+          let i = 0;
+          // eslint-disable-next-line no-plusplus
+          for (i; i < newurl.length; i++) {
+            newurl = newurl.replace(' ', '+');
+          }
+          console.log(newurl);
+
+          if (url === 'https://buskingapp.s3.amazonaws.com/undefined') {
+            console.log('TRUE');
+            const defaultImages = [
+              'https://www.jetsetter.com/uploads/sites/7/2018/05/L-ddNDL7-1380x690.jpeg',
+              'https://purewows3.imgix.net/images/articles/2017_03/beautiful_city_paris.png?auto=format,compress&cs=strip',
+              'https://besthqwallpapers.com/img/original/48870/spanish-steps-fontana-della-barcaccia-piazza-di-spagna-rome-italy.jpg',
+              'https://handluggageonly.co.uk/wp-content/uploads/2017/03/Hong-Kong-At-Night.jpg',
+              'https://learnallnow.com/wp-content/uploads/2018/06/los-angeles-dest1215.jpg',
+            ];
+            const listLength = defaultImages.length;
+            const randomIndex = Math.floor(Math.random() * listLength);
+            const randomlySelectedDefaultImage = defaultImages[randomIndex];
+            newurl = randomlySelectedDefaultImage;
+          }
+          const newEvent = {
+            title: this.state.title,
+            imageURL: newurl,
+            longitude: this.state.longitude,
+            latitude: this.state.latitude,
+            description: this.state.description,
+            address: this.state.address,
+            startTime: this.state.startTime,
+            endTime: this.state.endTime,
+            stripeId: this.props.user.stripeId,
+          };
+          this.props.createEvent(newEvent, this.props.history);
+        }).catch((error) => {
+          // handle error
+          console.log('Error: Image Upload');
+        });
       }
-      const newEvent = {
-        title: this.state.title,
-        imageURL: this.state.imageURL,
-        longitude: this.state.longitude,
-        latitude: this.state.latitude,
-        description: this.state.description,
-        address: this.state.address,
-        startTime: this.state.startTime,
-        endTime: this.state.endTime,
-        stripeId: this.props.user.stripeId,
-      };
-      this.props.createEvent(newEvent, this.props.history);
     }
   }
 
@@ -118,7 +165,7 @@ class NewEvent extends Component {
         if (results[0].address_components.length < 6) {
           this.setState({
             show: true,
-            error: 'Please be more specific about your location!!!',
+            error: 'Please provide a more specific location!',
           });
         } else {
           this.setState({
@@ -136,17 +183,18 @@ class NewEvent extends Component {
       .catch(error => console.error('Error', error));
   };
 
-  // close= () => {
-  //   this.setState({ show: false });
-  // }
+  close = () => {
+    this.setState({ show: false });
+  }
 
   render() {
     const today = new Date();
     const oneweek = new Date();
     oneweek.setDate(oneweek.getDate() + 7);
     const divStyle = {
-      margin: '-18px auto 0 auto',
+      margin: '-14px auto 0 auto',
       position: 'absolute',
+      width: '100%',
       zIndex: '100',
     };
     return (
@@ -154,15 +202,19 @@ class NewEvent extends Component {
         <div id="new-event-form">
           <h2 id="new-event-form-header">New Event</h2>
           <Modal
-            className="login-modal" // this will completely overwrite the default css completely
-            // containerStyle={{ background: 'white' }} // changes styling on the inner content area
+            className="error-modal"
             containerClassName="test"
             closeOnOuterClick
             show={this.state.show}
-            // onClose={() => this.close()}
+            onClose={() => this.close()}
           >
-            <div className="login-prompt">
-              {this.state.error}
+            <div className="error-prompt">
+              &#x26A0; {this.state.error}
+              <button className="error-close"
+                onClick={this.close.bind(this)}
+                type="submit"
+              >X
+              </button>
             </div>
           </Modal>
           <form>
@@ -190,7 +242,9 @@ class NewEvent extends Component {
               />
             </label>
             <label className="input-label" htmlFor="new-event-image">Event Image
-              <input
+              <img id="preview" alt="file preview" src={this.state.preview} />
+              <input id="new-event-image" type="file" name="coverImage" onChange={this.onImageUpload} />
+              {/* <input
                 type="text"
                 name="imageURL"
                 id="new-event-image"
@@ -198,7 +252,7 @@ class NewEvent extends Component {
                 value={this.state.imageURL}
                 placeholder="image URL"
                 onChange={this.onFieldChange}
-              />
+              /> */}
             </label>
             <div id="create-event-start-time">
               <p className="input-label input-label-p" htmlFor="create-event-start-time">Event Start Time</p>

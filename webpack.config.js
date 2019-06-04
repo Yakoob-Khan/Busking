@@ -1,6 +1,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const autoprefixer = require('autoprefixer');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
 const env = process.env.NODE_ENV || 'development';
 // set to 'production' or 'development' in your env
@@ -72,6 +73,7 @@ module.exports = {
       template: './src/index.html',
       filename: './200.html',
     }),
+    new FaviconsWebpackPlugin('./src/assets/saxophone_1f3b7.png'),
   ],
 
   devServer: {

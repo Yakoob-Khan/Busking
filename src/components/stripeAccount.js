@@ -19,7 +19,6 @@ class StripeAccount extends React.Component {
       axios.post('http://localhost:9090/api/stripeAccount',
         { code })
         .then((response) => {
-          // this.setState({ stripe_user_id: response.data.stripe_user_id });
           const updatedUser = {
             id: this.props.auth.user.id,
             stripeId: response.data.stripe_user_id,

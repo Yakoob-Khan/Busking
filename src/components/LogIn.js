@@ -29,29 +29,14 @@ class LogIn extends React.Component {
           </div>
           <div>
             <button onClick={this.props.logoutUser} className="button" type="submit">
-                    Log out
+              Log out
             </button>
             <button onClick={this.props.testAPI} className="button" type="submit">TEST API</button>
           </div>
         </div>
       )
       : (
-        <div>
-          {/* <FacebookLogin
-            appId={config.FACEBOOK_APP_ID}
-            autoLoad={false}
-            fields="name,email,picture"
-            callback={this.props.facebookResponse}
-          /> */}
-          {/* <FacebookLogin
-            appId={config.FACEBOOK_APP_ID}
-            autoLoad
-            callback={this.props.facebookResponse}
-            render={renderProps => (
-              <button type="button" onClick={renderProps.onClick}>This is my custom FB button</button>
-            )}
-          /> */}
-        </div>
+        <div />
       );
 
     return (

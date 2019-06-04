@@ -13,7 +13,7 @@ class ErrorModal extends Component {
   render() {
     return (
       <Modal
-            // trigger={<Button onClick={this.handleOpen}>Show Modal</Button>}
+        // trigger={<Button onClick={this.handleOpen}>Show Modal</Button>}
         open={this.props.isOpen}
         onClose={this.props.closeModal}
         basic
@@ -34,12 +34,3 @@ class ErrorModal extends Component {
 }
 
 export default ErrorModal;
-
-// <Modal
-//   open={props.isOpen}
-//   onClose={console.log('CLOSE')}
-//   // trigger={<Button>Show Modal</Button>}
-//   header="Reminder!"
-//   content="Call Benjamin regarding the reports."
-//   actions={['Snooze', { key: 'done', content: 'Done', positive: true }]}
-// />

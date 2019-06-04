@@ -29,8 +29,6 @@ class App extends Component {
     const token = localStorage.getItem('jwtToken');
     if (token) {
       this.props.facebookResponseLocal(token);
-    } else {
-      console.log('no local token');
     }
   }
 

@@ -62,25 +62,33 @@ export class MapView extends Component {
     }
   }
 
-  // getBounds = () => {
-  //   const now = new Date();
-  //   const events = this.props.events.filter(event => (moment(event.endTime).valueOf() > now.getTime()));
-  //   if (events.length !== 0) {
-  //     const points = events.map(event => (
-  //       { lat: event.latitude, lng: event.longitude }
-  //     ));
-  //     const userLoc = this.props.currentUserLocation;
-  //     // empty object check adapted from https://stackoverflow.com/questions/679915/how-do-i-test-for-an-empty-javascript-object
-  //     if (!(Object.entries(userLoc).length === 0 && userLoc.constructor === Object)) {
-  //       points.push(this.props.currentUserLocation);
-  //     }
-  //     const bounds = new this.props.google.maps.LatLngBounds();
-  //     points.forEach((point) => {
-  //       bounds.extend(point);
-  //     });
-  //     return bounds;
-  //   }
-  // }
+  renderUserMarker() {
+    if (this.props.user) {
+      return (
+        <Marker
+          title="Your current location"
+          position={this.props.currentUserLocation}
+          icon={{
+            url: `${this.props.user.photo}`,
+            anchor: new window.google.maps.Point(32, 32),
+            scaledSize: new window.google.maps.Size(40, 40),
+          }}
+        />
+      );
+    } else {
+      return (
+        <Marker
+          title="Your current location"
+          position={this.props.currentUserLocation}
+          icon={{
+            url: 'https://www.shareicon.net/data/2015/08/14/85301_public_512x512.png',
+            anchor: new window.google.maps.Point(32, 32),
+            scaledSize: new window.google.maps.Size(40, 40),
+          }}
+        />
+      );
+    }
+  }
 
   render() {
     return (
@@ -92,15 +100,7 @@ export class MapView extends Component {
           zoom={6}
         >
           {this.renderEvents()}
-          <Marker
-            title="Your current location"
-            position={this.props.currentUserLocation}
-            icon={{
-              url: `${this.props.user.photo}`,
-              anchor: new window.google.maps.Point(32, 32),
-              scaledSize: new window.google.maps.Size(40, 40),
-            }}
-          />
+          {this.renderUserMarker()}
           <InfoWindow className="info-window" marker={this.state.activeMarker} visible={this.state.showingInfoWindow} onClose={this.onClose}>
             <div className="info-container">
               <div key={this.state.selectedEvent.id}>
