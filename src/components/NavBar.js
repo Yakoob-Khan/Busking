@@ -38,6 +38,7 @@ class NavBar extends React.Component {
             {/* Login with Facebook */}
             <FacebookLogin
               appId={config.FACEBOOK_APP_ID}
+              isMobile={false}
               callback={this.props.facebookResponse}
               // onClick={this.props.facebookResponse}
               render={renderProps => (
@@ -198,6 +199,7 @@ class NavBar extends React.Component {
                   <FacebookLogin
                     appId={config.FACEBOOK_APP_ID}
                     callback={this.props.facebookResponse}
+                    isMobile={false}
                     // onClick={this.props.facebookResponse}
                     render={renderProps => (
                       <span onClick={renderProps.onClick}>Login with Facebook</span>

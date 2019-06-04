@@ -109,7 +109,6 @@ class UnwrappedEvent extends Component {
         // either run your createPost actionCreator
         // or your updatePost actionCreator
         let newurl = url;
-        
         let i = 0;
         // eslint-disable-next-line no-plusplus
         for (i; i < newurl.length; i++) {
