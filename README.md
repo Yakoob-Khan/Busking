@@ -29,7 +29,7 @@ A decentralized platform that empowers street performers to publicize their musi
 
 
 ## Frontend 
-###Home
+### Home
 We have a landing page that displays all the events, has a search bar to look up a particular event, toggle to map view, filter events! Users can also toggle into map view and we use **GEO-LOCATION API** to show the users the events that are nearby to them.
  	
 
