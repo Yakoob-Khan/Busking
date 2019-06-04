@@ -34,12 +34,3 @@ class ErrorModal extends Component {
 }
 
 export default ErrorModal;
-
-// <Modal
-//   open={props.isOpen}
-//   onClose={console.log('CLOSE')}
-//   // trigger={<Button>Show Modal</Button>}
-//   header="Reminder!"
-//   content="Call Benjamin regarding the reports."
-//   actions={['Snooze', { key: 'done', content: 'Done', positive: true }]}
-// />

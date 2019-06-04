@@ -95,25 +95,6 @@ class Followers extends Component {
     }
   }
 
-  // renderUsers = () => {
-  //   if (this.props.match.path === '/users/:userId/followers') {
-  //     return (
-  //       <div className="users-container">
-  //         Followers:
-  //         {this.renderFollowers()}
-  //       </div>
-  //     );
-  //   } else if (this.props.match.path === '/users/:userId/following') {
-  //     return (
-  //       <div className="users-container">
-  //         Following:
-  //         {this.renderFollowing()}
-  //       </div>
-  //     );
-  //   } else {
-  //     return null;
-  //   }
-  // }
 
   renderUsers = () => {
     if (this.props.option === 'followers') {
@@ -140,18 +121,8 @@ class Followers extends Component {
       this.props.fetchUser(this.props.match.params.userId);
     }
     if (!this.isObjectEmpty(this.props.user)) {
-      // const content = this.props.auth
-      //   ? (
-      //     this.renderUsers()
-      //   )
-      //   : (
-      //     <div>
-      //       Redirect back to home page here.
-      //     </div>
-      //   );
       return (
         <div className="content-container">{this.renderUsers()}</div>
-        // <div>test</div>
       );
     } else {
       return <div>Loading...</div>;

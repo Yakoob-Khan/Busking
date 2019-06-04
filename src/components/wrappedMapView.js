@@ -62,26 +62,6 @@ export class MapView extends Component {
     }
   }
 
-  // getBounds = () => {
-  //   const now = new Date();
-  //   const events = this.props.events.filter(event => (moment(event.endTime).valueOf() > now.getTime()));
-  //   if (events.length !== 0) {
-  //     const points = events.map(event => (
-  //       { lat: event.latitude, lng: event.longitude }
-  //     ));
-  //     const userLoc = this.props.currentUserLocation;
-  //     // empty object check adapted from https://stackoverflow.com/questions/679915/how-do-i-test-for-an-empty-javascript-object
-  //     if (!(Object.entries(userLoc).length === 0 && userLoc.constructor === Object)) {
-  //       points.push(this.props.currentUserLocation);
-  //     }
-  //     const bounds = new this.props.google.maps.LatLngBounds();
-  //     points.forEach((point) => {
-  //       bounds.extend(point);
-  //     });
-  //     return bounds;
-  //   }
-  // }
-
   renderUserMarker() {
     if (this.props.user) {
       return (
