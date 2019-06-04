@@ -6,13 +6,16 @@ A decentralized platform that empowers street performers to publicize their musi
 
 ## Product Demos
 
-**Landing Page**
+***Landing Page***
 ![Landing](src/assets/landing.gif)
-**Map View**
+
+***Map View***
 ![Event](src/assets/event.gif)
-**Payment**
+
+***Payment***
 ![Pay](src/assets/pay.gif)
-**User Profile**
+
+***User Profile***
 ![Profile](src/assets/profile.gif)
 
 ## Tech Stack
