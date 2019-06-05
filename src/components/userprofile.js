@@ -187,7 +187,7 @@ class UserProfile extends Component {
       if (!this.props.user.stripeId) {
         return (
           <a id="stripe-connect-button"
-            href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_FCAEzeAG3RQuxHzXLi6XdRmGRzVvYkO1&scope=read_write"
+            href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_F6rBJOefS9FTqzvaRY8cuXnnoDU9SHpV&scope=read_write"
             rel="noopener noreferrer"
           >
             Stripe Connect
@@ -208,7 +208,7 @@ class UserProfile extends Component {
     // if (this.props.user.id === this.props.loggedUser.id) {
     //   return (
     //     <a id="stripe-connect-button"
-    //       href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_F6rBJOefS9FTqzvaRY8cuXnnoDU9SHpV&scope=read_write"
+    //       href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_FCAEzeAG3RQuxHzXLi6XdRmGRzVvYkO1&scope=read_write"
     //       rel="noopener noreferrer"
     //     >
     //       Stripe Connect
