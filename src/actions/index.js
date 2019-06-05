@@ -19,11 +19,16 @@ export const ActionTypes = {
   UPDATE_STRIPE_ID: 'UPDATE_STRIPE_ID',
 };
 
+<<<<<<< HEAD
 export const ROOT_URL = 'http://localhost:9090/api';
+=======
+const ROOT_URL = 'https://busking-api.herokuapp.com';
+// const ROOT_URL = 'http://localhost:9090/api';
+>>>>>>> technigala
 
 export const testAPI = () => {
   return () => {
-    axios.get('http://localhost:9090/', { headers: { authorization: localStorage.getItem('jwtToken') } }).then((r) => {
+    axios.get(`${ROOT_URL}/`, { headers: { authorization: localStorage.getItem('jwtToken') } }).then((r) => {
       console.log(r);
     }).catch((e) => {
       console.log(e);
@@ -34,7 +39,8 @@ export const testAPI = () => {
 
 export const facebookResponseLocal = (localToken) => {
   return (dispatch) => {
-    axios.get('http://localhost:9090/auth/facebook/refresh', { headers: { authorization: localToken } }).then((r) => {
+    console.log('hit facebook facebook');
+    axios.get(`${ROOT_URL}/auth/facebook/refresh`, { headers: { authorization: localToken } }).then((r) => {
       const user = r.data;
       if (r.status === 200) {
         dispatch({
@@ -70,7 +76,7 @@ export const facebookResponse = (response) => {
       mode: 'cors',
       cache: 'default',
     };
-    fetch('http://localhost:9090/auth/facebook', options).then((r) => {
+    fetch(`${ROOT_URL}/auth/facebook`, options).then((r) => {
       const token = r.headers.get('x-auth-token');
       localStorage.setItem('jwtToken', token);
       r.json().then((user) => {
@@ -104,7 +110,7 @@ export function clearError() {
 
 export function fetchEvents() {
   return (dispatch) => {
-    axios.get(`${ROOT_URL}/events`)
+    axios.get(`${ROOT_URL}/api/events`)
       .then((response) => {
         dispatch({
           type: ActionTypes.FETCH_EVENTS,
@@ -123,7 +129,7 @@ export const searchEvents = (searchTerm) => {
     if (searchTerm === '') {
       dispatch(fetchEvents());
     } else {
-      axios.put('http://localhost:9090/api/search/event', { searchTerm }).then((r) => {
+      axios.put(`${ROOT_URL}/api/search/event`, { searchTerm }).then((r) => {
         dispatch(
           {
             type: ActionTypes.FETCH_EVENTS,
@@ -149,7 +155,7 @@ export function updateStateEvents(events) {
 
 export function createEvent(newEvent, history) {
   return (dispatch) => {
-    axios.post(`${ROOT_URL}/events`, newEvent, { headers: { authorization: localStorage.getItem('jwtToken') } })
+    axios.post(`${ROOT_URL}/api/events`, newEvent, { headers: { authorization: localStorage.getItem('jwtToken') } })
       .then((response) => {
         history.push('/');
       })
@@ -162,7 +168,7 @@ export function createEvent(newEvent, history) {
 
 export function fetchEvent(id, callback) {
   return (dispatch) => {
-    axios.get(`${ROOT_URL}/events/${id}`)
+    axios.get(`${ROOT_URL}/api/events/${id}`)
       .then((response) => {
         dispatch({
           type: ActionTypes.FETCH_EVENT,
@@ -179,7 +185,12 @@ export function fetchEvent(id, callback) {
 export const writeComment = (id, text, history) => {
   return (dispatch) => {
     console.log('helo api comment!');
+<<<<<<< HEAD
     axios.post(`http://localhost:9090/api/comment/${id}`, { text }, { headers: { authorization: localStorage.getItem('jwtToken') } }).then((r) => {
+=======
+    axios.post(`${ROOT_URL}/api/comment/${id}`, { text }, { headers: { authorization: localStorage.getItem('jwtToken') } }).then((r) => {
+      // console.log(r);
+>>>>>>> technigala
       dispatch(fetchEvent(id));
       history.push(`/events/${id}`);
     }).catch((e) => {
@@ -190,7 +201,7 @@ export const writeComment = (id, text, history) => {
 
 export function updateEvent(update) {
   return (dispatch) => {
-    axios.put(`${ROOT_URL}/events/${update.id}`, update)
+    axios.put(`${ROOT_URL}/api/events/${update.id}`, update)
       .then((response) => {
         dispatch(fetchEvent(update.id));
       })
@@ -202,7 +213,7 @@ export function updateEvent(update) {
 
 export function deleteEvent(id, history) {
   return (dispatch) => {
-    axios.delete(`${ROOT_URL}/events/${id}`)
+    axios.delete(`${ROOT_URL}/api/events/${id}`)
       .then((response) => {
         history.push('/');
       })
@@ -214,7 +225,7 @@ export function deleteEvent(id, history) {
 
 export function attendEvent(id) {
   return (dispatch) => {
-    axios.get(`${ROOT_URL}/events/attend/${id}`, { headers: { authorization: localStorage.getItem('jwtToken') } })
+    axios.get(`${ROOT_URL}/api/events/attend/${id}`, { headers: { authorization: localStorage.getItem('jwtToken') } })
       .then((response) => {
         dispatch({
           type: ActionTypes.ATTEND_EVENT,
@@ -229,7 +240,7 @@ export function attendEvent(id) {
 
 export function leaveEvent(id) {
   return (dispatch) => {
-    axios.get(`${ROOT_URL}/events/leave/${id}`, { headers: { authorization: localStorage.getItem('jwtToken') } })
+    axios.get(`${ROOT_URL}/api/events/leave/${id}`, { headers: { authorization: localStorage.getItem('jwtToken') } })
       .then((response) => {
         dispatch({
           type: ActionTypes.LEAVE_EVENT,
@@ -244,7 +255,7 @@ export function leaveEvent(id) {
 
 export function rateEvent(id, rating, history) {
   return (dispatch) => {
-    axios.post(`${ROOT_URL}/events/rate/${id}`, { rating })
+    axios.post(`${ROOT_URL}/api/events/rate/${id}`, { rating })
       .then((response) => {
         dispatch(fetchEvent(id));
         history.push(`/events/${id}`);
@@ -257,7 +268,7 @@ export function rateEvent(id, rating, history) {
 
 export function updateCurrentUser(updatedUser) {
   return (dispatch) => {
-    axios.put(`${ROOT_URL}/user`, updatedUser)
+    axios.put(`${ROOT_URL}/api/user`, updatedUser)
       .then((response) => {
         dispatch({ type: ActionTypes.UPDATE_CURRENT_USER, payload: response.data });
       })
@@ -269,8 +280,9 @@ export function updateCurrentUser(updatedUser) {
 
 export function updateStripeId(updatedUser) {
   return (dispatch) => {
-    axios.put(`${ROOT_URL}/userStripeId`, updatedUser)
+    axios.put(`${ROOT_URL}/api/userStripeId`, updatedUser)
       .then((response) => {
+        console.log(response.data);
         dispatch({ type: ActionTypes.UPDATE_STRIPE_ID, payload: response.data });
       })
       .catch((error) => {
@@ -281,7 +293,7 @@ export function updateStripeId(updatedUser) {
 
 export function fetchUser(id) {
   return (dispatch) => {
-    axios.get(`${ROOT_URL}/users/${id}`)
+    axios.get(`${ROOT_URL}/api/users/${id}`)
       .then((response) => {
         dispatch({
           type: ActionTypes.FETCH_USER,
@@ -296,7 +308,7 @@ export function fetchUser(id) {
 
 export function followUser(followId) {
   return (dispatch) => {
-    axios.get(`${ROOT_URL}/users/follow/${followId}`, { headers: { authorization: localStorage.getItem('jwtToken') } })
+    axios.get(`${ROOT_URL}/api/users/follow/${followId}`, { headers: { authorization: localStorage.getItem('jwtToken') } })
       .then((response) => {
         dispatch({
           type: ActionTypes.FOLLOW_USER,
@@ -311,7 +323,7 @@ export function followUser(followId) {
 
 export function unFollowUser(unfollowId) {
   return (dispatch) => {
-    axios.get(`${ROOT_URL}/users/unfollow/${unfollowId}`, { headers: { authorization: localStorage.getItem('jwtToken') } })
+    axios.get(`${ROOT_URL}/api/users/unfollow/${unfollowId}`, { headers: { authorization: localStorage.getItem('jwtToken') } })
       .then((response) => {
         dispatch({
           type: ActionTypes.UNFOLLOW_USER,

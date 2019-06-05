@@ -3,7 +3,8 @@ import axios from 'axios';
 import StripeCheckout from 'react-stripe-checkout';
 
 const fromDollarToCent = amount => amount * 100;
-const PAYMENT_SERVER_URL = 'http://localhost:9090/api/payment';
+// const PAYMENT_SERVER_URL = 'http://localhost:9090/api/payment';
+const PAYMENT_SERVER_URL = 'https://busking-api.herokuapp.com/api/payment';
 const CURRENCY = 'USD';
 const STRIPE_KEY = 'pk_test_cmSKgd5oAKJCXkLZWdG9iPkY00gDJLz3VP';
 
