@@ -42,7 +42,7 @@
     "webpack-dev-server": "^3.3.1"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "dotenv": "^8.0.0",
     "favicons-webpack-plugin": "^0.0.9",
     "google-maps-react": "^2.0.2",
